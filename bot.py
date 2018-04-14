@@ -20,6 +20,7 @@ async def on_ready():
 async def add(a:int, b:int):
     await bot.say(a + b)
 
+
 ########################################################
 
 @bot.command(pass_context=True)
@@ -28,11 +29,13 @@ async def info(ctx):
         info = json.load(menusFile)
         await bot.say('**' + info['description'] + '**\n\nCreated by: *' + info['author'] + '*\nVersion: *' + info['version'] + '*\n\n`*help` for commands')
 
+
 @bot.command(pass_context=True)
 async def help(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
         await bot.say(menus['help'])
+
 
 @bot.command(pass_context=True)
 async def helpP(ctx):
@@ -40,11 +43,13 @@ async def helpP(ctx):
         menus = json.load(menusFile)
         await bot.say(menus['helpP'])
 
+
 @bot.command(pass_context=True)
 async def helpG(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
         await bot.say(menus['helpG'])
+
 
 @bot.command(pass_context=True)
 async def helpquote(ctx):
@@ -52,11 +57,13 @@ async def helpquote(ctx):
         menus = json.load(menusFile)
         await bot.say(menus['helpquote'])
 
+
 ########################################################
 
 @bot.command(pass_context=True)
 async def roll(ctx):
     await bot.say('You rolled a ' + str(randint(1,20)))
+
 
 @bot.command(pass_context=True)
 async def flip(ctx):
@@ -67,11 +74,14 @@ async def flip(ctx):
 
     await bot.say(line)
 
+
+
 @bot.command(pass_context=True)
 async def pick(ctx):
     simbolo = ['Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei']
     naipe = ['paus', 'ouros', 'copas', 'espadas']
     await bot.say(simbolo[randint(0,12)] + ' de ' + naipe[randint(0,3)])
+
 
 
 #@bot.command(pass_context=True)
