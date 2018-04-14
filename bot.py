@@ -60,15 +60,12 @@ async def roll(ctx):
 
 @bot.command(pass_context=True)
 async def flip(ctx):
-    await bot.say(getSide())
+    n = randint(0,10000)
+    line = 'WTF the coin landed upright!'
+    if(n<5000): line = 'You got tails'
+    elif(n<10000): line = 'You got heads'
 
-def getSide():
-    n = randint(0,9999)
-    if(n==0):
-       return 'WTF the coin landed uprigth!'
-    if(n>5000):
-       return 'You got tails'
-    return 'You got heads';
+    await bot.say(line)
 
 @bot.command(pass_context=True)
 async def pick(ctx):
