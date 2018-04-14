@@ -25,7 +25,9 @@ async def on_ready():
 async def add(a:int, b:int):
     await bot.say(a + b)
 
+
 ######################################################## HELP
+
 
 @bot.command(pass_context=True)
 async def info(ctx):
@@ -33,11 +35,13 @@ async def info(ctx):
         info = json.load(menusFile)
         await bot.say('**' + info['description'] + '**\n\nCreated by: *' + info['author'] + '*\nVersion: *' + info['version'] + '*\n\n`*help` for commands')
 
+
 @bot.command(pass_context=True)
 async def help(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
         await bot.say(menus['help'])
+
 
 @bot.command(pass_context=True)
 async def helpP(ctx):
@@ -45,17 +49,20 @@ async def helpP(ctx):
         menus = json.load(menusFile)
         await bot.say(menus['helpP'])
 
+
 @bot.command(pass_context=True)
 async def helpG(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
         await bot.say(menus['helpG'])
 
+
 @bot.command(pass_context=True)
 async def helpquote(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
         await bot.say(menus['helpquote'])
+
 
 #@bot.command(pass_context=True)
 #async def helpPlay(ctx):
@@ -70,16 +77,17 @@ async def helpquote(ctx):
 async def roll(ctx):
     await bot.say('You rolled a ' + str(randint(1,20)))
 
+
 #atirar moeda ao ar (com easteregg)
 @bot.command(pass_context=True)
 async def flip(ctx):
-	result = 'You got heads'
-	n = randint(0,9999)
-	if(n==0):
-       result = 'WTF the coin landed uprigth!'
-    if(n>5000):
-       result = 'You got tails'
-    await bot.say(result)
+    n = randint(0,10000)
+    line = 'WTF the coin landed upright!'
+    if(n<5000): line = 'You got tails'
+    elif(n<10000): line = 'You got heads'
+
+    await bot.say(line)
+
 
 #escolher uma carta
 @bot.command(pass_context=True)
@@ -87,6 +95,7 @@ async def pick(ctx):
     simbolo = ['Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei']
     naipe = ['paus', 'ouros', 'copas', 'espadas']
     await bot.say(simbolo[randint(0,12)] + ' de ' + naipe[randint(0,3)])
+
 
 #pedra papel tesoura
 @bot.command(pass_context=True)
@@ -103,6 +112,7 @@ async def rps(ctx, player):
     else:
     	await bot.say('*Invalid*')
 
+
 def getRPS():
     n = randint(0,2)
     if(n == 0):
@@ -110,6 +120,7 @@ def getRPS():
     if(n == 1):
     	return "paper"
     return "scissors"
+
 
 def simpRPS(hand):
     if (hand == "r"):
@@ -122,20 +133,22 @@ def simpRPS(hand):
 
 
 #Macro to update the log
-def loggergenerator(userName, identifier):
-    nspaces = 40 - userName.length - identifier.length
-    currentdate = datetime.now()
-    var datetime = currentdate.date()   + "/"
-                 + currentdate.month()  + "/" 
-                 + currentdate.year()   + " @ "  
-                 + currentdate.hour()   + ":"  
-                 + currentdate.minute() + ":" 
-                 + currentdate.second()
+#def loggergenerator(userName, identifier):
+#    nspaces = 40 - userName.length - identifier.length
+#    currentdate = datetime.now()
+#    var datetime = currentdate.date()   + "/"
+#                 + currentdate.month()  + "/" 
+#                 + currentdate.year()   + " @ "  
+#                 + currentdate.hour()   + ":"  
+#                 + currentdate.minute() + ":" 
+#                 + currentdate.second()
+#    
+#    registo = registo + '\n*' + userName + identifier + '*' + '\n' + datetime
+#    print(userName + identifier + ' '.repeat(nspaces) + datetime)
+#    logwriter.write('\n' + userName + identifier + ' '.repeat(nspaces) + datetime)
+#    nregisto++
+#    prevDate = currentdate   
     
-    registo = registo + '\n*' + userName + identifier + '*' + '\n' + datetime
-    print(userName + identifier + ' '.repeat(nspaces) + datetime)
-    logwriter.write('\n' + userName + identifier + ' '.repeat(nspaces) + datetime)
-    nregisto++
-    prevDate = currentdate   
+
 
 bot.run(open('auth').readline().rstrip())
