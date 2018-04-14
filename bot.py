@@ -100,14 +100,18 @@ async def pick(ctx):
 #pedra papel tesoura
 @bot.command(pass_context=True)
 async def rps(ctx, player):
-	if(player == 'rock' || player == 'paper' || player == 'scissors' || player == 'r' || player == 'p' || player == 's'):
+    if(player == 'rock' or player == 'paper' or player == 'scissors'  or player == 'r' or player == 'p' or player == 's'):
         cpu = getRPS()
         player = simpRPS(player)
         result = "**JBB won!**" #assume que o JBB ganha
-        if (player                      == cpu)        {result = "**It´s a tie!**";}
-        if (player == "rock"     && cpu == "scissors") {result = "**You won!**";}
-        if (player == "paper"    && cpu == "rock"    ) {result = "**You won!**";}
-        if (player == "scissors" && cpu == "paper"   ) {result = "**You won!**";}
+        if (player == cpu):
+        	result = "**It´s a tie!**"
+        if (player == "rock" and cpu == "scissors"):
+        	result = "**You won!**"
+        if (player == "paper" and cpu == "rock"):
+        	result = "**You won!**"
+        if (player == "scissors" and cpu == "paper"):
+        	result = "**You won!**"
         await bot.say('You played ' + player + '\nJBB played ' + cpu + '\n' + result)
     else:
     	await bot.say('*Invalid*')
