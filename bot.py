@@ -57,9 +57,11 @@ async def on_message(message):
         if content in imagesMap:
             await bot.send_file(
                 message.channel, IMAGES_PATH+imagesMap[content])
+            return
         elif content in gifsMap:
             await bot.send_file(
                 message.channel, GIFS_PATH+gifsMap[content])
+            return
 
     await bot.process_commands(message)
 
