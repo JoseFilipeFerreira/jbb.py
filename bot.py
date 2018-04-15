@@ -70,7 +70,57 @@ async def helpquote(ctx):
 #        menus = json.load(menusFile)
 #        await bot.say(menus['helpPlay'] + musicFiles.join('\n')) 
 
+
+######################################################## QUOTES
+@bot.command(pass_context=True)
+async def quote(ctx):
+    await bot.say(getRLine('quote'))
+
+
+@bot.command(pass_context=True)
+async def quoteA(ctx):
+    await bot.say(getRLine('quoteA'))
+
+
+@bot.command(pass_context=True)
+async def fact(ctx):
+    await bot.say(getRLine('fact'))
+
+
+@bot.command(pass_context=True)
+async def nquoteA(ctx):
+    await bot.say('Existem ' + getNLine('quoteA') + ' quotes de alunos')
+
+
+@bot.command(pass_context=True)
+async def nquote(ctx):
+    await bot.say('Existem ' + getNLine('quote') + ' quotes do JBB')
+
+
+@bot.command(pass_context=True)
+async def nfact(ctx):
+    await bot.say('Existem '+ getNLine('fact') + ' factos sobre o JBB')
+
+
+@bot.command(pass_context=True)
+async def ntotal(ctx):
+    n = str(int(getNLine('quote')) + int(getNLine('quoteA')) + int(getNLine('fact')))
+    await bot.say('Existem '+ n + ' frases')
+
+
+def getRLine(filename):
+    file = open("./modules/quotes/" + filename + ".txt")
+    quotes_array = file.read().split('\n-\n')
+    return quotes_array[randint(0, len(quotes_array) -1 )]
+
+def getNLine(filename):
+    file = open("./modules/quotes/" + filename + ".txt")
+    quotes_array = file.read().split('\n-\n')
+    return str(len(quotes_array))
+
+
 ######################################################## GAMES
+
 
 #atirar um dado com 20 faces
 @bot.command(pass_context=True)
@@ -134,6 +184,13 @@ def simpRPS(hand):
     if (hand == "s"):
     	hand = "scissors"
     return hand
+
+######################################################## MÚSICA
+@bot.command(pass_context=True)
+async def play(ctx, music):
+    voice_channel = ctx.message.author.voice.voice_channel
+    await bot.join_voice_channel(voice_channel)
+    voice_channel.play(discord.FFmpegPCMAudio('./Music' + music +'.mp3'))
 
 
 ######################################################## PIADAS
