@@ -136,6 +136,152 @@ def simpRPS(hand):
     return hand
 
 
+######################################################## PIADAS
+
+####################################PNG
+@bot.command(pass_context=True)
+async def oracle(ctx):
+    await bot.say(':bat:')
+
+
+@bot.command(pass_context=True)
+async def sapos1(ctx):
+    await bot.say(':frog:')
+
+
+@bot.command(pass_context=True)
+async def hitler(ctx):
+    await bot.say('<:burger_hitler:418524889624870912>')
+
+
+@bot.command(pass_context=True)
+async def herulume(ctx):
+    await bot.say('top kek')
+
+                
+@bot.command(pass_context=True)
+async def denied(ctx):
+    await bot.send_file(ctx.message.channel,'Images/denied.png')
+
+
+@bot.command(pass_context=True)
+async def survival(ctx):
+    await bot.send_file(ctx.message.channel,'Images/survival.png')
+
+
+@bot.command(pass_context=True)
+async def sugoi(ctx):
+    await bot.send_file(ctx.message.channel,'Images/sugoi.png')
+
+
+@bot.command(pass_context=True)
+async def rude(ctx):
+    await bot.send_file(ctx.message.channel,'Images/rude.png')
+
+
+@bot.command(pass_context=True)
+async def dont(ctx):
+    await bot.send_file(ctx.message.channel,'Images/dont.png')
+
+
+@bot.command(pass_context=True)
+async def milady(ctx):
+    await bot.send_file(ctx.message.channel,'Images/milady.png')
+
+
+@bot.command(pass_context=True)
+async def manilator(ctx):
+    await bot.send_file(ctx.message.channel,'Images/manilator.png')
+
+
+@bot.command(pass_context=True)
+async def mac(ctx):
+    await bot.send_file(ctx.message.channel,'Images/mac.png')  
+
+
+@bot.command(pass_context=True)
+async def nani(ctx):
+    await bot.send_file(ctx.message.channel,'Images/nani.png')
+
+
+@bot.command(pass_context=True)
+async def arroz(ctx):
+    await bot.send_file(ctx.message.channel,'Images/arroz.png') 
+
+
+@bot.command(pass_context=True)
+async def deusvult(ctx):
+    await bot.send_file(ctx.message.channel,'Images/deusvult.png')
+
+
+@bot.command(pass_context=True)
+async def coffee(ctx):
+    await bot.send_file(ctx.message.channel,'Images/coffee.png')
+
+
+@bot.command(pass_context=True)
+async def morning(ctx):
+    await bot.send_file(ctx.message.channel,'Images/morning.png')
+
+
+@bot.command(pass_context=True)
+async def confused(ctx):
+    await bot.send_file(ctx.message.channel,'Images/confused.png')
+
+
+@bot.command(pass_context=True)
+async def notateacher(ctx):
+    await bot.send_file(ctx.message.channel,'Images/notateacher.png')
+
+
+@bot.command(pass_context=True)
+async def question(ctx):
+    await bot.send_file(ctx.message.channel,'Images/question.png')
+
+
+@bot.command(pass_context=True)
+async def wtf(ctx):
+    await bot.send_file(ctx.message.channel,'Images/wtf.png')
+
+
+@bot.command(pass_context=True)
+async def fly(ctx):
+    await bot.send_file(ctx.message.channel,'Images/fly.png')
+
+
+@bot.command(pass_context=True)
+async def cena(ctx):
+    await bot.send_file(ctx.message.channel,'Images/cena.png')
+
+
+@bot.command(pass_context=True)
+async def doubt(ctx):
+    await bot.send_file(ctx.message.channel,'Images/doubt.png')
+
+
+@bot.command(pass_context=True)
+async def anime(ctx):
+    await bot.send_file(ctx.message.channel,'Images/anime.png')
+
+
+@bot.command(pass_context=True)
+async def mendess(ctx):
+    await bot.send_file(ctx.message.channel,'Images/mendess.png')
+
+
+####################################GIF
+
+
+@bot.command(pass_context=True)
+async def perfection(ctx):
+    await bot.send_file(ctx.message.channel,'Images/perfection.gif')
+
+
+@bot.command(pass_context=True)
+async def dodge(ctx):
+    await bot.send_file(ctx.message.channel,'Images/dodge.gif')
+
+
 #Macro to update the log
 #def loggergenerator(userName, identifier):
 #    nspaces = 40 - userName.length - identifier.length
