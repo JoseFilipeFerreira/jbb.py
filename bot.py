@@ -31,7 +31,7 @@ async def add(a:int, b:int):
 
 @bot.command(pass_context=True)
 async def info(ctx):
-    with open('./package.json') as infoFile:
+    with open('./package.json') as menusFile:
         info = json.load(menusFile)
         await bot.say('**' + info['description'] + '**\n\nCreated by: *' + info['author'] + '*\nVersion: *' + info['version'] + '*\n\n`*help` for commands')
 
@@ -40,28 +40,32 @@ async def info(ctx):
 async def help(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
-        await bot.say(menus['help'])
+        await bot.send_message(ctx.message.author, menus['help'])
+        await bot.delete_message(ctx.message)
 
 
 @bot.command(pass_context=True)
 async def helpP(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
-        await bot.say(menus['helpP'])
+        await bot.send_message(ctx.message.author, menus['helpP'])
+        await bot.delete_message(ctx.message)
 
 
 @bot.command(pass_context=True)
 async def helpG(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
-        await bot.say(menus['helpG'])
+        await bot.send_message(ctx.message.author, menus['helpG'])
+        await bot.delete_message(ctx.message)
 
 
 @bot.command(pass_context=True)
 async def helpquote(ctx):
     with open('./modules/menus.json') as menusFile:
         menus = json.load(menusFile)
-        await bot.say(menus['helpquote'])
+        await bot.send_message(ctx.message.author, menus['helpquote'])
+        await bot.delete_message(ctx.message)
 
 
 #@bot.command(pass_context=True)
@@ -337,6 +341,14 @@ async def perfection(ctx):
 @bot.command(pass_context=True)
 async def dodge(ctx):
     await bot.send_file(ctx.message.channel,'Images/dodge.gif')
+
+
+####################################SOUND PNG
+
+
+@bot.command(pass_context=True)
+async def dorifto(ctx):
+    await bot.send_file(ctx.message.channel,'Images/dorifto.png')
 
 
 #Macro to update the log
