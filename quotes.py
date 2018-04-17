@@ -62,8 +62,20 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def add(self, ctx, file):
-        if(ctx.message.author.id == "400031648537640962"):
-            print(file)
+        if ctx.message.author.id == "400031648537640962":
+            if file == 'quote' or file == 'quoteA' or file == 'fact':
+                instL = len (file) + 6
+                newQuote = ctx.message.content[instL:].lstrip()
+
+                if len(newQuote) > 0:
+                    await self.bot.say(file +'\n' + newQuote)
+                    #tem de se colocar a gravar mesmo RIP
+                else:
+                    await self.bot.say('Invalid quote')
+            else:
+                await self.bot.say('Invalid category')
+        else:
+            await self.bot.say('Invalid user')
 
 
 def getRLine(quotes_array, filename):
