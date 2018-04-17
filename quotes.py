@@ -60,6 +60,11 @@ class Quotes():
         
         await self.bot.say('Existem '+ n + ' frases')
 
+    @commands.command(pass_context=True)
+    async def add(self, ctx, file):
+        if(ctx.message.author.id == "400031648537640962"):
+            print(file)
+
 
 def getRLine(quotes_array, filename):
     return quotes_array[filename][randint(0, len(quotes_array[filename]) -1 )]

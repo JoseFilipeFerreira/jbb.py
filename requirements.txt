@@ -4,9 +4,14 @@ baseconvert==1.0.0a4
 cffi==1.11.5
 chardet==3.0.4
 discord.py==0.16.12
+inflect==0.2.5
+jaraco.itertools==2.2
+more-itertools==4.1.0
 multidict==4.1.0
 pkg-resources==0.0.0
 pycparser==2.18
 PyNaCl==1.0.1
 six==1.11.0
 websockets==3.4
+wolframalpha==3.0.1
+xmltodict==0.11.0

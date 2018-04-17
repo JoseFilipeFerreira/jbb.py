@@ -41,7 +41,6 @@ def main():
     
     bot.run(open('auth').readline().rstrip())
 
-
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -62,7 +61,7 @@ async def on_message(message):
             await bot.send_file(
                 message.channel, GIFS_PATH+gifsMap[content])
             return
-
+        print(message.author)
     await bot.process_commands(message)
 
 

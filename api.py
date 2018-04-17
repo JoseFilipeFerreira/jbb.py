@@ -15,14 +15,16 @@ class Api():
     @commands.command(pass_context=True)
     async def ask(self, ctx):
         query = ctx.message.content[5:]
-        try:
-            res = client.query(query)
-        except:
-            res = "Couldn't find an answer"
-        answer = '**' + query +'**' + '\n```' + next(res.results).text + '```'
+        res = client.query(query)
+        if res['@success'] == 'false':
+            strRes = "Couldn't find an answer"
+        else:
+            strRes = next(res.results).text
+            
+        answer = '**' + query +'**' + '\n```' + strRes + '```'
         await self.bot.say(answer)
 
 
 
 def setup(bot):
-    bot.add_cog(Api(bot))  
+    bot.add_cog(Api(bot))
