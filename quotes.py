@@ -54,11 +54,12 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def ntotal(self, ctx):
-        n = 0
-        for array in self.quotes_array.values:
-            n += len(array)
+        n =  int(getNLine(self.quotes_array, 'quoteA'))
+        n += int(getNLine(self.quotes_array, 'quote'))
+        n += int(getNLine(self.quotes_array, 'fact'))
+        n += int(getNLine(self.quotes_array, 'quoteAdmin'))
         
-        await self.bot.say('Existem '+ n + ' frases')
+        await self.bot.say('Existem '+ str(n) + ' frases')
 
     @commands.command(pass_context=True)
     async def quoteAdmin(self, ctx):
