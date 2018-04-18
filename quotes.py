@@ -61,6 +61,22 @@ class Quotes():
         await self.bot.say('Existem '+ n + ' frases')
 
     @commands.command(pass_context=True)
+    async def quoteAdmin(self, ctx):
+        if "Administrador" in [y.name for y in ctx.message.author.roles]:
+            await self.bot.say(getRLine(self.quotes_array, 'quoteAdmin'))
+        else:
+            await self.bot.say('Invalid user')
+
+
+    @commands.command(pass_context=True)
+    async def nquoteAdmin(self, ctx):
+        if "Administrador" in [y.name for y in ctx.message.author.roles]:
+            await self.bot.say('Existem '+ getNLine(self.quotes_array, 'quoteAdmin') + ' quotes de Admin')
+        else:
+            await self.bot.say('Invalid user')
+        
+
+    @commands.command(pass_context=True)
     async def add(self, ctx, file):
         if ctx.message.author.id == "400031648537640962":
             if file == 'quote' or file == 'quoteA' or file == 'fact':

@@ -61,7 +61,6 @@ async def on_message(message):
             await bot.send_file(
                 message.channel, GIFS_PATH+gifsMap[content])
             return
-        print(message.author)
     await bot.process_commands(message)
 
 
@@ -104,6 +103,16 @@ async def helpquote(ctx):
         menus = json.load(menusFile)
         await bot.send_message(ctx.message.author, menus['helpquote'])
         await bot.delete_message(ctx.message)
+
+@bot.command(pass_context=True)
+async def sudohelp(ctx):
+    if "Administrador" in [y.name for y in ctx.message.author.roles]:
+        with open('./modules/menus.json') as menusFile:
+            menus = json.load(menusFile)
+            await bot.send_message(ctx.message.author, menus['sudohelp'])
+            await bot.delete_message(ctx.message)
+    else:
+        await self.bot.say('Invalid user')
 
 
 #@bot.command(pass_context=True)
