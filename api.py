@@ -1,8 +1,23 @@
+from __future__ import print_function
 import discord
 import wolframalpha
 from baseconvert import base
 from discord.ext import commands
 from random import randint
+from apiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
+import datetime
+
+#setup the calender API
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+store = file.Storage('credentials.json')
+creds = store.get()
+if not creds or creds.invalid:
+    flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+    creds = tools.run_flow(flow, store)
+service = build('calendar', 'v3', http=creds.authorize(Http()))
+
 
 client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
 
@@ -23,6 +38,40 @@ class Api():
             
         answer = '**' + query +'**' + '\n```' + strRes + '```'
         await self.bot.say(answer)
+
+    @commands.command(pass_context=True)
+    async def cantina(self, ctx):
+        #call calendar API
+        now = datetime.datetime.utcnow().isoformat() + 'Z'
+        events_result = service.events().list(
+            calendarId = 'primary',
+            timeMin = now,
+            maxResults = 3,
+            singleEvents = True,
+            orderBy = 'startTime').execute()
+
+        nomes = ['Hoje', 'Amanhã', 'depois de Amanhã']
+        nomesN = 0
+
+        events = events_result.get('items', [])
+
+        if not events:
+            print('No upcomig events found')
+
+        embed = discord.Embed(title="Ementa da Cantina", color=0xfbfb00)
+            
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            
+            arrayDate = start.split('T')[0].split('-')
+            embed.add_field(
+                name = arrayDate[2] + '-' + arrayDate[1] + '-' + arrayDate[0],
+                value = event['summary'],
+                inline=True)
+            nomesN = nomesN + 1
+
+        await self.bot.say(embed=embed)
+        
 
 
 
