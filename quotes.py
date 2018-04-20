@@ -79,7 +79,10 @@ class Quotes():
     @commands.command(pass_context=True)
     async def add(self, ctx, file, *quote):
         quote = ' '.join(word for word in quote)
-        if ctx.message.author == discord.AppInfo.owner:
+        appInfo = await self.bot.application_info()
+        owner = appInfo.owner
+        #TODO optimize one day
+        if ctx.message.author != owner:
             await self.bot.say('Invalid user')
 
         elif file not in self.quotes_dict:
