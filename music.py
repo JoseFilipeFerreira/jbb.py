@@ -2,7 +2,6 @@ import discord
 from baseconvert import base
 from discord.ext import commands
 from random import randint
-import 
 
 class Programming():
     
