@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import random
 from random import randint
 import os
 from os import path
@@ -11,60 +12,58 @@ class Quotes():
     
     def __init__(self, bot):
         self.bot = bot
-        self.quotes_array = {}
+        self.quotes_dict = {}
         for f in os.listdir(QUOTES_PATH):
-            print(f)
             if path.isfile(path.join(QUOTES_PATH, f)):
                 filename, file_ext = path.splitext(f)
-                print(filename)
-                print(file_ext)
-                with open(QUOTES_PATH+f,'r', encoding="utf8") as file:
-                    self.quotes_array[filename] = json.load(file)['array']
+                with open(QUOTES_PATH + f, 'r', encoding="utf8") as file:
+                    self.quotes_dict[filename] = json.load(file)['array']
 
         
     @commands.command(pass_context=True)
     async def quote(self, ctx):
-        await self.bot.say(getRLine(self.quotes_array,'quote'))
+        await self.bot.say(getRLine(self.quotes_dict,'quote'))
 
 
     @commands.command(pass_context=True)
     async def quoteA(self, ctx):
-        await self.bot.say(getRLine(self.quotes_array, 'quoteA'))
+        await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
 
 
     @commands.command(pass_context=True)
     async def fact(self, ctx):
-        await self.bot.say(getRLine(self.quotes_array, 'fact'))
+        await self.bot.say(getRLine(self.quotes_dict, 'fact'))
 
 
     @commands.command(pass_context=True)
     async def nquoteA(self, ctx):
-        await self.bot.say('Existem ' + getNLine(self.quotes_array, 'quoteA') + ' quotes de alunos')
+        await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
 
     @commands.command(pass_context=True)
     async def nquote(self, ctx):
-        await self.bot.say('Existem ' + getNLine(self.quotes_array, 'quote') + ' quotes do JBB')
+        await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
 
 
     @commands.command(pass_context=True)
     async def nfact(self, ctx):
-        await self.bot.say('Existem '+ getNLine(self.quotes_array, 'fact') + ' factos sobre o JBB')
+        await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
 
     @commands.command(pass_context=True)
     async def ntotal(self, ctx):
-        n =  int(getNLine(self.quotes_array, 'quoteA'))
-        n += int(getNLine(self.quotes_array, 'quote'))
-        n += int(getNLine(self.quotes_array, 'fact'))
-        n += int(getNLine(self.quotes_array, 'quoteAdmin'))
+        n =  int(getNLine(self.quotes_dict, 'quoteA'))
+        n += int(getNLine(self.quotes_dict, 'quote'))
+        n += int(getNLine(self.quotes_dict, 'fact'))
+        n += int(getNLine(self.quotes_dict, 'quoteAdmin'))
         
         await self.bot.say('Existem '+ str(n) + ' frases')
+
 
     @commands.command(pass_context=True)
     async def quoteAdmin(self, ctx):
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
-            await self.bot.say(getRLine(self.quotes_array, 'quoteAdmin'))
+            await self.bot.say(getRLine(self.quotes_dict, 'quoteAdmin'))
         else:
             await self.bot.say('Invalid user')
 
@@ -72,34 +71,42 @@ class Quotes():
     @commands.command(pass_context=True)
     async def nquoteAdmin(self, ctx):
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
-            await self.bot.say('Existem '+ getNLine(self.quotes_array, 'quoteAdmin') + ' quotes de Admin')
+            await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'quoteAdmin') + ' quotes de Admin')
         else:
             await self.bot.say('Invalid user')
         
 
     @commands.command(pass_context=True)
-    async def add(self, ctx, file):
-        if ctx.message.author.id == "400031648537640962":
-            if file == 'quote' or file == 'quoteA' or file == 'fact':
-                instL = len (file) + 6
-                newQuote = ctx.message.content[instL:].lstrip()
-
-                if len(newQuote) > 0:
-                    await self.bot.say(file +'\n' + newQuote)
-                    #tem de se colocar a gravar mesmo RIP
-                else:
-                    await self.bot.say('Invalid quote')
-            else:
-                await self.bot.say('Invalid category')
-        else:
+    async def add(self, ctx, file, quote):
+        if ctx.message.author == discord.AppInfo.owner:
             await self.bot.say('Invalid user')
 
+        elif file not in self.quotes_dict:
+            await self.bot.say('Invalid category')
 
-def getRLine(quotes_array, filename):
-    return quotes_array[filename][randint(0, len(quotes_array[filename]) -1 )]
+        elif len(quote) < 1:
+            await self.bot.say('Invalid quote')
 
-def getNLine(quotes_array, filename):
-    return str(len(quotes_array[filename]))
+        else:
+            self.quotes_dict[file].append(quote)
+            updateQuotes(self.quotes_dict, file)
+            await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
+
+
+
+def getRLine(quotes_dict, filename):
+    return random.choice(quotes_dict[filename])
+
+
+def getNLine(quotes_dict, filename):
+    return str(len(quotes_dict[filename]))
+
+
+def updateQuotes(quotes_dict, filename):
+    with open(QUOTES_PATH + filename + '.json', 'w', encoding='utf8') as file:
+        d = {'array': quotes_dict[filename]}
+        json.dump(d, file, indent=4)
+
 
 def setup(bot):
     bot.add_cog(Quotes(bot))
