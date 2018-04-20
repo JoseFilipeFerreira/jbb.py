@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
+import random
 from random import randint
+from random import choice
 
 
 class Games():
@@ -11,8 +13,8 @@ class Games():
 
     #atirar um dado com 20 faces
     @commands.command(pass_context=True)
-    async def roll(self, ctx):
-        await self.bot.say('You rolled a ' + str(randint(1,20)))
+    async def roll(self, ctx, nfaces=20):
+        await self.bot.say('You rolled a ' + str(randint(1,nfaces)))
     
     
     #atirar moeda ao ar (com easteregg)
@@ -31,14 +33,14 @@ class Games():
     async def pick(self, ctx):
         simbolo = ['Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei']
         naipe = ['paus', 'ouros', 'copas', 'espadas']
-        await self.bot.say(simbolo[randint(0,12)] + ' de ' + naipe[randint(0,3)])
+        await self.bot.say(choice(simbolo) + ' de ' + choice(naipe))
     
     
     #pedra papel tesoura
     @commands.command(pass_context=True)
     async def rps(self, ctx, player):
-        if(player == 'rock' or player == 'paper' or player == 'scissors'  or player == 'r' or player == 'p' or player == 's'):
-            cpu = getRPS()
+        if(player in ['rock','paper','scissors','r','p','s']):
+            cpu = choice(['rock','paper','scissors'])
             player = simpRPS(player)
             result = "**JBB won!**" #assume que o JBB ganha
             if (player == cpu):
@@ -52,6 +54,11 @@ class Games():
             await self.bot.say('You played ' + player + '\nJBB played ' + cpu + '\n' + result)
         else:
             await self.bot.say('*Invalid*')
+
+    @commands.command()
+    async def choose(self, *choices : str):
+        """Chooses between multiple choices."""
+        await self.bot.say(choice(choices))
 
 
 def getRPS():
