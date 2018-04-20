@@ -1,3 +1,3 @@
 # JBB.py
-Disscord bot programmed in Python
+Discord bot programmed in Python
 

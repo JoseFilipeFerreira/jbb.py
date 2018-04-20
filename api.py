@@ -65,6 +65,10 @@ class Api():
                 name = arrayDate[2] + '-' + arrayDate[1] + '-' + arrayDate[0],
                 value = event['summary'],
                 inline=False)
+<<<<<<< HEAD
+=======
+            nomesN = nomesN + 1
+>>>>>>> ed0d8442b42991d9753c81713c96b1bcd38dc5b9
 
         await self.bot.say(embed=embed)
         
