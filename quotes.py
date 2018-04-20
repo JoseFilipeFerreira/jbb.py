@@ -77,7 +77,8 @@ class Quotes():
         
 
     @commands.command(pass_context=True)
-    async def add(self, ctx, file, quote):
+    async def add(self, ctx, file, *quote):
+        quote = ' '.join(word for word in quote)
         if ctx.message.author == discord.AppInfo.owner:
             await self.bot.say('Invalid user')
 
