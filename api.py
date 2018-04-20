@@ -67,7 +67,7 @@ class Api():
             embed.add_field(
                 name = arrayDate[2] + '-' + arrayDate[1] + '-' + arrayDate[0],
                 value = event['summary'],
-                inline=True)
+                inline=False)
             nomesN = nomesN + 1
 
         await self.bot.say(embed=embed)
