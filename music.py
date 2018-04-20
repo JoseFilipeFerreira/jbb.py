@@ -9,7 +9,7 @@ class Programming():
         self.bot = bot
     
     @commands.command(pass_context=True)
-    def play(self, ctx, *, query):
+    def play(self, ctx, query):
             """Plays a file from the local filesystem"""
     
             if ctx.voice_client is None:
