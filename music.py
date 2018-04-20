@@ -21,7 +21,7 @@ class Programming():
             if ctx.voice_client.is_playing():
                 ctx.voice_client.stop()
     
-            source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
+            source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio('./Music/' + query))
             ctx.voice_client.play(source, after=lambda e: print(
                 'Player error: %s' % e) if e else None)
     
