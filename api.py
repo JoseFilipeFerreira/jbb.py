@@ -50,9 +50,6 @@ class Api():
             singleEvents = True,
             orderBy = 'startTime').execute()
 
-        nomes = ['Hoje', 'Amanhã', 'depois de Amanhã']
-        nomesN = 0
-
         events = events_result.get('items', [])
 
         if not events:
@@ -67,8 +64,7 @@ class Api():
             embed.add_field(
                 name = arrayDate[2] + '-' + arrayDate[1] + '-' + arrayDate[0],
                 value = event['summary'],
-                inline=True)
-            nomesN = nomesN + 1
+                inline=False)
 
         await self.bot.say(embed=embed)
         
