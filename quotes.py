@@ -9,7 +9,7 @@ import json
 QUOTES_PATH = './modules/quotes/'
 
 class Quotes():
-    
+
     def __init__(self, bot):
         self.bot = bot
         self.quotes_dict = {}
@@ -19,7 +19,7 @@ class Quotes():
                 with open(QUOTES_PATH + f, 'r', encoding="utf8") as file:
                     self.quotes_dict[filename] = json.load(file)['array']
 
-        
+
     @commands.command(pass_context=True)
     async def quote(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict,'quote'))
@@ -56,7 +56,7 @@ class Quotes():
         n += int(getNLine(self.quotes_dict, 'quote'))
         n += int(getNLine(self.quotes_dict, 'fact'))
         n += int(getNLine(self.quotes_dict, 'quoteAdmin'))
-        
+
         await self.bot.say('Existem '+ str(n) + ' frases')
 
 
@@ -74,7 +74,7 @@ class Quotes():
             await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'quoteAdmin') + ' quotes de Admin')
         else:
             await self.bot.say('Invalid user')
-        
+
 
     @commands.command(pass_context=True)
     async def add(self, ctx, file, *quote):

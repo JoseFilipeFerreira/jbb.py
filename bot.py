@@ -5,6 +5,7 @@ from discord.ext import commands
 from datetime import datetime
 import os
 from os import path
+import subprocess
 
 bot = commands.Bot(command_prefix = '*')
 
@@ -38,7 +39,7 @@ def main():
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-    
+
     bot.run(open('auth').readline().rstrip())
 
 @bot.event
@@ -128,6 +129,14 @@ async def play(ctx, music):
     voice_channel = ctx.message.author.voice.voice_channel
     await bot.join_voice_channel(voice_channel)
     voice_channel.play(discord.FFmpegPCMAudio('./Music' + music +'.mp3'))
+
+@bot.command(pass_context=True)
+async def update(ctx):
+    appInfo = await bot.application_info()
+    if ctx.message.author == appInfo.owner:
+        bot.logout()
+        subprocess.call("./update.sh")
+
 
 #Macro to update the log
 #def loggergenerator(userName, identifier):
