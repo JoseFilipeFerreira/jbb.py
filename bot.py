@@ -124,18 +124,18 @@ async def sudohelp(ctx):
 
 
 ######################################################## MÚSICA
-@bot.command(pass_context=True)
-async def play(ctx, music):
-    voice_channel = ctx.message.author.voice.voice_channel
-    await bot.join_voice_channel(voice_channel)
-    voice_channel.play(discord.FFmpegPCMAudio('./Music' + music +'.mp3'))
+#@bot.command(pass_context=True)
+#async def play(ctx, music):
+#    voice_channel = ctx.message.author.voice.voice_channel
+#    await bot.join_voice_channel(voice_channel)
+#    voice_channel.play(discord.FFmpegPCMAudio('./Music' + music +'.mp3'))
 
-@bot.command(pass_context=True)
-async def update(ctx):
-    appInfo = await bot.application_info()
-    if ctx.message.author == appInfo.owner:
-        bot.logout()
-        subprocess.call("./update.sh")
+#@bot.command(pass_context=True)
+#async def update(ctx):
+#    appInfo = await bot.application_info()
+#    if ctx.message.author == appInfo.owner:
+#        bot.logout()
+#        subprocess.call("./update.sh")
 
 
 #Macro to update the log
