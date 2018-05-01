@@ -12,8 +12,14 @@ class Programming():
 
     @commands.command(pass_context=True)
     async def helpHaskell(self, ctx):
-        await self.bot.say('```Haskell\ndouble :: Double -> Double\ndouble x = x + x```')
-    
+        doublFct = ['double = foldr (+) 0 . take 2 . repeat', 
+            'double = foldr (+) 0 . take 2 . cycle . return',
+            'double = head . fmap ap . zip [(2*)] . return',
+            'double = succ . (!!2) . enumFromThen 1',
+            'double = uncurry (+) . dup',
+            'double x = x + x']
+        await self.bot.say('```Haskell\ndouble :: Double -> Double\n' + doublFct[randint(0, len(doublFct) - 1)] + '```')
+
 
     @commands.command(pass_context=True)
     async def helpC(self, ctx):
