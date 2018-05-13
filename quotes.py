@@ -2,9 +2,12 @@ import discord
 from discord.ext import commands
 import random
 from random import randint
+from random import shuffle
 import os
 from os import path
 import json
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 QUOTES_PATH = './modules/quotes/'
 
@@ -95,6 +98,20 @@ class Quotes():
             self.quotes_dict[file].append(quote)
             updateQuotes(self.quotes_dict, file)
             await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
+
+    @commands.command(pass_context=True)
+    async def quoteS(self, ctx, *mod):
+        search = ' '.join(word for word in mod)
+        quoteA = self.quotes_dict['quoteA']
+        quote = self.quotes_dict['quote']
+        fact = self.quotes_dict['fact'] 
+        candidates = quoteA + quote + fact
+        random.shuffle(candidates)
+        
+        result = process.extract(search, candidates, limit=1)
+
+        await self.bot.say(result[0][0])
+
 
 
 
