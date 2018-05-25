@@ -54,16 +54,18 @@ class Games():
             await self.bot.say('You played ' + player + '\nJBB played ' + cpu + '\n' + result)
         else:
             await self.bot.say('*Invalid*')
-
+    
+    #escolhe entre vários argumentos passados
     @commands.command()
     async def choose(self, *choices : str):
         """Chooses between multiple choices."""
         await self.bot.say(choice(choices))
 
-        
+    #dá resposta positiva ou negativa
     @commands.command()
     async def magicball(self):
-        await self.bot.say(likelihood())
+        a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
+        await self.bot.say(choice(a))
 
 
 def getRPS():
@@ -83,10 +85,7 @@ def simpRPS(hand):
     if (hand == "s"):
         hand = "scissors"
     return hand
-
-def likelihood():
-    a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
-    return choice(a)
+    
 
 def setup(bot):
     bot.add_cog(Games(bot))
