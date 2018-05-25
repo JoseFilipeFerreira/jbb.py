@@ -85,9 +85,8 @@ def simpRPS(hand):
     return hand
 
 def likelihood():
-    n = randint(0,9)
     a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
-    return a[n]
+    return choice(a)
 
 def setup(bot):
     bot.add_cog(Games(bot))
