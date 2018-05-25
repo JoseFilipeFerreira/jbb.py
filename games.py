@@ -60,6 +60,11 @@ class Games():
         """Chooses between multiple choices."""
         await self.bot.say(choice(choices))
 
+        
+    @commands.command()
+    async def 8ball(self):
+        await self.bot.say(likelihood())
+
 
 def getRPS():
     n = randint(0,2)
@@ -79,6 +84,10 @@ def simpRPS(hand):
         hand = "scissors"
     return hand
 
+def likelihood():
+    n = randint(0,9)
+    a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
+    return a[n]
 
 def setup(bot):
     bot.add_cog(Games(bot))
