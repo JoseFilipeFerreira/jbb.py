@@ -62,7 +62,7 @@ class Games():
 
         
     @commands.command()
-    async def 8ball(self):
+    async def magicball(self):
         await self.bot.say(likelihood())
 
 
