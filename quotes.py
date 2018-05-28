@@ -31,6 +31,10 @@ class Quotes():
     @commands.command(pass_context=True)
     async def quoteA(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
+    
+    @commands.command(pass_context=True)
+    async def quoteP(self, ctx):
+        await self.bot.say(getRLine(self.quotes_dict, 'quoteP'))
 
 
     @commands.command(pass_context=True)
@@ -56,6 +60,7 @@ class Quotes():
     @commands.command(pass_context=True)
     async def ntotal(self, ctx):
         n =  int(getNLine(self.quotes_dict, 'quoteA'))
+        n += int(getNLine(self.quotes_dict, 'quoteP'))
         n += int(getNLine(self.quotes_dict, 'quote'))
         n += int(getNLine(self.quotes_dict, 'fact'))
         n += int(getNLine(self.quotes_dict, 'quoteAdmin'))
