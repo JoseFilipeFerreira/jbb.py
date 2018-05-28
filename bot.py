@@ -15,7 +15,7 @@ bot.remove_command('help')
 registo = '**Log pedidos JBB:**'
 nregisto = 0
 
-extensions = ['games','quotes', 'programming','api']
+extensions = ['games','quotes', 'programming','api', 'pokemon']
 imagesMap = {}
 gifsMap = {}
 
