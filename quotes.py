@@ -50,6 +50,10 @@ class Quotes():
     @commands.command(pass_context=True)
     async def nquote(self, ctx):
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
+    
+    @commands.command(pass_context=True)
+    async def nquoteP(self, ctx):
+        await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
 
 
     @commands.command(pass_context=True)
