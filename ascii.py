@@ -51,7 +51,7 @@ class Ascii():
              "⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠉⢀⠛⠳⢾⣷⣾⣿⣹⣿⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢧")
         await self.bot.say(a)
         
-        @commands.command()
+    @commands.command()
     async def asciihum(self):
         a = ("▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▒▒▒▒▒▒▒▒\n"
              "▒▒▒▒▒▄█▀▀░░░░░░▀▀█▄▒▒▒▒▒\n"
