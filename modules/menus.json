@@ -3,7 +3,7 @@
     "help"      : "**Comandos** \n`*quote` quote do JBB \n`*quoteA` quote de alunos \n`*conv` `number baseFrom baseTo` converter entre bases(sem vírgulas)\n \n`*cantina` ementa na cantina\n \n`*helpquote`  mais info sobre quotes \n`*helpP` info sobre programação \n`*helpG` info sobre jogos",
     "helpP"     : "**Comandos de programação**\n`*helpC` programa em C \n`*helpHaskell` programa em Haskell \n \n`*conv` `number baseFrom baseTo` converter entre bases(c/ vírgulas)\n \n`*ask` `query` procura uma query no Wolfram alpha",
     "helpquote" : "**Comandos de quotes**\n`*quote` quote do JBB\n`*nquote` número de quotes do JBB\n \n`*quoteA` quote de alunos\n`*nquoteA` número de quotes de alunos\n \n`*fact` facto do JBB \n`*nfact` número de factos do JBB\n\n`*quoteP` quote de professores\n`*nquoteP` número de quotes de professores\n \n`*quoteS` `search` procura nas quotes disponíveis(case sensitive)\n \n`*ntotal` número total de frases",
-    "helpG"     : "**Comandos de Jogos** \n`*roll` lançar dado de 20 faces \n`*flip` lançar uma moeda \n`*rps` `rock/paper/scissors` jogar pedra papel tesoura com o JBB \n`*pick` escolher uma carta\n`*choose` escolhe um dos elementos \n`*magicball` responde a uma pergunta (Y/N)\n`*pokedex` `pokemon` procura no pokedex um pokemon",
+    "helpG"     : "**Comandos de Jogos** \n`*roll` lançar dado de 20 faces \n`*flip` lançar uma moeda \n`*rps` `rock/paper/scissors` jogar pedra papel tesoura com o JBB \n`*pick` escolher uma carta\n`*choose` escolhe um dos elementos \n`*magicball` responde a uma pergunta (Y/N)\n`*pokedex` `pokemon` procura no pokedex um pokemon"
 }
 
 
