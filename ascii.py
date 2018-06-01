@@ -1,8 +1,5 @@
 import discord
 from discord.ext import commands
-import random
-from random import randint
-from random import choice
 
 
 class Ascii():
