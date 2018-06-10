@@ -15,7 +15,7 @@ bot.remove_command('help')
 registo = '**Log pedidos JBB:**'
 nregisto = 0
 
-extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii']
+extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage']
 imagesMap = {}
 gifsMap = {}
 
@@ -52,6 +52,8 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    if (message.content == 'push %ebp' or message.content == 'Push %ebp'):
+        await bot.send_message(message.channel, 'pop %recurso')
     if message.content.startswith('*'):
         content = message.content.lower()[1:]
         if content in imagesMap:
@@ -64,78 +66,12 @@ async def on_message(message):
             return
     await bot.process_commands(message)
 
-
-######################################################## HELP
-
-@bot.command(pass_context=True)
-async def info(ctx):
-    with open('./package.json') as menusFile:
-        info = json.load(menusFile)
-        await bot.say('**' + info['description'] + '**\n\nCreated by: *' + info['author'] + '*\nVersion: *' + info['version'] + '*\n\n`*help` for commands')
-
-
-@bot.command(pass_context=True)
-async def help(ctx):
-    with open('./modules/menus.json') as menusFile:
-        menus = json.load(menusFile)
-        await bot.send_message(ctx.message.author, menus['help'])
-        await bot.delete_message(ctx.message)
-
-
-@bot.command(pass_context=True)
-async def helpP(ctx):
-    with open('./modules/menus.json') as menusFile:
-        menus = json.load(menusFile)
-        await bot.send_message(ctx.message.author, menus['helpP'])
-        await bot.delete_message(ctx.message)
-
-
-@bot.command(pass_context=True)
-async def helpG(ctx):
-    with open('./modules/menus.json') as menusFile:
-        menus = json.load(menusFile)
-        await bot.send_message(ctx.message.author, menus['helpG'])
-        await bot.delete_message(ctx.message)
-
-
-@bot.command(pass_context=True)
-async def helpquote(ctx):
-    with open('./modules/menus.json') as menusFile:
-        menus = json.load(menusFile)
-        await bot.send_message(ctx.message.author, menus['helpquote'])
-        await bot.delete_message(ctx.message)
-
-@bot.command(pass_context=True)
-async def sudohelp(ctx):
-    if "Administrador" in [y.name for y in ctx.message.author.roles]:
-        with open('./modules/menus.json') as menusFile:
-            menus = json.load(menusFile)
-            await bot.send_message(ctx.message.author, menus['sudohelp'])
-            await bot.delete_message(ctx.message)
-    else:
-        await self.bot.say('Invalid user')
-
-
-#@bot.command(pass_context=True)
-#async def helpPlay(ctx):
-#    with open('./modules/menus.json') as menusFile:
-#        menus = json.load(menusFile)
-#        await bot.say(menus['helpPlay'] + musicFiles.join('\n')) 
-
-
 ######################################################## MÚSICA
 #@bot.command(pass_context=True)
 #async def play(ctx, music):
 #    voice_channel = ctx.message.author.voice.voice_channel
 #    await bot.join_voice_channel(voice_channel)
 #    voice_channel.play(discord.FFmpegPCMAudio('./Music' + music +'.mp3'))
-
-@bot.command(pass_context=True)
-async def update(ctx):
-    appInfo = await bot.application_info()
-    if ctx.message.author == appInfo.owner:
-        #bot.logout()
-        subprocess.call("./update.sh")
 
 
 #Macro to update the log
