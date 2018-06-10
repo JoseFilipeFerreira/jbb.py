@@ -66,6 +66,12 @@ async def on_message(message):
             return
     await bot.process_commands(message)
 
+@bot.event
+async def on_member_join(member):
+    server = member.server
+    await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI! {0}'.format(member.mention))
+
+
 ######################################################## MÚSICA
 #@bot.command(pass_context=True)
 #async def play(ctx, music):

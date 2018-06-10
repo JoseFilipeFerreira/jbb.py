@@ -12,8 +12,7 @@ class Manage():
     async def update(self, ctx):
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
-            subprocess.call("./update.sh") 
-   
+            subprocess.call("./update.sh")
 
 def setup(bot):
     bot.add_cog(Manage(bot))
