@@ -18,10 +18,11 @@ class Manage():
             await self.bot.say("Invalid User")
     
     @commands.command(pass_context=True)
-    async def stdplay(self, ctx):
+    async def setplay(self, ctx, *playing):
+        play = ' '.join(word for word in playing)
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
-            await self.bot.change_presence(game=discord.Game(name='*help'))
+            await self.bot.change_presence(game=discord.Game(name=play))
         else:
             await self.bot.say("Invalid User")
 
