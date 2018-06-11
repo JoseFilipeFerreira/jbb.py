@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import json
+import time
 from discord.ext import commands
 from datetime import datetime
 import os
@@ -44,16 +45,24 @@ def main():
 
 @bot.event
 async def on_ready():
+    await bot.change_presence(game=discord.Game(name='*help'))
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    await bot.change_presence(game=discord.Game(name='*help'))
 
 
 @bot.event
 async def on_message(message):
-    if (message.content == 'push %ebp' or message.content == 'Push %ebp'):
+	await reactMessage(message)
+
+@bot.event
+async def on_message_edit(before, after):
+	await reactMessage(after)
+
+
+async def reactMessage(message):
+    if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
     if message.content.startswith('*'):
         content = message.content.lower()[1:]
