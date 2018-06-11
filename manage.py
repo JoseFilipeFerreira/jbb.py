@@ -1,4 +1,5 @@
 import discord
+import time
 import json
 import subprocess
 from discord.ext import commands
@@ -12,7 +13,7 @@ class Manage():
     async def update(self, ctx):
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
-            await self.bot.change_presence(game=discord.Game(name='rebooting...'))
+            await self.bot.change_presence(game=discord.Game(name='rebooting'))
             subprocess.call("./update.sh")
 
 def setup(bot):
