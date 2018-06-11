@@ -1,5 +1,4 @@
 import discord
-import time
 import json
 import subprocess
 from discord.ext import commands
@@ -15,6 +14,14 @@ class Manage():
         if ctx.message.author == appInfo.owner:
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
             subprocess.call("./update.sh")
+        else:
+            await self.bot.say("Invalid User")
+
+    @commands.command(pass_context=True)
+    async def sudokill(self, ctx):
+        appInfo = await self.bot.application_info()
+        if ctx.message.author == appInfo.owner:
+            subprocess.call("./kill.sh")
         else:
             await self.bot.say("Invalid User")
     
