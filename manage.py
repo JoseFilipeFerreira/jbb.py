@@ -16,14 +16,6 @@ class Manage():
             subprocess.call("./update.sh")
         else:
             await self.bot.say("Invalid User")
-
-    @commands.command(pass_context=True)
-    async def sudokill(self, ctx):
-        appInfo = await self.bot.application_info()
-        if ctx.message.author == appInfo.owner:
-            subprocess.call("./kill.sh")
-        else:
-            await self.bot.say("Invalid User")
     
     @commands.command(pass_context=True)
     async def stdplay(self, ctx):
