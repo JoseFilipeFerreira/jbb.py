@@ -24,7 +24,7 @@ class Manage():
         if ctx.message.author == appInfo.owner:
             await self.bot.change_presence(game=discord.Game(name='*help'))
         else:
-            wait self.bot.say("Invalid User")
+            await self.bot.say("Invalid User")
 
 def setup(bot):
     bot.add_cog(Manage(bot))
