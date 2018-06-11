@@ -16,7 +16,7 @@ class Manage():
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
             subprocess.call("./update.sh")
         else:
-            wait self.bot.say("Invalid User")
+            await self.bot.say("Invalid User")
     
     @commands.command(pass_context=True)
     async def stdplay(self, ctx):
