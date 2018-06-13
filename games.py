@@ -67,6 +67,31 @@ class Games():
         a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
         await self.bot.say(choice(a))
 
+    #guess coin
+    @commands.command(pass_context=True)
+    async def guess(self, ctx):
+        await self.bot.say("Guess how the coin landed (head/tail)")
+        
+        def guess_check(m):
+            return m.content.lower() == 'tail' or m.content.lower() == 'head'
+        
+        await self.bot.send_typing(ctx.message.channel)
+        guess = await self.bot.wait_for_message(
+            timeout=10.0,
+            author=ctx.message.author,
+            check=guess_check)
+
+        n = randint(0,1)
+        answer  = 'tail'
+        if(n==1): answer = 'head'
+
+        if guess is None:
+            await self.bot.say('You took too long. I got {}'.format(answer))
+        elif guess.content == answer:
+            await self.bot.say('You guessed it!')
+        else:
+            await self.bot.say("You're wrong. I got {}".format(answer))
+
 def getRPS():
     n = randint(0,2)
     if(n == 0):
