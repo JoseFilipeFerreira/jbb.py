@@ -92,6 +92,14 @@ class Games():
         else:
             await self.bot.say("You're wrong. I got {}".format(answer))
 
+    #create poll
+    @commands.command(pass_context=True)
+    async def vote(self, ctx):
+        await self.bot.delete_message(ctx.message)
+        vote = await self.bot.say('**Vote here** (poll by *{}*)'.format(ctx.message.author.name))
+        await self.bot.add_reaction(vote, '\U0000274C')
+        await self.bot.add_reaction(vote, '\U00002705')
+
 def getRPS():
     n = randint(0,2)
     if(n == 0):

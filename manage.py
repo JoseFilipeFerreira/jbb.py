@@ -29,8 +29,11 @@ class Manage():
 
     @commands.command(pass_context=True)
     async def faketype(self, ctx, *playing):
-        await self.bot.delete_message(ctx.message)
-        await self.bot.send_typing(ctx.message.channel)
+        if "Administrador" in [y.name for y in ctx.message.author.roles]:
+            await self.bot.delete_message(ctx.message)
+            await self.bot.send_typing(ctx.message.channel)
+        else:
+            await self.bot.say("Invalid User")
 
 #    @commands.command(pass_context=True)
 #    async def vote(self, ctx):
