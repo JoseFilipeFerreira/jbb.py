@@ -94,9 +94,10 @@ class Games():
 
     #create poll
     @commands.command(pass_context=True)
-    async def vote(self, ctx):
+    async def vote(self, ctx, *quote):
+        quote = ' '.join(word for word in quote)
         await self.bot.delete_message(ctx.message)
-        vote = await self.bot.say('**Vote here** (poll by *{}*)'.format(ctx.message.author.name))
+        vote = await self.bot.say('**{0}** (poll by *{1}*)'.format(quote, ctx.message.author.name))
         await self.bot.add_reaction(vote, '\U0000274C')
         await self.bot.add_reaction(vote, '\U00002705')
 
