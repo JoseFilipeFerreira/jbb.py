@@ -42,7 +42,7 @@ class Games():
         if(player in ['rock','paper','scissors','r','p','s']):
             cpu = choice(['rock','paper','scissors'])
             player = simpRPS(player)
-            result = "**JBB won!**" #assume que o JBB ganha
+            result = "**JBB won!**" #assume que o JBB ganha top kek
             if (player == cpu):
                 result = "**It´s a tie!**"
             if (player == "rock" and cpu == "scissors"):
