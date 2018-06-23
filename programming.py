@@ -32,6 +32,11 @@ class Programming():
         await self.bot.say(
             n + ' na base ' + basefrom + ' para base ' + baseto + ' dá:\n' + result)
 
+    @commands.command(pass_context=True)
+    async def lmgtfy(self, ctx, *query):
+        query = '+'.join(word for word in query)
+        await self.bot.say("http://lmgtfy.com/?q={}".format(query))
+
 
 
 def setup(bot):
