@@ -42,7 +42,7 @@ class Games():
         if(player in ['rock','paper','scissors','r','p','s']):
             cpu = choice(['rock','paper','scissors'])
             player = simpRPS(player)
-            result = "**JBB won!**" #assume que o JBB ganha
+            result = "**JBB won!**" #assume que o JBB ganha top kek
             if (player == cpu):
                 result = "**It´s a tie!**"
             if (player == "rock" and cpu == "scissors"):
@@ -66,6 +66,43 @@ class Games():
     async def magicball(self):
         a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
         await self.bot.say(choice(a))
+
+    #guess coin
+    @commands.command(pass_context=True)
+    async def guess(self, ctx):
+        await self.bot.say("Guess how the coin landed (head/tail)")
+        
+        def guess_check(m):
+            return m.content.lower() == 'tail' or m.content.lower() == 'head'
+        
+        await self.bot.send_typing(ctx.message.channel)
+        guess = await self.bot.wait_for_message(
+            timeout=10.0,
+            author=ctx.message.author,
+            check=guess_check)
+
+        n = randint(0,1)
+        answer  = 'tail'
+        if(n==1): answer = 'head'
+
+        if guess is None:
+            await self.bot.say('You took too long. I got {}'.format(answer))
+        elif guess.content == answer:
+            await self.bot.say('You guessed it!')
+        else:
+            await self.bot.say("You're wrong. I got {}".format(answer))
+
+    #create poll
+    @commands.command(pass_context=True)
+    async def vote(self, ctx, *quote):
+        if not quote:
+           quote = 'Vote here'
+        else:
+           quote = ' '.join(word for word in quote)
+        await self.bot.delete_message(ctx.message)
+        vote = await self.bot.say('**{0}** (poll by *{1}*)'.format(quote, ctx.message.author.name))
+        await self.bot.add_reaction(vote, '\U0000274C')
+        await self.bot.add_reaction(vote, '\U00002705')
 
 def getRPS():
     n = randint(0,2)
