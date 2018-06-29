@@ -15,12 +15,16 @@ bot.remove_command('help')
 registo = '**Log pedidos JBB:**'
 nregisto = 0
 
-extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator']
+#extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator']
+extensions = ['manage']
+
 imagesMap = {}
 gifsMap = {}
+musicMap = {}
 
 IMAGES_PATH = './Images/'
 GIFS_PATH = './Gif/'
+MUSIC_PATH = './Music/'
 
 def main():
     for f in os.listdir(IMAGES_PATH):
@@ -32,6 +36,11 @@ def main():
         if path.isfile(path.join(GIFS_PATH, f)):
             filename, file_ext = path.splitext(f)
             gifsMap[filename.lower()] = f
+
+    for f in os.listdir(MUSIC_PATH):
+        if path.isfile(path.join(MUSIC_PATH, f)):
+            filename, file_ext = path.splitext(f)
+            musicMap[filename.lower()] = f
 
     for extension in extensions:
         try:
@@ -81,30 +90,21 @@ async def on_member_join(member):
     await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI! {0}'.format(member.mention))
 
 ######################################################## MÚSICA
-#@bot.command(pass_context=True)
-#async def play(ctx, music):
-#    voice_channel = ctx.message.author.voice.voice_channel
-#    await bot.join_voice_channel(voice_channel)
-#    voice_channel.play(discord.FFmpegPCMAudio('./Music' + music +'.mp3'))
+@bot.command(pass_context=True)
+async def play(ctx, music):
+    if ctx.message.author.voice_channel:
+        if music in musicMap:
+            voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
+            player = voice.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
+            player.start()
 
-
-#Macro to update the log
-#def loggergenerator(userName, identifier):
-#    nspaces = 40 - userName.length - identifier.length
-#    currentdate = datetime.now()
-#    var datetime = currentdate.date()   + "/"
-#                 + currentdate.month()  + "/" 
-#                 + currentdate.year()   + " @ "  
-#                 + currentdate.hour()   + ":"  
-#                 + currentdate.minute() + ":" 
-#                 + currentdate.second()
-#    
-#    registo = registo + '\n*' + userName + identifier + '*' + '\n' + datetime
-#    print(userName + identifier + ' '.repeat(nspaces) + datetime)
-#    logwriter.write('\n' + userName + identifier + ' '.repeat(nspaces) + datetime)
-#    nregisto++
-#    prevDate = currentdate   
-    
-
+            while True:
+            	if player.is_done():
+            		await voice.disconnect()
+            		break
+        else:
+        	await bot.say("Invalid Music")
+    else:
+    	await bot.say("You're not in a voice channel")
 
 main()
