@@ -97,11 +97,6 @@ async def play(ctx, music):
             voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
             player = voice.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
             player.start()
-
-            while True:
-            	if player.is_done():
-            		await voice.disconnect()
-            		break
         else:
         	await bot.say("Invalid Music")
     else:
