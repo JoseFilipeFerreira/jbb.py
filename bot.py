@@ -21,6 +21,8 @@ imagesMap = {}
 gifsMap = {}
 musicMap = {}
 
+voice_client = None
+
 IMAGES_PATH = './Images/'
 GIFS_PATH = './Gif/'
 MUSIC_PATH = './Music/'
@@ -94,10 +96,24 @@ async def play(ctx, music):
     if ctx.message.author.voice_channel:
         if music in musicMap:
             voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
+            global voice_client
+            voice_client = voice
             player = voice.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
             player.start()
         else:
         	await bot.say("Invalid Music")
+    else:
+    	await bot.say("You're not in a voice channel")
+
+@bot.command(pass_context=True)
+async def stop(ctx):
+    if ctx.message.author.voice_channel:
+        global voice_client
+        if voice_client:
+            await voice_client.disconnect()
+            voice_client = None
+        else:
+        	await bot.say("JBB not in a voice channel")
     else:
     	await bot.say("You're not in a voice channel")
 
