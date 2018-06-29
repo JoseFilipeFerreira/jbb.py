@@ -59,7 +59,7 @@ class Games():
     @commands.command(pass_context=True)
     async def choose(self, ctx, *choices : str):
         """Chooses between multiple choices."""
-        if (any('@' not in choice for choice in choices)):
+        if all(('@' not in choice) for choice in choices):
             await self.bot.say(choice(choices))
 
     #dá resposta positiva ou negativa
