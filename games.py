@@ -56,10 +56,11 @@ class Games():
             await self.bot.say('*Invalid*')
     
     #escolhe entre vários argumentos passados
-    @commands.command()
-    async def choose(self, *choices : str):
+    @commands.command(pass_context=True)
+    async def choose(self, ctx, *choices : str):
         """Chooses between multiple choices."""
-        await self.bot.say(choice(choices))
+        if (any('@' not in choice for choice in choices)):
+            await self.bot.say(choice(choices))
 
     #dá resposta positiva ou negativa
     @commands.command()
