@@ -17,6 +17,8 @@ nregisto = 0
 
 extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator']
 
+
+
 imagesMap = {}
 gifsMap = {}
 musicMap = {}
@@ -123,6 +125,9 @@ async def play(ctx, music):
 @bot.command(pass_context=True)
 async def stop(ctx):
     if ctx.message.author.voice_channel:
+        if ctx.message.author.name == "Sapos1":
+            await bot.say("Sapos sebosos não param a música")
+            return
         global voice_client
         global player_client
         if voice_client:
