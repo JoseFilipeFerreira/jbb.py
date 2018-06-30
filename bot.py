@@ -86,6 +86,13 @@ async def reactMessage(message):
             return
     await bot.process_commands(message)
 
+    global player_client
+    global voice_client
+    if player_client != None and player_client.is_playing() == False:
+        await voice_client.disconnect()
+        voice_client = None
+        player_client = None
+
 @bot.event
 async def on_member_join(member):
     server = member.server
