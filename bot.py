@@ -95,10 +95,11 @@ async def on_member_join(member):
 async def play(ctx, music):
     if ctx.message.author.voice_channel:
         if music in musicMap:
-            voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
             global voice_client
-            voice_client = voice
-            player = voice.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
+            if voice_client == None:
+               voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
+               voice_client = voice
+            player = voice_client.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
             player.start()
         else:
         	await bot.say("Invalid Music")
