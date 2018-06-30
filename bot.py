@@ -102,6 +102,7 @@ async def on_member_join(member):
 @bot.command(pass_context=True)
 async def play(ctx, music):
     if ctx.message.author.voice_channel:
+        music = music.lower()
         if music in musicMap:
             global voice_client
             global player_client
