@@ -92,37 +92,38 @@ async def on_member_join(member):
     await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI! {0}'.format(member.mention))
 
 ######################################################## MÚSICA
-#@bot.command(pass_context=True)
-#async def play(ctx, music):
-#    if ctx.message.author.voice_channel:
-#        if music in musicMap:
-#            global voice_client
-#            global player_client
-#            if voice_client == None:
-#               voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
-#               voice_client = voice
-#            if player_client.is_playing()
-#                await bot.say("Already Playing")
-#            else:
-#                player = voice_client.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
-#                player.start()
-#        else:
-#        	await bot.say("Invalid Music")
-#    else:
-#    	await bot.say("You're not in a voice channel")
-#
-#@bot.command(pass_context=True)
-#async def stop(ctx):
-#    if ctx.message.author.voice_channel:
-#        global voice_client
-#        global player_client
-#        if voice_client:
-#            await voice_client.disconnect()
-#            voice_client = None
-#            player_client = None
-#        else:
-#        	await bot.say("JBB not in a voice channel")
-#    else:
-#    	await bot.say("You're not in a voice channel")
+@bot.command(pass_context=True)
+async def play(ctx, music):
+    if ctx.message.author.voice_channel:
+        if music in musicMap:
+            global voice_client
+            global player_client
+            if voice_client == None:
+               voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
+               voice_client = voice
+            if player_client != None and player_client.is_playing():
+                await bot.say("Already Playing")
+            else:
+                player = voice_client.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
+                player_client = player
+                player.start()
+        else:
+        	await bot.say("Invalid Music")
+    else:
+    	await bot.say("You're not in a voice channel")
+
+@bot.command(pass_context=True)
+async def stop(ctx):
+    if ctx.message.author.voice_channel:
+        global voice_client
+        global player_client
+        if voice_client:
+            await voice_client.disconnect()
+            voice_client = None
+            player_client = None
+        else:
+        	await bot.say("JBB not in a voice channel")
+    else:
+    	await bot.say("You're not in a voice channel")
 
 main()
