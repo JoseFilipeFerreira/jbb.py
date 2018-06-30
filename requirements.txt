@@ -8,6 +8,7 @@ chardet==3.0.4
 discord.py==0.16.12
 fuzzywuzzy==0.16.0
 google-api-python-client==1.6.6
+googletrans==2.3.0
 httplib2==0.11.3
 idna==2.6
 inflect==0.2.5
@@ -15,6 +16,7 @@ jaraco.itertools==2.2
 more-itertools==4.1.0
 multidict==4.1.0
 oauth2client==4.1.2
+Pillow==5.1.0
 pkg-resources==0.0.0
 pokebase==1.2.0
 pyasn1==0.4.2
