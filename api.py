@@ -8,6 +8,7 @@ from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import datetime
+from googletrans import Translator
 
 #setup the calender API
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -67,9 +68,18 @@ class Api():
                 inline=False)
 
         await self.bot.say(embed=embed)
+
+    @commands.command(pass_context=True)
+    async def translate(self, ctx, *query):
+        query = ' '.join(word for word in query)
+        translator = Translator()
+        translation = translator.translate(query, dest='pt')
+        detector = translator.detect(query)
+        embed = discord.Embed(title="Translating to PT:", description=query, color=0xfbfb00)
+        embed.set_thumbnail(url = "http://logonoid.com/images/google-translate-logo.png")
+        embed.add_field(name="Detected Language:", value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)), inline=False)
+        embed.add_field(name="Translation:", value=translation.text, inline=True)
+        await self.bot.say(embed =embed)
         
-
-
-
 def setup(bot):
     bot.add_cog(Api(bot))

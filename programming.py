@@ -38,6 +38,5 @@ class Programming():
         await self.bot.say("http://lmgtfy.com/?q={}".format(query))
 
 
-
 def setup(bot):
     bot.add_cog(Programming(bot))        
