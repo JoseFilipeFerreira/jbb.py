@@ -9,6 +9,7 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 import datetime
 from googletrans import Translator
+import urbandictionary as ud
 
 #setup the calender API
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -79,6 +80,18 @@ class Api():
         embed.set_thumbnail(url = "http://logonoid.com/images/google-translate-logo.png")
         embed.add_field(name="Detected Language:", value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)), inline=False)
         embed.add_field(name="Translation:", value=translation.text, inline=True)
+        await self.bot.say(embed =embed)
+
+    @commands.command(pass_context=True)
+    async def urban(self, ctx, *query):
+        query = ' '.join(word for word in query)
+        defs = ud.define(query)
+        d = defs[0]
+        embed = discord.Embed(title="Definition of {}".format(query), description=d.definition, color=0xfbfb00)
+        embed.set_thumbnail(url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
+        embed.add_field(name="Example", value=d.example, inline=False)
+        embed.add_field(name=":thumbsup:", value=d.upvotes, inline=True)
+        embed.add_field(name=":thumbsdown:", value=d.downvotes, inline=True)
         await self.bot.say(embed =embed)
         
 def setup(bot):
