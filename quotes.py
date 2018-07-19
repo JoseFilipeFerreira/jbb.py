@@ -129,13 +129,6 @@ class Quotes():
         result = process.extract(search, candidates, limit=1)
 
         await self.bot.say(result[0][0])
-        
-    @commands.command(pass_context=True)
-    async def herulume(self, ctx):
-        await self.bot.say('top kek')
-
-
-
 
 def getRLine(quotes_dict, filename):
     return random.choice(quotes_dict[filename])
