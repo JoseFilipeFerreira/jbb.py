@@ -41,6 +41,10 @@ class Quotes():
     async def fact(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict, 'fact'))
 
+    @commands.command(pass_context=True)
+    async def dadjoke(self, ctx):
+        await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'))
+
 
     @commands.command(pass_context=True)
     async def nquoteA(self, ctx):
@@ -60,6 +64,10 @@ class Quotes():
     async def nfact(self, ctx):
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
+    @commands.command(pass_context=True)
+    async def ndadjoke(self, ctx):
+        await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
+
 
     @commands.command(pass_context=True)
     async def ntotal(self, ctx):
@@ -68,6 +76,7 @@ class Quotes():
         n += int(getNLine(self.quotes_dict, 'quote'))
         n += int(getNLine(self.quotes_dict, 'fact'))
         n += int(getNLine(self.quotes_dict, 'quoteAdmin'))
+        n += int(getNLine(self.quotes_dict, 'dadjoke'))
 
         await self.bot.say('Existem '+ str(n) + ' frases')
 
