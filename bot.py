@@ -76,6 +76,9 @@ async def on_message_edit(before, after):
 async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
+    elif ('anime' in message.content.lower()):
+        await bot.send_message(message.channel, 'Milady, get the shotgun')
+
     if message.content.startswith('*'):
         content = message.content.lower()[1:]
         if content in imagesMap:
