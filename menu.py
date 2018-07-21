@@ -17,44 +17,32 @@ class Menu():
     
     @commands.command(pass_context=True)
     async def help(self, ctx):
-        with open('./modules/menus.json') as menusFile:
-            menus = json.load(menusFile)
-            await self.bot.send_message(ctx.message.author, menus['help'])
-            await self.bot.delete_message(ctx.message)
-    
+        await MenuGenerate(self, ctx, 'help')
     
     @commands.command(pass_context=True)
     async def helpP(self, ctx):
-        with open('./modules/menus.json') as menusFile:
-            menus = json.load(menusFile)
-            await self.bot.send_message(ctx.message.author, menus['helpP'])
-            await self.bot.delete_message(ctx.message)
-    
+        await MenuGenerate(self, ctx, 'helpP') 
     
     @commands.command(pass_context=True)
     async def helpG(self, ctx):
-        with open('./modules/menus.json') as menusFile:
-            menus = json.load(menusFile)
-            await self.bot.send_message(ctx.message.author, menus['helpG'])
-            await self.bot.delete_message(ctx.message)
-    
+        await MenuGenerate(self, ctx, 'helpG')  
     
     @commands.command(pass_context=True)
     async def helpquote(self, ctx):
-        with open('./modules/menus.json') as menusFile:
-            menus = json.load(menusFile)
-            await self.bot.send_message(ctx.message.author, menus['helpquote'])
-            await self.bot.delete_message(ctx.message)
+        await MenuGenerate(self, ctx, 'helpquote')
     
     @commands.command(pass_context=True)
     async def sudohelp(self, ctx):
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
-            with open('./modules/menus.json') as menusFile:
-                menus = json.load(menusFile)
-                await self.bot.send_message(ctx.message.author, menus['sudohelp'])
-                await self.bot.delete_message(ctx.message)
+            await MenuGenerate(self, ctx, 'sudohelp')
         else:
             await self.bot.say('Invalid user')
+
+async def MenuGenerate(self, ctx, name):
+    with open('./modules/menus.json') as menusFile:
+            menus = json.load(menusFile)
+            await self.bot.send_message(ctx.message.author, menus[name])
+            await self.bot.delete_message(ctx.message)
 
 
 #@bot.command(pass_context=True)
