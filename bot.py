@@ -17,8 +17,6 @@ nregisto = 0
 
 extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator']
 
-
-
 imagesMap = {}
 gifsMap = {}
 musicMap = {}
@@ -76,7 +74,7 @@ async def on_message_edit(before, after):
 async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
-    elif ('anime' in message.content.lower()):
+    elif (checkArray(['adoro', 'gosto', 'like', 'love'],  message.content.lower()) and checkArray(['anime'], message.content.lower()) ):
         await bot.send_message(message.channel, 'Milady, get the shotgun')
 
     if message.content.startswith('*'):
@@ -138,5 +136,11 @@ async def stop(ctx):
         	await bot.say("JBB not in a voice channel")
     else:
     	await bot.say("You're not in a voice channel")
+
+def checkArray(tester, s):
+    result = False
+    for test in tester:
+        result = result or test in s
+    return result
 
 main()
