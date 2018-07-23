@@ -10,3 +10,7 @@ Discord bot programmed in Python
 * [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
 * [py-googletrans](https://github.com/ssut/py-googletrans) - Python 3 wrapper for Google Translate API
 * [urbandictionary-py](https://github.com/bcyn/urbandictionary-py) - Python 3 wrapper for Urban Dictionary API.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
