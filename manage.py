@@ -35,59 +35,17 @@ class Manage():
         else:
             await self.bot.say("Invalid User")
 
-#    @commands.command(pass_context=True)
-#    async def vote(self, ctx):
-#        timeBUP = 10
-#        if "Administrador" in [y.name for y in ctx.message.author.roles]:
-#            vote = await self.bot.say('Vote here')
-#            await self.bot.add_reaction(vote, '\U0000274C')
-#            await self.bot.add_reaction(vote, '\U00002705')
-#            nupdates = 5*60/timeBUP
-#            while nupdates > 0:
-#                time.sleep(timeBUP)
-#                vote = await self.bot.get_message(vote.channel, vote.id)
-#                status = '(Tied)'
-#                nX = 0
-#                ncheck = 0
-#                for reaction in vote.reactions:
-#                    if reaction.emoji == '\U0000274C':
-#                        reactors = await self.bot.get_reaction_users(reaction)
-#                        for reactor in reactors:
-#                            nX = nX +1
-#                    elif reaction.emoji == '\U00002705':
-#                        reactors = await self.bot.get_reaction_users(reaction)
-#                        for reactor in reactors:
-#                            ncheck = ncheck + 1
-#                if ncheck == 1 and nX == 1 : status = ' '
-#                elif ncheck > nX: status = '(Yes is wining)'
-#                elif ncheck < nX: status = '(No is wining)'
-#                await self.bot.edit_message(vote, 'Vote here {}'.format(status))
-#                nupdates = nupdates -1
-#                print(nupdates)
-#            vote = await self.bot.get_message(vote.channel, vote.id)
-#            status = '(Tied)'
-#            nX = 0
-#            ncheck = 0
-#            for reaction in vote.reactions:
-#                if reaction.emoji == '\U0000274C':
-#                    reactors = await self.bot.get_reaction_users(reaction)
-#                    for reactor in reactors: nX = nX +1
-#                elif reaction.emoji == '\U00002705':
-#                    reactors = await self.bot.get_reaction_users(reaction)
-#                    for reactor in reactors: ncheck = ncheck + 1
-#            if ncheck == 1 and nX == 1 : status = ' '
-#            elif ncheck > nX: status = '(Yes won)'
-#            elif ncheck < nX: status = '(No won)'
-#            await self.bot.edit_message(vote, 'Vote here {}'.format(status))
-#        else:
-#            await self.bot.say("Invalid User")
 
+    @commands.command(pass_context=True)
+    async def info(self, ctx):
+        for user in ctx.message.mentions:
+            embed = discord.Embed(title=str(user), url=user.avatar_url, description=user.display_name, color=0xffff00)
+            embed.set_thumbnail(url=user.avatar_url)
+            embed.add_field(name='Is bot:', value=user.bot, inline=True)
+            embed.add_field(name='Voice channel:', value=user.voice_channel, inline=True)
+            embed.add_field(name='Joined discord at:', value=user.created_at, inline=True)
+            await self.bot.say(embed=embed)
 
-
-    #@commands.command(pass_context=True)
-    #async def test(self, ctx):
-    #    if "Administrador" in [y.name for y in ctx.message.author.roles]:
-    #        await self.bot.add_reaction(ctx.message, '\U0001F44D')
 
 
 

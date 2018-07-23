@@ -7,13 +7,6 @@ class Menu():
     
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command(pass_context=True)
-    async def info(self, ctx):
-        with open('./package.json') as menusFile:
-            info = json.load(menusFile)
-            await self.bot.say('**' + info['description'] + '**\n\nCreated by: *' + info['author'] + '*\nVersion: *' + info['version'] + '*\n\n`*help` for commands')
-    
     
     @commands.command(pass_context=True)
     async def help(self, ctx):
