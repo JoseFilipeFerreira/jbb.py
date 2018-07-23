@@ -40,7 +40,7 @@ class Manage():
     async def info(self, ctx):
         for user in ctx.message.mentions:
             member = ctx.message.server.get_member(user.id)
-            embed = discord.Embed(title=str(user), url=user.avatar_url, description=user.display_name, color=0xffff00)
+            embed = discord.Embed(title=str(user), url=user.avatar_url, description=user.display_name, color=member.colour)
             embed.set_thumbnail(url=user.avatar_url)
             embed.add_field(name='Is bot:', value=user.bot, inline=True)
             embed.add_field(name='Voice channel:', value=user.voice_channel, inline=True)
