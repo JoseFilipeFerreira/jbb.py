@@ -18,7 +18,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("You can't fake human interaction like that!")
         else:
-            await self.bot.say("c⌒っ╹v╹ )っ {0}, you just received a hug from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("c⌒っ╹v╹ )っ {0}  received a hug from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def slap(self, ctx):
@@ -30,7 +30,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("You can't slap yourself! Well... You shouldn't.")
         else:
-            await self.bot.say("( ‘д‘ ⊂ 彡☆))Д´) {0}, you just received a slap from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("( ‘д‘ ⊂ 彡☆))Д´) {0} received a slap from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def punch(self, ctx):
@@ -42,7 +42,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("You can punch yourself! But first you should get some help.")
         else:
-            await self.bot.say("(*＇Д＇)ﾉｼ)ﾟﾛﾟ ) {0}, you were just punched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("(*＇Д＇)ﾉｼ)ﾟﾛﾟ ) {0} was punched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
     
     @commands.command(pass_context=True)
     async def whip(self, ctx):
@@ -54,7 +54,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("Perhaps you sould ask someone to do that for you.")
         else:
-            await self.bot.say("(˵ ͡~ ͜ʖ ͡°˵)ﾉ⌒{0}, you were just whipped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("(˵ ͡~ ͜ʖ ͡°˵)ﾉ⌒{0} was whipped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def table(self, ctx):
@@ -66,7 +66,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("You shouldn't make yourself flip tables.")
         else:
-            await self.bot.say("(╯°□°）╯︵ ┻━┻ {0}, you just made {1} flip.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("(╯°□°）╯︵ ┻━┻ {0} just made {1} flip.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def snipe(self, ctx):
@@ -78,7 +78,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("you could just do a flip.")
         else:
-            await self.bot.say("︻デ═一 {0}, you were sniped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("︻デ═一 {0} was sniped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def giveup(self, ctx):
@@ -90,7 +90,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("You matter, unless you multiply yourself by ligthspeed then you energy.")
         else:
-            await self.bot.say("¯\\_( ツ )_/¯ {0}, you just made {1} lose hope in humanity.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("¯\\_( ツ )_/¯ {0} just made {1} lose hope in humanity.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def tbag(self, ctx):
@@ -114,7 +114,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("Keep it to yourself then.")
         else:
-            await self.bot.say("( ╬ Ò ‸ Ó) {0}, you just made {1} angry.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("( ╬ Ò ‸ Ó) {0} just made {1} angry.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
 
 
