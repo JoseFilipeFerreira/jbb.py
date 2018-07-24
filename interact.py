@@ -54,7 +54,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("Perhaps you sould ask someone to do that for you.")
         else:
-            await self.bot.say("(˵ ͡~ ͜ʖ ͡°˵)ﾉ⌒{0}, you were just whiped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("(˵ ͡~ ͜ʖ ͡°˵)ﾉ⌒{0}, you were just whipped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True)
     async def table(self, ctx):
@@ -91,6 +91,18 @@ class Interact():
             await self.bot.say("You matter, unless you multiply yourself by ligthspeed then you energy.")
         else:
             await self.bot.say("¯\\_( ツ )_/¯ {0}, you just made {1} lose hope in humanity.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+
+    @commands.command(pass_context=True)
+    async def tbag(self, ctx):
+        size = len(ctx.message.mentions)
+        if size == 0:
+            await self.bot.say("Tell me who to humiliate!")
+        elif size > 1:
+            await self.bot.say("You only have one bag to tbag.")
+        elif ctx.message.author in ctx.message.mentions:
+            await self.bot.say("I can't picture a pose in wich this is possible.")
+        else:
+            await self.bot.say("¬‿¬ {0}, the last thing you see before you die  is {1} tbag.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
 
 
