@@ -102,7 +102,19 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("I can't picture a pose in wich this is possible.")
         else:
-            await self.bot.say("¬‿¬ {0}, the last thing you see before you die  is {1} tbag.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("( ﾟДﾟ)┌┛Σ( ﾟ∀ﾟ)･∵ {0}, the last thing you see before you die  is {1} tbag.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+
+    @commands.command(pass_context=True)
+    async def angry(self, ctx):
+        size = len(ctx.message.mentions)
+        if size == 0:
+            await self.bot.say("Tell me who pissed you off!")
+        elif size > 1:
+            await self.bot.say("It is better to direct anger at only one person at a time.")
+        elif ctx.message.author in ctx.message.mentions:
+            await self.bot.say("Keep it to yourself then.")
+        else:
+            await self.bot.say("( ╬ Ò ‸ Ó) {0}, you just made {1} angry.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
 
 
