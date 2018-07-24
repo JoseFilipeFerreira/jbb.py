@@ -16,7 +16,7 @@ class Interact():
         elif size > 1:
             await self.bot.say("Calm down! Hug one at a time!")
         elif ctx.message.author in ctx.message.mentions:
-            await self.bot.say("You can't hug yourself!")
+            await self.bot.say("You can't fake human interaction like that!")
         else:
             await self.bot.say("c⌒っ╹v╹ )っ {0}, you just received a hug from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
