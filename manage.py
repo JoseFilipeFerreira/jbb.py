@@ -47,12 +47,14 @@ class Manage():
             embed.set_thumbnail(url=user.avatar_url)
             embed.add_field(name='Is bot:', value=user.bot, inline=True)
             embed.add_field(name='Voice channel:', value=user.voice_channel, inline=True)
-            role_array = []
-            for role in member.roles:
-                role_array.append(role.name)
-            role_array.pop(0)
-            role_array.reverse()
-            role_list = ', '.join(role_array)
+            role_list = "None"
+            if len(member.roles) > 1:
+                role_array = []
+                for role in member.roles:
+                    role_array.append(role.name)
+                role_array.pop(0)
+                role_array.reverse()
+                role_list = ', '.join(role_array)
             embed.add_field(name='Roles:', value=role_list, inline=False)
             embed.add_field(name='Playing:', value=member.game, inline=False)
             embed.add_field(name='Joined discord at:', value=user.created_at, inline=True)
