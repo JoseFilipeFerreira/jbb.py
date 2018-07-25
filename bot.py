@@ -22,9 +22,6 @@ imagesMap = {}
 gifsMap = {}
 musicMap = {}
 
-voice_client = None
-player_client = None
-
 IMAGES_PATH = './Images/'
 GIFS_PATH = './Gif/'
 MUSIC_PATH = './Music/'
@@ -52,6 +49,8 @@ def main():
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
 
+    bot.voice_client = None
+    bot.player_client = None
     bot.run(open('auth').readline().rstrip())
 
 @bot.event
@@ -90,12 +89,10 @@ async def reactMessage(message):
             return
     await bot.process_commands(message)
 
-    global player_client
-    global voice_client
-    if player_client != None and player_client.is_playing() == False:
-        await voice_client.disconnect()
-        voice_client = None
-        player_client = None
+    if bot.player_client != None and bot.player_client.is_playing() == False:
+        await bot.voice_client.disconnect()
+        bot.voice_client = None
+        bot.player_client = None
 
 @bot.event
 async def on_member_join(member):
@@ -108,16 +105,14 @@ async def play(ctx, music):
     if ctx.message.author.voice_channel:
         music = music.lower()
         if music in musicMap:
-            global voice_client
-            global player_client
-            if voice_client == None:
+            if bot.voice_client == None:
                voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
-               voice_client = voice
-            if player_client != None and player_client.is_playing():
+               bot.voice_client = voice
+            if bot.player_client != None and bot.player_client.is_playing():
                 await bot.say("Already Playing")
             else:
-                player = voice_client.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
-                player_client = player
+                player = bot.voice_client.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
+                bot.player_client = player
                 player.start()
         else:
         	await bot.say("Invalid Music")
@@ -127,12 +122,10 @@ async def play(ctx, music):
 @bot.command(pass_context=True)
 async def stop(ctx):
     if ctx.message.author.voice_channel:
-        global voice_client
-        global player_client
-        if voice_client:
-            await voice_client.disconnect()
-            voice_client = None
-            player_client = None
+        if bot.voice_client:
+            await bot.voice_client.disconnect()
+            bot.voice_client = None
+            bot.player_client = None
         else:
         	await bot.say("JBB not in a voice channel")
     else:
