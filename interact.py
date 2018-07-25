@@ -116,6 +116,18 @@ class Interact():
         else:
             await self.bot.say("( ╬ Ò ‸ Ó) {0} just made {1} angry.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
+    @commands.command(pass_context=True)
+    async def touch(self, ctx):
+        size = len(ctx.message.mentions)
+        if size == 0:
+            await self.bot.say("Tell me who to touch!")
+        elif size > 1:
+            await self.bot.say("Direct your love to one person at a time.")
+        elif ctx.message.author in ctx.message.mentions:
+            await self.bot.say("Touch yourself in private!")
+        else:
+            await self.bot.say("( ╬ Ò ‸ Ó) {0} was gently touched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+
 
 
 
