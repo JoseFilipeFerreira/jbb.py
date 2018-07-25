@@ -1,6 +1,7 @@
 import discord
 import json
 import subprocess
+from random import randint
 from discord.ext import commands
 
 class Interact():
@@ -77,6 +78,8 @@ class Interact():
             await self.bot.say("You are using a sniper. Not a minigun.")
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("you could just do a flip.")
+        elif randint(0,9) == 0:
+            await self.bot.say("Oh no! You failed the shot, like everything you do in your life.")
         else:
             await self.bot.say("︻デ═一 {0} was sniped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
@@ -128,7 +131,17 @@ class Interact():
         else:
             await self.bot.say("( ͡° ͜ʖ ͡°) {0} was gently touched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-
+    @commands.command(pass_context=True)
+    async def lick(self, ctx):
+        size = len(ctx.message.mentions)
+        if size == 0:
+            await self.bot.say("Tell me who to lick!")
+        elif size > 1:
+            await self.bot.say("You only have one tongue.")
+        elif ctx.message.author in ctx.message.mentions:
+            await self.bot.say("Stop licking yourself! It is unsanitary")
+        else:
+            await self.bot.say("(ˆڡˆ) {0} was licked by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
 
 def setup(bot):
