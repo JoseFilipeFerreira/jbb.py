@@ -126,7 +126,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("Touch yourself in private!")
         else:
-            await self.bot.say("( ╬ Ò ‸ Ó) {0} was gently touched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("( ͡° ͜ʖ ͡°) {0} was gently touched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
 
 
