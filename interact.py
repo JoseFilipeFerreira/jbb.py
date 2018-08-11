@@ -141,7 +141,7 @@ class Interact():
         elif ctx.message.author in ctx.message.mentions:
             await self.bot.say("Stop licking yourself! It is unsanitary")
         else:
-            await self.bot.say("(ˆڡˆ) {0} was licked by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            await self.bot.say("(っˆڡˆς){0} was licked by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
 
 def setup(bot):
