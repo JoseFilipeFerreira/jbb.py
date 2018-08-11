@@ -98,8 +98,7 @@ class Quotes():
 
 
     @commands.command(pass_context=True)
-    async def add(self, ctx, file, *quote):
-        quote = ' '.join(word for word in quote)
+    async def add(self, ctx, file,*, quote):
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
         #TODO optimize one day
@@ -118,8 +117,7 @@ class Quotes():
             await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
 
     @commands.command(pass_context=True)
-    async def quoteS(self, ctx, *mod):
-        search = ' '.join(word for word in mod)
+    async def quoteS(self, ctx, *, search):
         quoteA = self.quotes_dict['quoteA']
         quote = self.quotes_dict['quote']
         fact = self.quotes_dict['fact'] 

@@ -71,8 +71,7 @@ class Api():
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
-    async def translate(self, ctx, *query):
-        query = ' '.join(word for word in query)
+    async def translate(self, ctx, *, query):
         translator = Translator()
         translation = translator.translate(query, dest='pt')
         detector = translator.detect(query)
@@ -83,9 +82,9 @@ class Api():
         await self.bot.say(embed =embed)
 
     @commands.command(pass_context=True)
-    async def urban(self, ctx, *query):
-        query = ' '.join(word for word in query)
+    async def urban(self, ctx, *, query):
         defs = ud.define(query)
+        print(query)
         d = defs[0]
         embed = discord.Embed(title="Definition of {}".format(query), description=d.definition, color=0xfbfb00)
         embed.set_thumbnail(url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
