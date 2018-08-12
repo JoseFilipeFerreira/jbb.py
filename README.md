@@ -1,6 +1,9 @@
 # JBB.py
 Discord bot programmed in Python
 
+## Getting Started
+```$ pip install -r requirements.txt --upgrade```
+get a discord bot Token and place it into a text file named `auth`
 
 ## Built With
 * [discord.py](https://github.com/Rapptz/discord.py) - API for discord
