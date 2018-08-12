@@ -31,18 +31,35 @@ class Menu():
         else:
             await self.bot.say('Invalid user')
 
+    @commands.command(pass_context=True)
+    async def helpPlay(self, ctx):
+        await MenuGenerateEmbed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
+
+    @commands.command(pass_context=True)
+    async def helpImage(self, ctx):
+        await MenuGenerateEmbed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
+
+    @commands.command(pass_context=True)
+    async def helpGif(self, ctx):
+        await MenuGenerateEmbed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
+
+
 async def MenuGenerate(self, ctx, name):
     with open('./modules/menus.json') as menusFile:
             menus = json.load(menusFile)
             await self.bot.send_message(ctx.message.author, menus[name])
             await self.bot.delete_message(ctx.message)
 
+async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
 
-#@bot.command(pass_context=True)
-#async def helpPlay(ctx):
-#    with open('./modules/menus.json') as menusFile:
-#        menus = json.load(menusFile)
-#        await bot.say(menus['helpPlay'] + musicFiles.join('\n'))
+    embed=discord.Embed(title=title, description=" ", color=0xffff00)
+    musicArray = []
+    for music in thingMap:
+        musicArray.append(music)
+    musicArray.sort()
+    embed.add_field(name=section, value='\n'.join(musicArray), inline=True)
+    await self.bot.send_message(ctx.message.author, embed=embed)
+    await self.bot.delete_message(ctx.message)
 
 def setup(bot):
     bot.add_cog(Menu(bot))

@@ -18,29 +18,29 @@ nregisto = 0
 extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact']
 
 
-imagesMap = {}
-gifsMap = {}
-musicMap = {}
-
 IMAGES_PATH = './Images/'
 GIFS_PATH = './Gif/'
 MUSIC_PATH = './Music/'
 
 def main():
+    bot.imagesMap = {}
+    bot.gifsMap = {}
+    bot.musicMap = {}
+
     for f in os.listdir(IMAGES_PATH):
         if path.isfile(path.join(IMAGES_PATH, f)):
             filename, file_ext = path.splitext(f)
-            imagesMap[filename.lower()] = f
+            bot.imagesMap[filename.lower()] = f
 
     for f in os.listdir(GIFS_PATH):
         if path.isfile(path.join(GIFS_PATH, f)):
             filename, file_ext = path.splitext(f)
-            gifsMap[filename.lower()] = f
+            bot.gifsMap[filename.lower()] = f
 
     for f in os.listdir(MUSIC_PATH):
         if path.isfile(path.join(MUSIC_PATH, f)):
             filename, file_ext = path.splitext(f)
-            musicMap[filename.lower()] = f
+            bot.musicMap[filename.lower()] = f
 
     for extension in extensions:
         try:
@@ -70,7 +70,6 @@ async def on_message(message):
 async def on_message_edit(before, after):
 	await reactMessage(after)
 
-
 async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
@@ -79,20 +78,21 @@ async def reactMessage(message):
 
     if message.content.startswith('*'):
         content = message.content.lower()[1:]
-        if content in imagesMap:
+        if content in bot.imagesMap:
             await bot.send_file(
-                message.channel, IMAGES_PATH+imagesMap[content])
+                message.channel, IMAGES_PATH+bot.imagesMap[content])
             return
-        elif content in gifsMap:
+        elif content in bot.gifsMap:
             await bot.send_file(
-                message.channel, GIFS_PATH+gifsMap[content])
+                message.channel, GIFS_PATH+bot.gifsMap[content])
             return
-    await bot.process_commands(message)
 
     if bot.player_client != None and bot.player_client.is_playing() == False:
-        await bot.voice_client.disconnect()
-        bot.voice_client = None
-        bot.player_client = None
+        await voice_disconect()
+
+    await bot.process_commands(message)
+
+    
 
 @bot.event
 async def on_member_join(member):
@@ -104,7 +104,7 @@ async def on_member_join(member):
 async def play(ctx, music):
     if ctx.message.author.voice_channel:
         music = music.lower()
-        if music in musicMap:
+        if music in bot.musicMap:
             if bot.voice_client == None:
                voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
                bot.voice_client = voice
@@ -123,13 +123,16 @@ async def play(ctx, music):
 async def stop(ctx):
     if ctx.message.author.voice_channel:
         if bot.voice_client:
-            await bot.voice_client.disconnect()
-            bot.voice_client = None
-            bot.player_client = None
+            await voice_disconect()
         else:
         	await bot.say("JBB not in a voice channel")
     else:
     	await bot.say("You're not in a voice channel")
+
+async def voice_disconect():
+    await bot.voice_client.disconnect()
+    bot.voice_client = None
+    bot.player_client = None
 
 def checkArray(tester, s):
     result = False
