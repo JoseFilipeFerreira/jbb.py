@@ -2,7 +2,9 @@
 Discord bot programmed in Python
 
 ## Getting Started
-```$ pip install -r requirements.txt --upgrade```
+```
+$ pip install -r requirements.txt --upgrade
+```
 get a discord bot Token and place it into a text file named `auth`
 
 ## Built With
