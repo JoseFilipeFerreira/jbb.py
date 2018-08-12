@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
-extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact']
+extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact', 'music']
 
 
 IMAGES_PATH = './Images/'
@@ -84,51 +84,17 @@ async def reactMessage(message):
             return
 
     if bot.player_client != None and bot.player_client.is_playing() == False:
-        await voice_disconect()
+        await bot.voice_client.disconnect()
+        bot.voice_client = None
+        bot.player_client = None
 
     await bot.process_commands(message)
 
-    
 
 @bot.event
 async def on_member_join(member):
     server = member.server
     await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI! {0}'.format(member.mention))
-
-######################################################## MÚSICA
-@bot.command(pass_context=True)
-async def play(ctx, music):
-    if ctx.message.author.voice_channel:
-        music = music.lower()
-        if music in bot.musicMap:
-            if bot.voice_client == None:
-               voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
-               bot.voice_client = voice
-            if bot.player_client != None and bot.player_client.is_playing():
-                await bot.say("Already Playing")
-            else:
-                player = bot.voice_client.create_ffmpeg_player(MUSIC_PATH + bot.musicMap[music])
-                bot.player_client = player
-                player.start()
-        else:
-        	await bot.say("Invalid Music")
-    else:
-    	await bot.say("You're not in a voice channel")
-
-@bot.command(pass_context=True)
-async def stop(ctx):
-    if ctx.message.author.voice_channel:
-        if bot.voice_client:
-            await voice_disconect()
-        else:
-        	await bot.say("JBB not in a voice channel")
-    else:
-    	await bot.say("You're not in a voice channel")
-
-async def voice_disconect():
-    await bot.voice_client.disconnect()
-    bot.voice_client = None
-    bot.player_client = None
 
 def checkArray(tester, s):
     result = False
