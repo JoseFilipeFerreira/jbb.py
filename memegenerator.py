@@ -15,6 +15,7 @@ class Memegenerator():
     
     @commands.command(pass_context=True)
     async def meme(self, ctx, image, *text):
+        image = image.lower()
         if (len(text) == 0):
             top = " "
             bottom = " "
@@ -24,21 +25,26 @@ class Memegenerator():
         else:
             top = text[0]
             bottom = text[1] #"parse" information to draw
-
-        img = Image.open("Images/{}.png".format(image))
-        draw = ImageDraw.Draw(img)
         
-        fontTop, w1, h1 = getFittingFont(img, "impact.ttf", top)
-        fontBottom, w2, h2 = getFittingFont(img, "impact.ttf", bottom)
+        if image in self.bot.imagesMap:
+            img = Image.open("Images/" + self.bot.imagesMap[image])
+            draw = ImageDraw.Draw(img)
+        
+            fontTop, w1, h1 = getFittingFont(img, "impact.ttf", top)
+            fontBottom, w2, h2 = getFittingFont(img, "impact.ttf", bottom)
 
-        drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 10)
-        drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-52)
+            drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 10)
+            drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-52)
 
-        img.save("Memegenerator/tmp.png")
+            img.save("Memegenerator/tmp.png")
     
-        await self.bot.delete_message(ctx.message)
-        await self.bot.send_file(ctx.message.channel, "Memegenerator/tmp.png")
-        await self.bot.say('by {}'.format(ctx.message.author.mention))
+            await self.bot.delete_message(ctx.message)
+            await self.bot.send_file(
+                ctx.message.channel,
+                "Memegenerator/tmp.png",
+                content='by {}'.format(ctx.message.author.mention))
+        else:
+            await self.bot.say("Invalid image name!")
 
 def setup(bot):
     bot.add_cog(Memegenerator(bot))

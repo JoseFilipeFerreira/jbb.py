@@ -11,10 +11,6 @@ bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
-#log variabels
-registo = '**Log pedidos JBB:**'
-nregisto = 0
-
 extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact']
 
 
@@ -111,7 +107,7 @@ async def play(ctx, music):
             if bot.player_client != None and bot.player_client.is_playing():
                 await bot.say("Already Playing")
             else:
-                player = bot.voice_client.create_ffmpeg_player(MUSIC_PATH + music + ".mp3")
+                player = bot.voice_client.create_ffmpeg_player(MUSIC_PATH + bot.musicMap[music])
                 bot.player_client = player
                 player.start()
         else:
