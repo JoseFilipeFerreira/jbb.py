@@ -13,28 +13,28 @@ bot.remove_command('help')
 
 extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact', 'music']
 
-
-IMAGES_PATH = './Images/'
-GIFS_PATH = './Gif/'
-MUSIC_PATH = './Music/'
-
 def main():
+    bot.IMAGES_PATH = './Images/'
+    bot.GIFS_PATH = './Gif/'
+    bot.MUSIC_PATH = './Music/'
+    bot.MEMEGENERATOR_PATH = './Memegenerator/'
+
     bot.imagesMap = {}
     bot.gifsMap = {}
     bot.musicMap = {}
 
-    for f in os.listdir(IMAGES_PATH):
-        if path.isfile(path.join(IMAGES_PATH, f)):
+    for f in os.listdir(bot.IMAGES_PATH):
+        if path.isfile(path.join(bot.IMAGES_PATH, f)):
             filename, file_ext = path.splitext(f)
             bot.imagesMap[filename.lower()] = f
 
-    for f in os.listdir(GIFS_PATH):
-        if path.isfile(path.join(GIFS_PATH, f)):
+    for f in os.listdir(bot.GIFS_PATH):
+        if path.isfile(path.join(bot.GIFS_PATH, f)):
             filename, file_ext = path.splitext(f)
             bot.gifsMap[filename.lower()] = f
 
-    for f in os.listdir(MUSIC_PATH):
-        if path.isfile(path.join(MUSIC_PATH, f)):
+    for f in os.listdir(bot.MUSIC_PATH):
+        if path.isfile(path.join(bot.MUSIC_PATH, f)):
             filename, file_ext = path.splitext(f)
             bot.musicMap[filename.lower()] = f
 
@@ -76,11 +76,11 @@ async def reactMessage(message):
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
             await bot.send_file(
-                message.channel, IMAGES_PATH+bot.imagesMap[content])
+                message.channel, bot.IMAGES_PATH+bot.imagesMap[content])
             return
         elif content in bot.gifsMap:
             await bot.send_file(
-                message.channel, GIFS_PATH+bot.gifsMap[content])
+                message.channel, bot.GIFS_PATH+bot.gifsMap[content])
             return
 
     if bot.player_client != None and bot.player_client.is_playing() == False:

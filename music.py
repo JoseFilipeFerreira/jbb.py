@@ -20,7 +20,7 @@ class Music():
                 if self.bot.player_client != None and self.bot.player_client.is_playing():
                     await self.bot.say("Already Playing")
                 else:
-                    player = self.bot.voice_client.create_ffmpeg_player('./Music/' + self.bot.musicMap[music])
+                    player = self.bot.voice_client.create_ffmpeg_player(self.bot.MUSIC_PATH + self.bot.musicMap[music])
                     self.bot.player_client = player
                     player.start()
             else:

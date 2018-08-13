@@ -27,7 +27,7 @@ class Memegenerator():
             bottom = text[1] #"parse" information to draw
         
         if image in self.bot.imagesMap:
-            img = Image.open("Images/" + self.bot.imagesMap[image])
+            img = Image.open(self.bot.IMAGES_PATH + self.bot.imagesMap[image])
             draw = ImageDraw.Draw(img)
         
             fontTop, w1, h1 = getFittingFont(img, "impact.ttf", top)
@@ -41,7 +41,7 @@ class Memegenerator():
             await self.bot.delete_message(ctx.message)
             await self.bot.send_file(
                 ctx.message.channel,
-                "Memegenerator/tmp.png",
+                self.bot.MEMEGENERATOR_PATH + "tmp.png",
                 content='by {}'.format(ctx.message.author.mention))
         else:
             await self.bot.say("Invalid image name!")
