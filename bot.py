@@ -19,6 +19,7 @@ def main():
     bot.GIFS_PATH = './Gif/'
     bot.MUSIC_PATH = './Music/'
     bot.MEMEGENERATOR_PATH = './Memegenerator/'
+    bot.EXTENSIONS_PATH ='Extensions.'
 
     #adding to bot object available media
     bot.imagesMap = {}
@@ -43,7 +44,7 @@ def main():
     #load extensions
     for extension in extensions:
         try:
-            bot.load_extension(extension)
+            bot.load_extension(bot.EXTENSIONS_PATH + extension)
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
