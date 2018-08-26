@@ -15,10 +15,10 @@ extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtub
 
 def main():
     #adding to bot object directories
-    bot.IMAGES_PATH = './Images/'
-    bot.GIFS_PATH = './Gif/'
-    bot.MUSIC_PATH = './Music/'
-    bot.MEMEGENERATOR_PATH = './Memegenerator/'
+    bot.IMAGES_PATH = './Media/Images/'
+    bot.GIFS_PATH = './Media/Gif/'
+    bot.MUSIC_PATH = './Media/Music/'
+    bot.MEMEGENERATOR_PATH = './Media/Memegenerator/'
     bot.EXTENSIONS_PATH ='Extensions.'
 
     #adding to bot object available media
