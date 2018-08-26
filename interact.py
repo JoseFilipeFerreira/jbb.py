@@ -11,6 +11,7 @@ class Interact():
     
     @commands.command(pass_context=True)
     async def hug(self, ctx):
+    #hug somenone you love
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to hug!")
@@ -23,6 +24,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def slap(self, ctx):
+    #slap somenone you hate
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to slap!")
@@ -35,6 +37,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def punch(self, ctx):
+    #punch someone you hate
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to punch!")
@@ -47,6 +50,7 @@ class Interact():
     
     @commands.command(pass_context=True)
     async def whip(self, ctx):
+    #whip the sinner
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to whip!")
@@ -59,6 +63,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def table(self, ctx):
+    #show the world you are flipping a table
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who made you flip tables!")
@@ -71,6 +76,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def snipe(self, ctx):
+    #shoot that guy down
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to snipe!")
@@ -85,6 +91,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def giveup(self, ctx):
+    #giveup on humanity
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who made you lose fate in humanity!")
@@ -97,6 +104,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def tbag(self, ctx):
+    #tbag that noob
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to humiliate!")
@@ -109,6 +117,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def angry(self, ctx):
+    #show the world that someone made you angry
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who pissed you off!")
@@ -121,6 +130,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def touch(self, ctx):
+    #touch that special someone
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to touch!")
@@ -133,6 +143,7 @@ class Interact():
 
     @commands.command(pass_context=True)
     async def lick(self, ctx):
+    #lick like an icecream
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to lick!")

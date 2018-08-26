@@ -11,6 +11,7 @@ class Manage():
     
     @commands.command(pass_context=True)
     async def update(self, ctx):
+    #update the code from github and recompile
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
@@ -18,8 +19,10 @@ class Manage():
         else:
             await self.bot.say("Invalid User")
     
+
     @commands.command(pass_context=True)
     async def setplay(self, ctx, *playing):
+    #change the game tag off the bot
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
             play = ' '.join(word for word in playing)
             appInfo = await self.bot.application_info()
@@ -27,8 +30,10 @@ class Manage():
         else:
             await self.bot.say("Invalid User")
 
+
     @commands.command(pass_context=True)
     async def faketype(self, ctx, *playing):
+    #send typing to the channel and delete trigger message
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
             await self.bot.delete_message(ctx.message)
             await self.bot.send_typing(ctx.message.channel)
@@ -38,6 +43,7 @@ class Manage():
 
     @commands.command(pass_context=True)
     async def info(self, ctx):
+    #get info on a specific user
         for user in ctx.message.mentions:
             member = ctx.message.server.get_member(user.id)
             embed_colour = 0xffff00

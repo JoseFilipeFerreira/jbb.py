@@ -15,7 +15,9 @@ class Memegenerator():
     
     @commands.command(pass_context=True)
     async def meme(self, ctx, image, *text):
+    #generate meme
         image = image.lower()
+        #"parse" information to draw
         if (len(text) == 0):
             top = " "
             bottom = " "
@@ -24,7 +26,7 @@ class Memegenerator():
             bottom = " "
         else:
             top = text[0]
-            bottom = text[1] #"parse" information to draw
+            bottom = text[1]
         
         if image in self.bot.imagesMap:
             img = Image.open(self.bot.IMAGES_PATH + self.bot.imagesMap[image])
@@ -46,9 +48,6 @@ class Memegenerator():
         else:
             await self.bot.say("Invalid image name!")
 
-def setup(bot):
-    bot.add_cog(Memegenerator(bot))
-
 
 def drawTextWithOutline(draw, font, text, x, y):
     draw.text((x-2, y-2), text,(0,0,0),font=font)
@@ -58,11 +57,9 @@ def drawTextWithOutline(draw, font, text, x, y):
     draw.text((x, y), text, (255,255,255), font=font)
     return
 
-def getRandomName(size):
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
 
-#get font that fits in image
 def getFittingFont(img, fontName, text):
+    #get font that fits in image
     textSize = 42
     font = ImageFont.truetype(fontName, textSize)
     w, h = font.getsize(text)
@@ -72,3 +69,6 @@ def getFittingFont(img, fontName, text):
             font = ImageFont.truetype(fontName, textSize)
             w, h = font.getsize(text)
     return font, w, h
+
+def setup(bot):
+    bot.add_cog(Memegenerator(bot))

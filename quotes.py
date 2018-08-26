@@ -25,52 +25,63 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def quote(self, ctx):
+    #gives a quote from JBB
         await self.bot.say(getRLine(self.quotes_dict,'quote'))
 
 
     @commands.command(pass_context=True)
     async def quoteA(self, ctx):
+    #gives a quote from Students
         await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
     
     @commands.command(pass_context=True)
     async def quoteP(self, ctx):
+    #gives a quote from teachers
         await self.bot.say(getRLine(self.quotes_dict, 'quoteP'))
 
 
     @commands.command(pass_context=True)
     async def fact(self, ctx):
+    #gives a true fact of JBB
         await self.bot.say(getRLine(self.quotes_dict, 'fact'))
 
     @commands.command(pass_context=True)
     async def dadjoke(self, ctx):
+    #gives a dad joke
         await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'))
 
 
     @commands.command(pass_context=True)
     async def nquoteA(self, ctx):
+    #number of student quotes
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
 
     @commands.command(pass_context=True)
     async def nquote(self, ctx):
+    #number of JBB quotes
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
     
     @commands.command(pass_context=True)
     async def nquoteP(self, ctx):
+    #number of teachers quotes
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
 
 
     @commands.command(pass_context=True)
     async def nfact(self, ctx):
+    #number of JBB facts
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
     @commands.command(pass_context=True)
     async def ndadjoke(self, ctx):
+    #number of dadjokes
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
 
 
     @commands.command(pass_context=True)
     async def ntotal(self, ctx):
+    #total number of quotes
         n =  int(getNLine(self.quotes_dict, 'quoteA'))
         n += int(getNLine(self.quotes_dict, 'quoteP'))
         n += int(getNLine(self.quotes_dict, 'quote'))
@@ -83,6 +94,7 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def quoteAdmin(self, ctx):
+    #gives a quote from admins
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
             await self.bot.say(getRLine(self.quotes_dict, 'quoteAdmin'))
         else:
@@ -91,6 +103,7 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def nquoteAdmin(self, ctx):
+    #number of admin quotes
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
             await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'quoteAdmin') + ' quotes de Admin')
         else:
@@ -99,6 +112,7 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def add(self, ctx, file,*, quote):
+    #add a quote
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
         #TODO optimize one day
@@ -118,6 +132,7 @@ class Quotes():
 
     @commands.command(pass_context=True)
     async def quoteS(self, ctx, *, search):
+    #search a quote using fuzzysearching
         quoteA = self.quotes_dict['quoteA']
         quote = self.quotes_dict['quote']
         fact = self.quotes_dict['fact'] 
@@ -129,14 +144,17 @@ class Quotes():
         await self.bot.say(result[0][0])
 
 def getRLine(quotes_dict, filename):
+#get a random quote
     return random.choice(quotes_dict[filename])
 
 
 def getNLine(quotes_dict, filename):
+#get number of quotes
     return str(len(quotes_dict[filename]))
 
 
 def updateQuotes(quotes_dict, filename):
+#update a JSON file
     with open(QUOTES_PATH + filename + '.json', 'w', encoding='utf8') as file:
         d = {'array': quotes_dict[filename]}
         json.dump(d, file, indent=4)

@@ -15,12 +15,10 @@ class Pokemon():
 
     @commands.command(pass_context=True)
     async def pokedex(self, ctx, name):
-
+    #get the pokedex defenition of a pokemon
+        #get defenition
         pokemon = pb.pokemon(name)
-
-        #print(pk)
-
-
+        #generate embed
         embed=discord.Embed(title = pokemon.name, color=0xfbfb00)
         embed.set_thumbnail(url = 'https://vignette.wikia.nocookie.net/clubpenguin/images/4/4c/Pokeball.png/revision/latest?cb=20130901024704')
         embed.add_field(name = ":scales:Weight"          , value = pokemon.weight   , inline=True)
@@ -35,20 +33,7 @@ def getType(pokemon):
     for i in range(0,len(types)):
         r += types[i].type.name + ', '
     return (r[:-2])
-
-#[
-#{'type':
-#    {'url': 'https://pokeapi.co/api/v2/type/3/',
-#     'name': 'flying'},
-#     'slot': 2},
-#{'type':
-#    {'url': 'https://pokeapi.co/api/v2/type/4/',
-#     'name': 'poison'},
-#     'slot': 1}
-#     ]
         
-
-
 
 def setup(bot):
     bot.add_cog(Pokemon(bot))

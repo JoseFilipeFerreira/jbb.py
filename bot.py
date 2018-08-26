@@ -14,11 +14,13 @@ bot.remove_command('help')
 extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact', 'music']
 
 def main():
+    #adding to bot object directories
     bot.IMAGES_PATH = './Images/'
     bot.GIFS_PATH = './Gif/'
     bot.MUSIC_PATH = './Music/'
     bot.MEMEGENERATOR_PATH = './Memegenerator/'
 
+    #adding to bot object available media
     bot.imagesMap = {}
     bot.gifsMap = {}
     bot.musicMap = {}
@@ -38,6 +40,7 @@ def main():
             filename, file_ext = path.splitext(f)
             bot.musicMap[filename.lower()] = f
 
+    #load extensions
     for extension in extensions:
         try:
             bot.load_extension(extension)
@@ -93,8 +96,10 @@ async def reactMessage(message):
 
 @bot.event
 async def on_member_join(member):
+#send greeting to new menbers
     server = member.server
     await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI! {0}'.format(member.mention))
+
 
 def checkArray(tester, s):
     result = False

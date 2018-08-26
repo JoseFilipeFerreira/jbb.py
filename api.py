@@ -31,6 +31,7 @@ class Api():
 
     @commands.command(pass_context=True)
     async def ask(self, ctx):
+    #wolfram alpha API (replies to a query with the short text answer)
         query = ctx.message.content[5:]
         res = client.query(query)
         if res['@success'] == 'false':
@@ -43,6 +44,7 @@ class Api():
 
     @commands.command(pass_context=True)
     async def cantina(self, ctx):
+    #get the next three meals (actually gets the nex three events in the google calendar)
         #call calendar API
         now = datetime.datetime.utcnow().isoformat() + 'Z'
         events_result = service.events().list(
@@ -72,6 +74,7 @@ class Api():
 
     @commands.command(pass_context=True)
     async def translate(self, ctx, *, query):
+    #translates a given query to english
         translator = Translator()
         translation = translator.translate(query, dest='pt')
         detector = translator.detect(query)
@@ -83,6 +86,7 @@ class Api():
 
     @commands.command(pass_context=True)
     async def urban(self, ctx, *, query):
+    #gets the definition of a given query from urban dictionary (currently not working due to black magic)
         defs = ud.define(query)
         print(query)
         d = defs[0]

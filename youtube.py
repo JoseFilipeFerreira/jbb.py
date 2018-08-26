@@ -14,6 +14,7 @@ class Youtube():
 
     @commands.command(pass_context=True)
     async def video(self, ctx):
+    #top kek já deu
         print('top kek não dá')
         
 

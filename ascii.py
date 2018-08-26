@@ -3,7 +3,7 @@ from discord.ext import commands
 
 
 class Ascii():
-    
+    #module for ascii art
     def __init__(self, bot):
         self.bot = bot
 
