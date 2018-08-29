@@ -13,6 +13,7 @@ class Music():
     async def play(self, ctx, music):
     #play a mp3 file
         #check if user in voice channel
+        if ctx.message.author.name == "Oracle": return
         if ctx.message.author.voice_channel:
             music = music.lower()
             #check if requested music exists
