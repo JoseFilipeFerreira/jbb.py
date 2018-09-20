@@ -99,7 +99,7 @@ async def reactMessage(message):
 async def on_member_join(member):
 #send greeting to new menbers
     server = member.server
-    await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI! {0}'.format(member.mention))
+    await bot.send_message(server.get_channel('418433020719136770'), 'Welcome to Selva MIEI!')
 
 
 def checkArray(tester, s):
