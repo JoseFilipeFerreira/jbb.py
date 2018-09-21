@@ -1,5 +1,5 @@
 #!/bin/bash
 
-git pull
+git pull origin master
 
 python3 bot.py
