@@ -2,4 +2,4 @@
 
 git pull
 
-python3 bot.py
+exec python3 bot.py
