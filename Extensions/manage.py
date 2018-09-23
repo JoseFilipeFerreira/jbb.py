@@ -1,6 +1,6 @@
 import discord
 import json
-import subprocess
+import os
 import time
 from discord.ext import commands
 
@@ -15,7 +15,7 @@ class Manage():
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
-            subprocess.call("./update.sh")
+            os.execlp("./update.sh", ",/update.sh")
         else:
             await self.bot.say("Invalid User")
     
