@@ -15,7 +15,7 @@ class Manage():
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
-            os.execlp("./update.sh", ",/update.sh")
+            subprocess.call("./update.sh")
         else:
             await self.bot.say("Invalid User")
     
