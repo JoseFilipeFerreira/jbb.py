@@ -75,8 +75,6 @@ async def reactMessage(message):
         await bot.send_message(message.channel, 'pop %recurso')
     elif (checkArray(['adoro', 'gosto', 'like', 'love'],  message.content.lower()) and checkArray(['anime'], message.content.lower()) ):
         await bot.send_message(message.channel, 'Milady, get the shotgun')
-    elif checkArray(['isd'], message.content.lower()):
-        await bot.send_message(message.channel, 'Tabem')
 
     if message.content.startswith('*'):
         content = message.content.lower()[1:]
