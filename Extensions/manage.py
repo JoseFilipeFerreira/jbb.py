@@ -2,6 +2,7 @@ import discord
 import json
 import os
 import time
+import subprocess
 from discord.ext import commands
 
 class Manage():
@@ -98,7 +99,6 @@ class Manage():
         embed.add_field(name='Online', value=online, inline=False)
         embed.add_field(name='Roles', value=len(server.roles), inline=False)
         await self.bot.say(embed=embed)
-
 
 def setup(bot):
     bot.add_cog(Manage(bot))
