@@ -3,6 +3,7 @@ import json
 import subprocess
 from random import randint
 from discord.ext import commands
+from random import randint
 
 class Interact():
     
@@ -154,6 +155,20 @@ class Interact():
         else:
             await self.bot.say("(っˆڡˆς){0} was licked by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
+    @commands.command(pass_context=True)  
+    async def duel(self, ctx):
+    #lick like an icecream
+        size = len(ctx.message.mentions)
+        if size == 0:
+            await self.bot.say("Tell me who is your opponent!")
+        elif size > 1:
+            await self.bot.say("You can only do 1v1.")
+        elif ctx.message.author in ctx.message.mentions:
+            await self.bot.say("Stop trying to figth your inner demmons")
+        else:
+            n = randint(0,1)
+            if n == 0: await self.bot.say("(ᗒᗣᗕ)՞o==|::::::::::::> {0} was wrecked by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
+            else: await self.bot.say("(ᗒᗣᗕ)՞o==|::::::::::::> {0} was wrecked by {1}.".format(ctx.message.author.mention, ctx.message.mentions[0].mention))
 
 def setup(bot):
     bot.add_cog(Interact(bot))
