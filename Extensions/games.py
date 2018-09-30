@@ -180,7 +180,15 @@ class Games():
             killer = users[p2]
             users.pop(p1)
 
-            figthResult = choice(listReactions).format(killed.nick, killer.nick)
+            killedName = killed.name
+            killerName = killer.name
+
+            if killed.nick != None:
+                killedName = killed.nick
+            if killer.nick != None:
+                killerName = killer.nick
+
+            figthResult = choice(listReactions).format(killedName, killerName)
             figthTrailer = figthTrailer + figthResult + "\n"
         #create final embed
         embed = discord.Embed(
@@ -196,9 +204,14 @@ class Games():
             value=figthTrailer,
             inline=False
         )
+
+        winnerName = users[0].name
+        if users[0].nick != None:
+           winnerName = users[0].nick
+        
         embed.add_field(
             name='Winner',
-            value=users[0].nick,
+            value=winnerName,
             inline=False
         )
         await self.bot.say(embed=embed)
