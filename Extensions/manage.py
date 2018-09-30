@@ -22,11 +22,9 @@ class Manage():
     
 
     @commands.command(pass_context=True)
-    async def setplay(self, ctx, *playing):
+    async def setplay(self, ctx,*, play):
     #change the game tag off the bot
         if "Administrador" in [y.name for y in ctx.message.author.roles]:
-            play = ' '.join(word for word in playing)
-            appInfo = await self.bot.application_info()
             await self.bot.change_presence(game=discord.Game(name=play))
         else:
             await self.bot.say("Invalid User")
