@@ -144,6 +144,8 @@ class Games():
         users = await self.bot.get_reaction_users(msg.reactions[0])
         users = list(set(users[:-1]))
 
+        users = list(map(lambda x: ctx.message.server.get_member(x.id), users))
+
         listReactions=[
             "{0}'s cold body was tbaged by {1}.",
             "{0} was sniped by {1}.",
@@ -155,11 +157,16 @@ class Games():
             "{0}'s blood will make a delicious drink for {1}.",
             "{0}'s anus was wrecked by {1}.",
             "{0}'s body, much like Java, was killed by {1}",
-            "This masrks the last time {0} saw {1}. {1} is a dick.",
+            "This marks the last time {0} saw {1}. {1} is a dick.",
             "One for the money, two for show, {0} is dead, {1} made him blow.",
             "Much like my ex {0} got fucked by {1}.",
             "Are you Microft {0}? Because {1} mada an Apple out of you."
         ]
+        #check if enough users
+        if len(users) < 2:
+            await self.bot.say("Not enough players for a Battle Royale")
+            return
+
         figthTrailer = ""
         while(len(users) > 1):
             #choose the one that is killed and the one who kills
@@ -173,7 +180,7 @@ class Games():
             killer = users[p2]
             users.pop(p1)
 
-            figthResult = choice(listReactions).format(killed.name, killer.name)
+            figthResult = choice(listReactions).format(killed.nick, killer.nick)
             figthTrailer = figthTrailer + figthResult + "\n"
         #create final embed
         embed = discord.Embed(
@@ -186,11 +193,13 @@ class Games():
         )
         embed.add_field(
             name='Fights',
-            value=figthTrailer
+            value=figthTrailer,
+            inline=False
         )
         embed.add_field(
             name='Winner',
-            value=users[0].name
+            value=users[0].nick,
+            inline=False
         )
         await self.bot.say(embed=embed)
 
