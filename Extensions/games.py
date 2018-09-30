@@ -112,9 +112,12 @@ class Games():
 
     @commands.command(pass_context=True)
     async def battleroyale(self, ctx):
+    #TODO: make it so that people don't cry by seeing this pice of code
     #create battle royale
         if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
-            await self.bot.say("This command must be done in #nsfw or #bot-commands")
+            await self.bot.say(
+                "This command must be done in #nsfw or #bot-commands"
+            )
             return
         await self.bot.delete_message(ctx.message)
         #generate embed
@@ -123,8 +126,13 @@ class Games():
             description='{} started a battle royale'.format(ctx.message.author.mention),
             color=0xffff00
         )
-        embed.set_thumbnail(url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
-        embed.add_field(name='Pick your weapon bellow if you wish to participate', value='(you have approximately 10 seconds)')
+        embed.set_thumbnail(
+            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
+        )
+        embed.add_field(
+            name='Pick your weapon bellow if you wish to participate',
+            value='(you have approximately 10 seconds)'
+        )
         msg = await self.bot.say(embed=embed)
         await self.bot.add_reaction(msg, '\U0001F52B')
         #update sent embed so it contains the reaction
@@ -173,7 +181,9 @@ class Games():
             description='Result of the battle',
             color=0xffff00
         )
-        embed.set_thumbnail(url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
+        embed.set_thumbnail(
+            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
+        )
         embed.add_field(
             name='Fights',
             value=figthTrailer
