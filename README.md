@@ -5,17 +5,17 @@ Discord bot programmed in Python
 
 ### Setting up
 
-Create a virtual env
+- Create a virtual env
 ```
 python3 -m venv .env
 ```
 
-Activate the virtual env
+- Activate the virtual env
 ```
 source .env/bin/activate
 ```
 
-Install all dependencies
+- Install all dependencies
 ```
 $ pip install -r requirements.txt --upgrade
 ```
@@ -31,11 +31,11 @@ pip3 freeze > requirements.txt
 
 ### Credentials
 
-get a discord bot Token and place it into a text file named `auth`
+- Get a discord bot Token and place it into a text file named `auth`
 
-get a acess key to wolfram alpha and place the key in a file named `WA_KEY`
+- Get a access key to wolfram alpha and place the key in a file named `WA_KEY`
 
-get acess credentials to the google calendar containig the menu and place them in `credentials.json` and `client_secret.json`
+- Get acess to the google calendar and place them in `credentials.json` and `client_secret.json`
 
 ### Run the Bot
 ```
