@@ -112,7 +112,7 @@ class Games():
 
     @commands.command(pass_context=True)
     async def battleroyale(self, ctx):
-    #TODO: make it so that people don't cry by seeing this pice of code
+    #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
         if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
             await self.bot.say(
@@ -142,9 +142,17 @@ class Games():
         await asyncio.sleep(10)
         #create a list with the users that reacted
         users = await self.bot.get_reaction_users(msg.reactions[0])
-        users = list(set(users[:-1]))
+        users = list(filter(lambda x: not x.bot, users))
+        users = list(set(users))
 
-        users = list(map(lambda x: ctx.message.server.get_member(x.id), users))
+        def changeNick(user):
+            member = ctx.message.server.get_member(user.id)
+            if member.nick != None:
+                return member.nick
+            else:
+                return member.name
+
+        users = list(map(changeNick , users))
 
         listReactions=[
             "{0}'s cold body was tbaged by {1}.",
@@ -176,20 +184,9 @@ class Games():
                 if p2 == (len(users) - 1): p2 = p2 - 1
                 else: p2 = p2 + 1
 
-            killed = users[p1]
-            killer = users[p2]
-            users.pop(p1)
-
-            killedName = killed.name
-            killerName = killer.name
-
-            if killed.nick != None:
-                killedName = killed.nick
-            if killer.nick != None:
-                killerName = killer.nick
-
-            figthResult = choice(listReactions).format(killedName, killerName)
+            figthResult = choice(listReactions).format(users[p1], users[p2])
             figthTrailer = figthTrailer + figthResult + "\n"
+            users.pop(p1)
         #create final embed
         embed = discord.Embed(
             title = 'Battle Royale no DI',
@@ -204,14 +201,9 @@ class Games():
             value=figthTrailer,
             inline=False
         )
-
-        winnerName = users[0].name
-        if users[0].nick != None:
-           winnerName = users[0].nick
-        
         embed.add_field(
             name='Winner',
-            value=winnerName,
+            value=users[0],
             inline=False
         )
         await self.bot.say(embed=embed)
