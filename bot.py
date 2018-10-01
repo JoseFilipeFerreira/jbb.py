@@ -59,11 +59,14 @@ def main():
 @bot.event
 async def on_ready():
     await bot.change_presence(game=discord.Game(name='*help'))
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
 
+    print('Logged in as:')
+    print('> ' +bot.user.name)
+    print('> ' +bot.user.id)
+    print('-----------------------------')
+    print('Servers:')
+    for server in bot.servers:
+        print('> ' + server.name)
 
 @bot.event
 async def on_message(message):
@@ -76,8 +79,6 @@ async def on_message_edit(before, after):
 async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
-    elif (checkArray(['adoro', 'gosto', 'like', 'love'],  message.content.lower()) and checkArray(['anime'], message.content.lower()) ):
-        await bot.send_message(message.channel, 'Milady, get the shotgun')
 
     if message.content.startswith('*'):
         content = message.content.lower()[1:]
