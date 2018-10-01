@@ -2,10 +2,45 @@
 Discord bot programmed in Python
 
 ## Getting Started
+
+### Setting up
+
+Create a virtual env
+```
+python3 -m venv .env
+```
+
+Activate the virtual env
+```
+source .env/bin/activate
+```
+
+Install all dependencies
 ```
 $ pip install -r requirements.txt --upgrade
 ```
+
+<details><summary>Update dependencies</summary>
+<p>
+
+```
+pip3 freeze > requirements.txt
+```
+</p>
+</details>
+
+### Credentials
+
 get a discord bot Token and place it into a text file named `auth`
+
+get a acess key to wolfram alpha and place the key in a file named `WA_KEY`
+
+get acess credentials to the google calendar containig the menu and place them in `credentials.json` and `client_secret.json`
+
+### Run the Bot
+```
+python3 bot.py
+```
 
 ## Built With
 * [discord.py](https://github.com/Rapptz/discord.py) - API for discord
