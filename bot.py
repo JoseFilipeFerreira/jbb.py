@@ -20,6 +20,9 @@ def main():
     bot.MUSIC_PATH = './Media/Music/'
     bot.MEMEGENERATOR_PATH = './Media/Memegenerator/'
     bot.EXTENSIONS_PATH ='Extensions.'
+    
+    #default color for embeds (yellow)
+    bot.embed_color = 0xffff00
 
     #adding to bot object available media
     bot.imagesMap = {}

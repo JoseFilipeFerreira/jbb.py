@@ -45,7 +45,7 @@ class Manage():
     #get info on a specific user
         for user in ctx.message.mentions:
             member = ctx.message.server.get_member(user.id)
-            embed_colour = 0xffff00
+            embed_colour = self.bot.embed_color
             if member.colour != member.colour.default():
                 embed_colour = member.colour.value
             embed = discord.Embed(title=str(user), url=user.avatar_url, description=user.display_name, color=embed_colour)
@@ -78,7 +78,11 @@ class Manage():
                 bot = bot + 1
             if member.status != discord.Status.offline:
                 online = online + 1
-        embed = discord.Embed(title="serverInfo", description=server.name, color=0xffff00)
+        embed = discord.Embed(
+            title="serverInfo",
+            description=server.name,
+            color=self.bot.embed_color
+        )
         embed.set_thumbnail(url=server.icon_url)
         embed.add_field(name='Owner', value=server.owner, inline=False)
         embed.add_field(name='Region', value=server.region, inline=False)

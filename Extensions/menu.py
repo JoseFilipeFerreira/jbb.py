@@ -52,7 +52,11 @@ async def MenuGenerate(self, ctx, name):
 
 async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
 
-    embed=discord.Embed(title=title, description=" ", color=0xffff00)
+    embed=discord.Embed(
+        title=title,
+        description=" ",
+        color=self.bot.embed_color
+    )
     musicArray = []
     for music in thingMap:
         musicArray.append(music)

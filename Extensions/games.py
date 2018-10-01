@@ -124,7 +124,7 @@ class Games():
         embed = discord.Embed(
             title = 'Battle Royale no DI',
             description='{} started a battle royale'.format(ctx.message.author.mention),
-            color=0xffff00
+            color=self.bot.embed_color
         )
         embed.set_thumbnail(
             url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
@@ -191,7 +191,7 @@ class Games():
         embed = discord.Embed(
             title = 'Battle Royale no DI',
             description='Result of the battle',
-            color=0xffff00
+            color=self.bot.embed_color
         )
         embed.set_thumbnail(
             url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
