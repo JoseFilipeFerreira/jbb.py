@@ -168,7 +168,7 @@ class Games():
             "This marks the last time {0} saw {1}. {1} is a dick.",
             "One for the money, two for show, {0} is dead, {1} made him blow.",
             "Much like my ex {0} got fucked by {1}.",
-            "Are you Microft {0}? Because {1} mada an Apple out of you."
+            "Are you Microsoft {0}? Because {1} mada an Apple out of you."
         ]
         #check if enough users
         if len(users) < 2:
