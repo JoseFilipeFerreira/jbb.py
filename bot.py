@@ -11,7 +11,22 @@ bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
-extensions = ['games','quotes', 'programming','api', 'pokemon', 'ascii', 'youtube', 'menu', 'manage', 'memegenerator', 'interact', 'music']
+extensions = [
+    'games',
+    'quotes',
+    'programming',
+    'api',
+    'pokemon',
+    'ascii',
+    'youtube',
+    'menu',
+    'manage',
+    'memegenerator',
+    'interact',
+    'music',
+    'battleroyale'
+]
+
 
 def main():
     #adding to bot object directories
