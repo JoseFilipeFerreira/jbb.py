@@ -101,6 +101,11 @@ class Manage():
         embed.add_field(name='Online', value=online, inline=False)
         embed.add_field(name='Roles', value=len(server.roles), inline=False)
         await self.bot.say(embed=embed)
+        
+    @commands.command(pass_context=True)
+    async def say(self, ctx, *,word):
+        await self.bot.delete_message(ctx.message)
+        await self.bot.say(word)
 
 def setup(bot):
     bot.add_cog(Manage(bot))

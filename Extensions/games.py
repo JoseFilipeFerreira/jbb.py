@@ -64,11 +64,6 @@ class Games():
         if all(('@' not in choice) for choice in choices):
             await self.bot.say(choice(choices))
     
-    @commands.command(pass_context=True)
-    async def say(self, ctx, *,word):
-        await self.bot.delete_message(ctx.message)
-        await self.bot.say(word)
-    
     @commands.command()
     async def magicball(self):
     #dá resposta positiva ou negativa
