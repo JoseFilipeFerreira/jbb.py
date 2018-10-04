@@ -34,6 +34,7 @@ def main():
     bot.GIFS_PATH = './Media/Gif/'
     bot.MUSIC_PATH = './Media/Music/'
     bot.MEMEGENERATOR_PATH = './Media/Memegenerator/'
+    bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
     bot.EXTENSIONS_PATH ='Extensions.'
     
     #default color for embeds (yellow)

@@ -107,3 +107,4 @@ auth
 WA_KEY
 client_secret.json
 credentials.json
+.vscode/
