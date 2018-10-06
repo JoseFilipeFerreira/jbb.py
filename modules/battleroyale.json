@@ -1,72 +1,132 @@
 [
     {
         "action": 0,
-        "time": 0,
+        "time": 1,
         "description": "{0}'s cold body was tbaged by {1}."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 0.5,
         "description": "{0} was sniped by {1}."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 1.5,
         "description": "{0} had an heart attack from {1}'s face."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 0.5,
         "description": "{0} was 360 noscoped by {1}."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 2,
         "description": "{0}'s head will make a nice addition to {1}'s collection."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 2.5,
         "description": "{0}'s meat was a little too bland for {1}'s taste."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 1.5,
         "description": "{0}'s scared dead face made {1}'s day."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 1.5,
         "description": "{0}'s blood will make a delicious drink for {1}."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 1.5,
         "description": "{0}'s anus was wrecked by {1}."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 0.5,
         "description": "{0}'s body, much like Java, was killed by {1}"
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 2.0,
         "description": "This marks the last time {0} saw {1}. {1} is a dick."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 3.5,
         "description": "One for the money, two for show, {0} is dead, {1} made him blow."
     },
     {
         "action": 0,
-        "time": 0,
+        "time": 1.5,
         "description": "Much like my ex {0} got fucked by {1}."
     },
     {
         "action": 0,
-        "time": 0,
-        "description": "Are you Microsoft {0}? Because {1} mada an Apple out of you."
+        "time": 2.5,
+        "description": "Are you Microsoft {0}? Because {1} made an Apple out of you."
+    },
+    {
+        "action": 2,
+        "time": 0.5,
+        "description": "{0} was hungry and ate a sandwich."
+    },
+    {
+        "action": 2,
+        "time": 0.5,
+        "description": "{0} saw a squirrel."
+    },
+    {
+        "action": 2,
+        "time": 0.5,
+        "description": "{0} found a dead bird and ate it."
+    },
+    {
+        "action": 1,
+        "time": 1.0,
+        "description": "{0} discovered that falling head first kills."
+    },
+    {
+        "action": 1,
+        "time": 0.5,
+        "description": "{0} forgot not to breathe under weater."
+    },
+    {
+        "action": 2,
+        "time": 4.0,
+        "description": "{0} started walking in circles."
+    },
+    {
+        "action": 0,
+        "time": 2.0,
+        "description": "{0} got absolutely destroyed by {1}."
+    },
+    {
+        "action": 0,
+        "time": 3.0,
+        "description": "{0} got the big gay from {1}."
+    },
+    {
+        "action": 1,
+        "time": 1.0,
+        "description": "{0}, please don't jump off a cliff again."
+    },
+    {
+        "action": 1,
+        "time": 1.0,
+        "description": "{0}'s entrails splattered everywhere."
+    },
+    {
+        "action": 0,
+        "time": 0.5,
+        "description": "{0} was killed by {1} while taking selfie."
+    },
+    {
+        "action": 0,
+        "time": 2.5,
+        "description": "{0}'s forceful blood donation to {1} was successful."
     }
 ]
