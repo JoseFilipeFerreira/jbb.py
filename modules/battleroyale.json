@@ -128,5 +128,40 @@
         "action": 0,
         "time": 2.5,
         "description": "{0}'s forceful blood donation to {1} was successful."
+    },
+    {
+        "action": 1,
+        "time": 2.0,
+        "description": "{0} got ambushed by the DC and died."
+    },
+    {
+        "action": 1,
+        "time": 3.5,
+        "description": "{0} entered a classroom and never came back"
+    },
+    {
+        "action": 1,
+        "time": 1.5,
+        "description": "{0} got tired listening \"tabem\" and suicided."
+    },
+    {
+        "action": 0,
+        "time": 2.5,
+        "description": "Let's be positive, at least {0} looks cuter now that he's been decapitated by {1}."
+    },
+    {
+        "action": 2,
+        "time": 1.5,
+        "description": "A bird shat on {0}'s head."
+    },
+    {
+        "action": 2,
+        "time": 1.5,
+        "description": "{0} suddenly dabbed."
+    },
+    {
+        "action": 2,
+        "time": 3.5,
+        "description": "Enlightenment fills {0}'s head."
     }
 ]
