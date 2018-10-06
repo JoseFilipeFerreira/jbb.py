@@ -129,6 +129,23 @@ class Quotes():
             self.quotes_dict[file].append(quote)
             updateQuotes(self.quotes_dict, file)
             await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
+    
+    @commands.command(pass_context=True)
+    async def remove(self, ctx, file):
+    #remove a quote
+        appInfo = await self.bot.application_info()
+        owner = appInfo.owner
+        #TODO optimize one day
+        if ctx.message.author != owner:
+            await self.bot.say('Invalid user')
+
+        elif file not in self.quotes_dict:
+            await self.bot.say('Invalid category')
+
+        else:
+            quote = self.quotes_dict[file].pop()
+            updateQuotes(self.quotes_dict, file)
+            await self.bot.say('quote "'+ quote +'" removed from file `'+ file +'`')
 
     @commands.command(pass_context=True)
     async def quoteS(self, ctx, *, search):
