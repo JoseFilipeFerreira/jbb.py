@@ -27,20 +27,9 @@ class BattleRoyale():
             return
         await self.bot.delete_message(ctx.message)
         msg = await sendChallenge(self, ctx)
-        #await thirtysecondtyping(self, ctx)
-        #users = await getListUsers(self, ctx, msg.reactions[0])
-        users = [
-            "Q","W","E","R",
-            "T","Y","U","I",
-            "O","P","A","S",
-            "D","F","G","H",
-            "J","K","L","Z",
-            "AQ","AW","AE","AR",
-            "AT","AY","AU","AI",
-            "AO","AP","AA","AS",
-            "AD","AF","AG","AH",
-            "AJ","AK","AL","AZ"
-        ]
+        await thirtysecondtyping(self, ctx)
+        users = await getListUsers(self, ctx, msg.reactions[0])
+
         #check if enough users
         if len(users) < 2:
             await self.bot.say("Not enough players for a Battle Royale")
