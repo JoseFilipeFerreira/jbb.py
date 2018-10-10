@@ -18,6 +18,26 @@ class BattleRoyale():
             self.listReactions = json.load(file)
     
     @commands.command(pass_context=True)
+    async def battleroyaleFull(self, ctx):
+    #TODO: make it so that people don't cry by seeing this piece of code
+    #create battle royale
+        if "Administrador" not in [y.name for y in ctx.message.author.roles]:
+            await self.bot.say("invalid user")
+            return
+        await self.bot.delete_message(ctx.message)
+        await sendChallenge(self, ctx)
+        users = correctListUsers(ctx, ctx.message.server.members)
+        await sendAllDailyReports(self, ctx, users)
+
+        #create final embed
+        embed = discord.Embed(
+            title = 'Winner',
+            description=users[0],
+            color=self.bot.embed_color
+        )
+        await self.bot.say(embed=embed)
+    
+    @commands.command(pass_context=True)
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
@@ -31,20 +51,7 @@ class BattleRoyale():
         await thirtysecondtyping(self, ctx)
         users = await getListUsers(self, ctx, msg.reactions[0])
 
-        #check if enough users
-        if len(users) < 2:
-            await self.bot.say("Not enough players for a Battle Royale")
-            return
-        
-        await sendInitialReport(self, ctx)
-
-        day = 1
-        time = getCurrentHour()
-        while(len(users) > 1):
-            figthTrailer, users = generateDailyReport(self, ctx, users, time)
-            await sendDaylyReport(self, ctx, day, figthTrailer)
-            time = 24
-            day = day + 1
+        await sendAllDailyReports(self, ctx, users)
 
         #create final embed
         embed = discord.Embed(
@@ -107,6 +114,23 @@ class BattleRoyale():
                     )
             )  
 
+async def sendAllDailyReports(self, ctx, users):
+#gets a list of all users and sends all days
+    #check if enough users
+    if len(users) < 2:
+        await self.bot.say("Not enough players for a Battle Royale")
+        return
+        
+    await sendInitialReport(self, ctx)
+
+    day = 1
+    time = getCurrentHour()
+    while(len(users) > 1):
+        figthTrailer, users = generateDailyReport(self, ctx, users, time)
+        await sendDaylyReport(self, ctx, day, figthTrailer)
+        time = 24
+        day = day + 1
+
 def getCurrentHour():
 #gets current hour irl
     now = datetime.datetime.now()
@@ -122,7 +146,7 @@ def generateDailyReport(self, ctx, users, time):
     figthTrailer = ""
     while(len(users) > 1 and time > 0):
         match = choice(self.listReactions)
-        if time - match["time"] < 0:
+        if time - match["time"] <= 0:
             break
         elif match["action"] == 0:
             p1 = choice(users)
@@ -179,6 +203,11 @@ async def thirtysecondtyping(self, ctx):
 async def getListUsers(self, ctx, reaction):
 #create a list with the users that reacted
     users = await self.bot.get_reaction_users(reaction)
+    return correctListUsers(ctx, users)
+    
+
+def correctListUsers(ctx, users):
+#takes a list of users and gives a list of user name/nick
     users = list(filter(lambda x: not x.bot, users))
 
     def changeNick(user):
@@ -189,7 +218,6 @@ async def getListUsers(self, ctx, reaction):
             return member.name
 
     users = list(map(changeNick , users))
-
     return list(set(users))
 
 async def sendChallenge(self, ctx):
