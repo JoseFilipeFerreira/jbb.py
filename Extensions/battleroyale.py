@@ -203,7 +203,7 @@ async def sendChallenge(self, ctx):
         url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
     )
     embed.add_field(
-        name='Pick your weapon bellow if you wish to participate',
+        name='Pick your weapon below if you wish to participate',
         value='(you have approximately 30 seconds)'
     )
     msg = await self.bot.send_message(ctx.message.channel,embed=embed)
