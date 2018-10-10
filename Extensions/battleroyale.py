@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import random
+import datetime
 from random import randint
 from random import choice
 import asyncio
@@ -15,7 +16,7 @@ class BattleRoyale():
         self.listReactions=[]
         with open(bot.BATTLEROYALE_PATH, 'r') as file:
             self.listReactions = json.load(file)
-
+    
     @commands.command(pass_context=True)
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
@@ -38,9 +39,11 @@ class BattleRoyale():
         await sendInitialReport(self, ctx)
 
         day = 1
+        time = getCurrentHour()
         while(len(users) > 1):
-            figthTrailer, users = generateDailyReport(self, ctx, users)
+            figthTrailer, users = generateDailyReport(self, ctx, users, time)
             await sendDaylyReport(self, ctx, day, figthTrailer)
+            time = 24
             day = day + 1
 
         #create final embed
@@ -104,10 +107,19 @@ class BattleRoyale():
                     )
             )  
 
-def generateDailyReport(self, ctx, users):
+def getCurrentHour():
+#gets current hour irl
+    now = datetime.datetime.now()
+    time = 24 - now.hour
+    if now.minute > 30:
+        time = time - 1
+    elif now.minute > 0:
+        time = time - 0.5
+    return time
+
+def generateDailyReport(self, ctx, users, time):
 #generates a string with a daily report and returns a list containing survivors
     figthTrailer = ""
-    time = 24
     while(len(users) > 1 and time > 0):
         match = choice(self.listReactions)
         if time - match["time"] < 0:
@@ -135,6 +147,7 @@ def generateDailyReport(self, ctx, users):
 
 async def sendDaylyReport(self, ctx, day, result):
 #send a embed with the daily report
+    if result == "": result = "Today nothing happened"
     embed = discord.Embed(
         title = 'DAY {}'.format(day),
         description=result,
