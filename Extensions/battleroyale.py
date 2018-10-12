@@ -6,7 +6,7 @@ from random import randint
 from random import choice
 import asyncio
 import json
-
+import operator
 
 class BattleRoyale():
     
@@ -16,6 +16,9 @@ class BattleRoyale():
         self.listReactions=[]
         with open(bot.BATTLEROYALE_PATH, 'r') as file:
             self.listReactions = json.load(file)
+        with open(bot.BATTLEROYALEWINS_PATH, 'r') as file:
+            self.listWinners = json.load(file)
+        
     
     @commands.command(pass_context=True)
     async def battleroyaleFull(self, ctx):
@@ -32,7 +35,7 @@ class BattleRoyale():
         #create final embed
         embed = discord.Embed(
             title = 'Winner',
-            description=users[0],
+            description=users[0]["name"],
             color=self.bot.embed_color
         )
         await self.bot.say(embed=embed)
@@ -56,9 +59,37 @@ class BattleRoyale():
         #create final embed
         embed = discord.Embed(
             title = 'Winner',
-            description=users[0],
+            description=users[0]["name"],
             color=self.bot.embed_color
         )
+        await self.bot.say(embed=embed)
+
+        updateWinners(self, users[0])
+    
+    @commands.command(pass_context=True)
+    async def battleroyaleWinners(self, ctx):
+    #TODO IMPROVE THIS HOT PIECE OF GARBAGE ASAP
+        winner = self.listWinners
+
+        embed = discord.Embed(
+            title = 'Battleroyale no DI',
+            description="Leaderboard",
+            color=self.bot.embed_color
+        )
+        for i in range(3):
+            win = max(winner.items(), key=operator.itemgetter(1))
+            winner.pop(win[0])
+            member = ctx.message.server.get_member(win[0])
+            name = member.name
+            if member.nick != None:
+                name = member.nick
+
+            embed.add_field(
+                name="{0}. {1}".format(i, name),
+                value="Number of Wins: {0}".format(win[1]),
+                inline=False
+            )
+
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
@@ -153,16 +184,16 @@ def generateDailyReport(self, ctx, users, time):
             users.remove(p1)
             p2 = choice(users)
 
-            figthResult = match["description"].format(p1, p2)
+            figthResult = match["description"].format(p1["name"], p2["name"])
         elif match["action"] == 1:
             p1 = choice(users)
             users.remove(p1)
 
-            figthResult = match["description"].format(p1)
+            figthResult = match["description"].format(p1["name"])
         else: #action default
             p1 = choice(users)
 
-            figthResult = match["description"].format(p1)
+            figthResult = match["description"].format(p1["name"])
         
         time = time - match["time"]
         figthTrailer = figthTrailer + "**" + convertHour(time) + "** " + figthResult + "\n"
@@ -204,21 +235,24 @@ async def getListUsers(self, ctx, reaction):
 #create a list with the users that reacted
     users = await self.bot.get_reaction_users(reaction)
     return correctListUsers(ctx, users)
-    
 
 def correctListUsers(ctx, users):
-#takes a list of users and gives a list of user name/nick
+#takes a list of users and gives a list of user name/nick an id
     users = list(filter(lambda x: not x.bot, users))
 
     def changeNick(user):
         member = ctx.message.server.get_member(user.id)
+        name = member.name
         if member.nick != None:
-            return member.nick
-        else:
-            return member.name
+            name = member.nick
+        return {
+                "name": name,
+                "id": user.id
+            }
 
     users = list(map(changeNick , users))
-    return list(set(users))
+    users = [i for n, i in enumerate(users) if i not in users[n+1:]]
+    return users
 
 async def sendChallenge(self, ctx):
 #generate embed
@@ -260,6 +294,17 @@ def updateListReactions(self):
 #update a JSON file
     with open(self.bot.BATTLEROYALE_PATH, 'w') as file:
         json.dump(self.listReactions, file, indent=4)
+
+def updateWinners(self, winner):
+#update winners JSON file
+    winner = winner["id"]
+    if not winner in self.listWinners:
+        self.listWinners[winner] = 1
+    else:
+        self.listWinners[winner] += 1
+    
+    with open(self.bot.BATTLEROYALEWINS_PATH, 'w') as file:
+        json.dump(self.listWinners, file, indent=4)
 
 def setup(bot):
     bot.add_cog(BattleRoyale(bot))
