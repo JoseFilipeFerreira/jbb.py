@@ -85,7 +85,7 @@ class BattleRoyale():
                 name = member.nick
 
             embed.add_field(
-                name="{0}. {1}".format(i, name),
+                name="{0}. {1}".format(3 - i, name),
                 value="Number of Wins: {0}".format(win[1]),
                 inline=False
             )
