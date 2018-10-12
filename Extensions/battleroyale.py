@@ -53,6 +53,10 @@ class BattleRoyale():
         msg = await sendChallenge(self, ctx)
         await thirtysecondtyping(self, ctx)
         users = await getListUsers(self, ctx, msg.reactions[0])
+        
+        if len(users) < 2:
+            await self.bot.say("Not enough players for a Battle Royale")
+            return
 
         await sendAllDailyReports(self, ctx, users)
 
@@ -69,7 +73,7 @@ class BattleRoyale():
     @commands.command(pass_context=True)
     async def battleroyaleWinners(self, ctx):
     #TODO IMPROVE THIS HOT PIECE OF GARBAGE ASAP
-        winner = self.listWinners
+        winner = self.listWinners.copy()
 
         embed = discord.Embed(
             title = 'Battleroyale no DI',
@@ -148,10 +152,6 @@ class BattleRoyale():
 async def sendAllDailyReports(self, ctx, users):
 #gets a list of all users and sends all days
     #check if enough users
-    if len(users) < 2:
-        await self.bot.say("Not enough players for a Battle Royale")
-        return
-        
     await sendInitialReport(self, ctx)
 
     day = 1
