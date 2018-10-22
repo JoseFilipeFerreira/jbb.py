@@ -93,6 +93,10 @@ class BattleRoyale():
                 value="Number of Wins: {0}".format(win[1]),
                 inline=False
             )
+            
+            embed.set_thumbnail(
+                url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
+            )
 
         await self.bot.say(embed=embed)
 
