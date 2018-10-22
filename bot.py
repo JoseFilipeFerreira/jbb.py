@@ -46,6 +46,7 @@ def main():
     bot.gifsMap = {}
     bot.musicMap = {}
 
+    #load media
     for f in os.listdir(bot.IMAGES_PATH):
         if path.isfile(path.join(bot.IMAGES_PATH, f)):
             filename, file_ext = path.splitext(f)
@@ -114,6 +115,9 @@ async def reactMessage(message):
         bot.player_client = None
 
     await bot.process_commands(message)
+
+
+
 
 def checkArray(tester, s):
     result = False
