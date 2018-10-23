@@ -24,7 +24,7 @@ class Manage():
     @commands.command(pass_context=True)
     async def setplay(self, ctx,*, play):
     #change the game tag off the bot
-        if ctx.message.author.server_permissions.administrator
+        if ctx.message.author.server_permissions.administator:
             await self.bot.change_presence(game=discord.Game(name=play))
         else:
             await self.bot.say("Invalid User")
@@ -33,7 +33,7 @@ class Manage():
     @commands.command(pass_context=True)
     async def faketype(self, ctx, *playing):
     #send typing to the channel and delete trigger message
-        if ctx.message.author.server_permissions.administrator
+        if ctx.message.author.server_permissions.administator:
             await self.bot.delete_message(ctx.message)
             await self.bot.send_typing(ctx.message.channel)
         else:
