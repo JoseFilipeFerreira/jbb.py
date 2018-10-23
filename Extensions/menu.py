@@ -26,7 +26,7 @@ class Menu():
     
     @commands.command(pass_context=True)
     async def sudohelp(self, ctx):
-        if ctx.message.author.server_permissions.administrator
+        if ctx.message.author.server_permissions.administator:
             await MenuGenerate(self, ctx, 'sudohelp')
         else:
             await self.bot.say('Invalid user')
