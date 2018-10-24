@@ -24,7 +24,7 @@ class BattleRoyale():
     async def battleroyaleFull(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
-        if ctx.message.author.server_permissions.administrator:
+        if not ctx.message.author.server_permissions.administrator:
             await self.bot.say("invalid user")
             return
         await self.bot.delete_message(ctx.message)
