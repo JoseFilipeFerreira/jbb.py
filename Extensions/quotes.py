@@ -26,29 +26,29 @@ class Quotes():
     @commands.command(pass_context=True)
     async def quote(self, ctx):
     #gives a quote from JBB
-        await self.bot.say(getRLine(self.quotes_dict,'quote'))
+        await self.bot.say(getRLine(self.quotes_dict,'quote'), tts=True)
 
 
     @commands.command(pass_context=True)
     async def quoteA(self, ctx):
     #gives a quote from Students
-        await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
+        await self.bot.say(getRLine(self.quotes_dict, 'quoteA'), tts=True)
     
     @commands.command(pass_context=True)
     async def quoteP(self, ctx):
     #gives a quote from teachers
-        await self.bot.say(getRLine(self.quotes_dict, 'quoteP'))
+        await self.bot.say(getRLine(self.quotes_dict, 'quoteP'), tts=True)
 
 
     @commands.command(pass_context=True)
     async def fact(self, ctx):
     #gives a true fact of JBB
-        await self.bot.say(getRLine(self.quotes_dict, 'fact'))
+        await self.bot.say(getRLine(self.quotes_dict, 'fact'), tts=True)
 
     @commands.command(pass_context=True)
     async def dadjoke(self, ctx):
     #gives a dad joke
-        await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'))
+        await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'), tts=True)
 
 
     @commands.command(pass_context=True)
