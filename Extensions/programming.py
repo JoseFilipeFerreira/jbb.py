@@ -47,9 +47,6 @@ class Programming():
     @commands.command(pass_context=True)
     async def draw(self, ctx, xmax : int, *, formula):
     #draw graph
-    
-        env = {}
-        env["__import__"] = None
 
         if (xmax < 1 or xmax > 101):
             await self.bot.say("Invalid dimensions")
@@ -61,7 +58,7 @@ class Programming():
         t = []
         for x in tests:
             try:
-                result = eval(formula, env)
+                result = eval(formula)
                 s.append(result)
                 t.append(x)
             except Exception:
