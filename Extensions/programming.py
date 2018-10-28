@@ -49,7 +49,6 @@ class Programming():
     #draw graph
     
         env = {}
-        env["globals"]  = None
         env["__name__"] = None
         env["__file__"] = None
         env["__builtins__"] = None
