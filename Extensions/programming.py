@@ -47,6 +47,14 @@ class Programming():
     @commands.command(pass_context=True)
     async def draw(self, ctx, xmax : int, *, formula):
     #draw graph
+    
+        env = {}
+        env["locals"]   = None
+        env["globals"]  = None
+        env["__name__"] = None
+        env["__file__"] = None
+        env["__builtins__"] = None
+
         if (xmax < 1 or xmax > 101):
             await self.bot.say("Invalid dimensions")
             return
@@ -57,7 +65,7 @@ class Programming():
         t = []
         for x in tests:
             try:
-                result = eval(formula)
+                result = eval(formula, env)
                 s.append(result)
                 t.append(x)
             except Exception:
