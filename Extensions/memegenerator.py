@@ -38,12 +38,12 @@ class Memegenerator():
             drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 10)
             drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-52)
 
-            img.save(self.bot.MEMEGENERATOR_PATH + "tmp.png")
+            img.save(self.bot.TMP_PATH + "memegenerator.png")
     
             await self.bot.delete_message(ctx.message)
             await self.bot.send_file(
                 ctx.message.channel,
-                self.bot.MEMEGENERATOR_PATH + "tmp.png",
+                self.bot.TMP_PATH + "memegenerator.png",
                 content='by {}'.format(ctx.message.author.mention))
         else:
             await self.bot.say("Invalid image name!")
