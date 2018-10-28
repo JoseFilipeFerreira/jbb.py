@@ -50,6 +50,7 @@ python3 bot.py
 * [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
 * [py-googletrans](https://github.com/ssut/py-googletrans) - Python 3 wrapper for Google Translate API
 * [urbandictionary-py](https://github.com/bcyn/urbandictionary-py) - Python 3 wrapper for Urban Dictionary API.
+* [matplotlib](https://github.com/matplotlib/matplotlib) - plotter API.
 
 ## License
 
