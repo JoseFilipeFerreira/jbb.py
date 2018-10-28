@@ -49,7 +49,7 @@ class Programming():
     #draw graph
     
         env = {}
-        env["__builtins__"] = None
+        env["__import__"] = None
 
         if (xmax < 1 or xmax > 101):
             await self.bot.say("Invalid dimensions")
