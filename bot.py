@@ -14,7 +14,7 @@ bot.remove_command('help')
 extensions = [
     'games',
     'quotes',
-    'programming',
+    #'programming',
     'api',
     'pokemon',
     'ascii',
