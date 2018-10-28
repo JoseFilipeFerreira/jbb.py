@@ -1,7 +1,10 @@
 import discord
+import matplotlib.pyplot as plt
+import numpy as np
 from baseconvert import base
 from discord.ext import commands
 from random import randint
+from math import *
 
 class Programming():
     
@@ -41,6 +44,34 @@ class Programming():
         query = '+'.join(word for word in query)
         await self.bot.say("http://lmgtfy.com/?q={}".format(query))
 
+    @commands.command(pass_context=True)
+    async def draw(self, ctx, xmax : int, *, formula):
+    #draw graph
+        if (xmax < 1):
+            self.bot.say("Invalid dimensions")
+            return
+        await self.bot.delete_message(ctx.message)
+
+        tests = np.arange(0.0, xmax, 0.01)
+        s = []
+        t = []
+        for x in tests:
+            try:
+                result = eval(formula)
+                s.append(result)
+                t.append(x)
+            except Exception:
+                pass
+        plt.plot(t, s)
+
+        plt.xlabel("X")
+        plt.ylabel(formula)
+        plt.title("Plot requested by "+ctx.message.author.name)
+
+        fig = plt.gcf()
+        fig.savefig(self.bot.TMP_PATH + "plot.png")
+        await self.bot.send_file(ctx.message.channel, self.bot.TMP_PATH + "plot.png")
+        plt.close()
 
 def setup(bot):
     bot.add_cog(Programming(bot))        
