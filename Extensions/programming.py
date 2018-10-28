@@ -48,7 +48,7 @@ class Programming():
     async def draw(self, ctx, xmax : int, *, formula):
     #draw graph
         if (xmax < 1 or xmax > 101):
-            self.bot.say("Invalid dimensions")
+            await self.bot.say("Invalid dimensions")
             return
         await self.bot.delete_message(ctx.message)
 
