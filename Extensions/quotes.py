@@ -95,7 +95,7 @@ class Quotes():
     @commands.command(pass_context=True)
     async def quoteAdmin(self, ctx):
     #gives a quote from admins
-        if "Administrador" in [y.name for y in ctx.message.author.roles]:
+        if ctx.message.author.server_permissions.administrator:
             await self.bot.say(getRLine(self.quotes_dict, 'quoteAdmin'))
         else:
             await self.bot.say('Invalid user')
@@ -104,7 +104,7 @@ class Quotes():
     @commands.command(pass_context=True)
     async def nquoteAdmin(self, ctx):
     #number of admin quotes
-        if "Administrador" in [y.name for y in ctx.message.author.roles]:
+        if ctx.message.author.server_permissions.administrator:
             await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'quoteAdmin') + ' quotes de Admin')
         else:
             await self.bot.say('Invalid user')
