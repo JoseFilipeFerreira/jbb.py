@@ -49,8 +49,6 @@ class Programming():
     #draw graph
     
         env = {}
-        env["__name__"] = None
-        env["__file__"] = None
         env["__builtins__"] = None
 
         if (xmax < 1 or xmax > 101):
