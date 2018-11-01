@@ -39,6 +39,7 @@ def main():
     bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
     bot.BATTLEROYALEWINS_PATH = './modules/battleroyalewins.json'
     bot.EXTENSIONS_PATH ='Extensions.'
+    bot.TMP_PATH = './Media/Tmp/'
     
     #default color for embeds (yellow)
     bot.embed_color = 0xffff00
