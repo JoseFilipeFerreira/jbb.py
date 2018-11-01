@@ -42,7 +42,7 @@ class Api():
         answer = '**' + query +'**' + '\n```' + strRes + '```'
         await self.bot.say(answer)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['ementa'])
     async def cantina(self, ctx):
     #get the next three meals (actually gets the nex three events in the google calendar)
         #call calendar API

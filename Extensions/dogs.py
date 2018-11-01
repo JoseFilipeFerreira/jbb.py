@@ -9,7 +9,7 @@ class Dogs():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['auau'])
     async def dog(self, ctx):
         isVideo = True
         while isVideo:

@@ -133,7 +133,7 @@ class BattleRoyale():
             updateListReactions(self)
             await self.bot.say("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases='removeBattleroyale')
     async def deleteBattleroyale(self, ctx):
     #add a Battleroyale description
         appInfo = await self.bot.application_info()

@@ -7,7 +7,7 @@ class Ascii():
     def __init__(self, bot):
         self.bot = bot
         
-    @commands.command()
+    @commands.command(aliases=['hum', 'thinking'])
     async def asciihum(self):
         a = ("▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▒▒▒▒▒▒▒▒\n"
              "▒▒▒▒▒▄█▀▀░░░░░░▀▀█▄▒▒▒▒▒\n"

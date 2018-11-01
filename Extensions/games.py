@@ -97,7 +97,7 @@ class Games():
             await self.bot.say("You're wrong. I got {}".format(answer))
 
     
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['poll'])
     async def vote(self, ctx, *quote):
     #create poll
         if not quote:
