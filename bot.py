@@ -34,7 +34,7 @@ def main():
     bot.IMAGES_PATH = './Media/Images/'
     bot.GIFS_PATH = './Media/Gif/'
     bot.MUSIC_PATH = './Media/Music/'
-    bot.MEMEGENERATOR_PATH = './Media/Memegenerator/'
+    bot.TMP_PATH = './Media/Tmp/'
     bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
     bot.BATTLEROYALEWINS_PATH = './modules/battleroyalewins.json'
     bot.EXTENSIONS_PATH ='Extensions.'
