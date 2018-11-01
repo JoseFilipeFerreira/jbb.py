@@ -130,7 +130,7 @@ class Quotes():
             updateQuotes(self.quotes_dict, file)
             await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
     
-    @commands.command(pass_context=True, aliases='delete')
+    @commands.command(pass_context=True, aliases=['delete'])
     async def remove(self, ctx, file):
     #remove a quote
         appInfo = await self.bot.application_info()
