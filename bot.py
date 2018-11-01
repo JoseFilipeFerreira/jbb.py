@@ -6,8 +6,6 @@ from datetime import datetime
 import os
 from os import path
 import subprocess
-import requests
-import random
 
 bot = commands.Bot(command_prefix = '*')
 
