@@ -24,7 +24,8 @@ extensions = [
     'memegenerator',
     'interact',
     'music',
-    'battleroyale'
+    'battleroyale',
+    'dogs'
 ]
 
 
