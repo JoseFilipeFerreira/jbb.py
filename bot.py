@@ -40,7 +40,6 @@ def main():
     bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
     bot.BATTLEROYALEWINS_PATH = './modules/battleroyalewins.json'
     bot.EXTENSIONS_PATH ='Extensions.'
-    bot.TMP_PATH = './Media/Tmp/'
     
     #default color for embeds (yellow)
     bot.embed_color = 0xffff00
@@ -102,7 +101,7 @@ async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
 
-    if message.content.startswith('*'):
+    if message.content.startswith(bot.command_prefix):
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
             await bot.send_file(
