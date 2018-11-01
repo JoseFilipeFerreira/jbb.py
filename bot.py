@@ -6,6 +6,8 @@ from datetime import datetime
 import os
 from os import path
 import subprocess
+import requests
+import random
 
 bot = commands.Bot(command_prefix = '*')
 
@@ -33,7 +35,7 @@ def main():
     bot.IMAGES_PATH = './Media/Images/'
     bot.GIFS_PATH = './Media/Gif/'
     bot.MUSIC_PATH = './Media/Music/'
-    bot.TMP_PATH = './Media/Tmp/'
+    bot.MEMEGENERATOR_PATH = './Media/Memegenerator/'
     bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
     bot.BATTLEROYALEWINS_PATH = './modules/battleroyalewins.json'
     bot.EXTENSIONS_PATH ='Extensions.'
@@ -97,8 +99,23 @@ async def on_message_edit(before, after):
 async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
-
-    if message.content.startswith(bot.command_prefix):
+    
+    if (message.content.lower() == '*' + 'dogs'):
+        isVideo = True
+        while isVideo:
+            r = requests.get('https://random.dog/woof.json')
+            js = r.json()
+            if js['url'].endswith('.mp4'):
+                pass
+            else:
+                isVideo = False
+        colours = [0x1abc9c, 0x11806a, 0x2ecc71, 0x1f8b4c, 0x3498db, 0x206694, 0x9b59b6, 0x71368a, 0xe91e63, 0xad1457, 0xf1c40f, 0xc27c0e, 0xa84300, 0xe74c3c, 0x992d22, 0x95a5a6, 0x607d8b, 0x979c9f, 0x546e7a]
+        col = int(random.random() * len(colours))
+        em = discord.Embed(color=colours[col])
+        em.set_image(url=js['url'])
+        await bot.send_message(message.channel, embed=em) 
+        
+    if message.content.startswith('*'):
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
             await bot.send_file(
