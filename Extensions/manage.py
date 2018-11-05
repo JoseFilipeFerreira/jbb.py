@@ -73,11 +73,14 @@ class Manage():
         total = len(ctx.message.server.members)
         bot  = 0
         online = 0
+        gaming = 0
         for member in server.members:
             if member.bot:
-                bot = bot + 1
+                bot += 1
             if member.status != discord.Status.offline:
-                online = online + 1
+                online += 1
+            if member.game and not member.bot:
+                gaming += 1
         embed = discord.Embed(
             title="serverInfo",
             description=server.name,
@@ -90,14 +93,15 @@ class Manage():
         voice_channel = 0
         for channel in server.channels:
             if channel.type == discord.ChannelType.text:
-                text_channel = text_channel + 1
+                text_channel += 1
             elif channel.type == discord.ChannelType.voice:
-                voice_channel = voice_channel + 1
+                voice_channel += 1
         embed.add_field(name='Text Channels', value=text_channel, inline=False)
         embed.add_field(name='Voice Channels', value=voice_channel, inline=False)
         embed.add_field(name='Members', value=total, inline=False)
         embed.add_field(name='Humans', value=total-bot, inline=False)
         embed.add_field(name='Bots', value=bot, inline=False)
+        embed.add_field(name='Gaming', value=gaming, inline=False)
         embed.add_field(name='Online', value=online, inline=False)
         embed.add_field(name='Roles', value=len(server.roles), inline=False)
         await self.bot.say(embed=embed)
