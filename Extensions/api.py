@@ -54,28 +54,11 @@ class Api():
 
     @commands.command(pass_context=True, aliases=['ementa'])
     async def cantina(self, ctx ,* menu):
-    #get the next three meals (actually gets the nex three events in the google calendar)
+    #get the next three meals
         #call calendar API
-        page_token = None
-        calendar_ids = {}
-        while True:
-            calendar_list = service.calendarList().list(pageToken=page_token).execute()
-            for calendar_list_entry in calendar_list['items']:
-                if '@group.calendar.google.com' in calendar_list_entry['id']:
-                    key = calendar_list_entry['summary']
-                    if 'summaryOverride' in calendar_list_entry:
-                       key = calendar_list_entry['summaryOverride']
-                    calendar_ids[key] = calendar_list_entry['id']
-            page_token = calendar_list.get('nextPageToken')
-            if not page_token:
-                break
-    
-        menu = ' '.join(menu)
-        menu = menu.lower()
-
-        calendar_name = 'almoço'
-        if menu in self.menus:
-            calendar_name = self.menus[menu]
+        calendar_ids = get_calendar_ids()
+        menu = convert_menu(menu)
+        calendar_name = get_calendar_name(self, menu)
         
         calendar_id = calendar_ids[calendar_name]
         now = datetime.datetime.utcnow().isoformat() + 'Z'
@@ -84,7 +67,8 @@ class Api():
             timeMin = now,
             maxResults = 3,
             singleEvents = True,
-            orderBy = 'startTime').execute()
+            orderBy = 'startTime'
+        ).execute()
 
         events = events_result.get('items', [])
 
@@ -129,6 +113,38 @@ class Api():
         embed.add_field(name=":thumbsup:", value=d.upvotes, inline=True)
         embed.add_field(name=":thumbsdown:", value=d.downvotes, inline=True)
         await self.bot.say(embed =embed)
-        
+
 def setup(bot):
     bot.add_cog(Api(bot))
+
+def get_calendar_name(self, menu):
+#return the default calendar name ("almoço")
+#if menu is not in default
+    calendar_name = 'almoço'
+    if menu in self.menus:
+        calendar_name = self.menus[menu]
+    return calendar_name
+
+def convert_menu(menu):
+#get a list of string and returna string in all lower cases
+    menu = ' '.join(menu)
+    return menu.lower()
+
+def get_calendar_ids():
+#return all added extenal calendars in a dict
+#with calendar name as key and calendar id as value
+    page_token = None
+    calendar_ids = {}
+    while True:
+        calendar_list = service.calendarList().list(pageToken=page_token).execute()
+        for calendar_list_entry in calendar_list['items']:
+            if '@group.calendar.google.com' in calendar_list_entry['id']:
+                key = calendar_list_entry['summary']
+                if 'summaryOverride' in calendar_list_entry:
+                   key = calendar_list_entry['summaryOverride']
+                calendar_ids[key] = calendar_list_entry['id']
+        page_token = calendar_list.get('nextPageToken')
+        if not page_token:
+            break
+
+    return calendar_ids
