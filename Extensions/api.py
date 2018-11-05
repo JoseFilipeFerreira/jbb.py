@@ -27,6 +27,16 @@ class Api():
     
     def __init__(self, bot):
         self.bot = bot
+        self.menus = {
+            "almoço": "almoço",
+            "jantar": "jantar",
+            "almoço vegetariano": "almoço vegetariano",
+            "almoço vegan": "almoço vegetariano",
+            "vegetariano": "almoço vegetariano",
+            "vegan": "almoço vegetariano",
+            "jantar vegetariano": "jantar vegetariano",
+            "jantar vegan": "jantar vegetariano"
+        }
 
 
     @commands.command(pass_context=True)
@@ -43,22 +53,34 @@ class Api():
         await self.bot.say(answer)
 
     @commands.command(pass_context=True, aliases=['ementa'])
-    async def cantina(self, ctx):
+    async def cantina(self, ctx ,* menu):
     #get the next three meals (actually gets the nex three events in the google calendar)
         #call calendar API
         page_token = None
-        calendar_ids = []
+        calendar_ids = {}
         while True:
             calendar_list = service.calendarList().list(pageToken=page_token).execute()
             for calendar_list_entry in calendar_list['items']:
                 if '@group.calendar.google.com' in calendar_list_entry['id']:
-                    calendar_ids.append(calendar_list_entry['id'])
+                    key = calendar_list_entry['summary']
+                    if 'summaryOverride' in calendar_list_entry:
+                       key = calendar_list_entry['summaryOverride']
+                    calendar_ids[key] = calendar_list_entry['id']
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
                 break
+    
+        menu = ' '.join(menu)
+        menu = menu.lower()
+
+        calendar_name = 'almoço'
+        if menu in self.menus:
+            calendar_name = self.menus[menu]
+        
+        calendar_id = calendar_ids[calendar_name]
         now = datetime.datetime.utcnow().isoformat() + 'Z'
         events_result = service.events().list(
-            calendarId = calendar_ids[0],
+            calendarId = calendar_id,
             timeMin = now,
             maxResults = 3,
             singleEvents = True,
@@ -66,10 +88,11 @@ class Api():
 
         events = events_result.get('items', [])
 
-        if not events:
-            print('No upcomig events found')
-
-        embed = discord.Embed(title="Ementa da Cantina", color=0xfbfb00)
+        embed = discord.Embed(
+            title="Ementa da Cantina",
+            description=calendar_name,
+            color=0xfbfb00
+        )
             
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
