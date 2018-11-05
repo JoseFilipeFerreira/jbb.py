@@ -46,9 +46,19 @@ class Api():
     async def cantina(self, ctx):
     #get the next three meals (actually gets the nex three events in the google calendar)
         #call calendar API
+        page_token = None
+        calendar_ids = []
+        while True:
+            calendar_list = service.calendarList().list(pageToken=page_token).execute()
+            for calendar_list_entry in calendar_list['items']:
+                if '@group.calendar.google.com' in calendar_list_entry['id']:
+                    calendar_ids.append(calendar_list_entry['id'])
+            page_token = calendar_list.get('nextPageToken')
+            if not page_token:
+                break
         now = datetime.datetime.utcnow().isoformat() + 'Z'
         events_result = service.events().list(
-            calendarId = 'primary',
+            calendarId = calendar_ids[0],
             timeMin = now,
             maxResults = 3,
             singleEvents = True,
