@@ -30,12 +30,9 @@ class Api():
         self.menus = {
             "almoço": "almoço",
             "jantar": "jantar",
-            "almoço vegetariano": "almoço vegetariano",
-            "almoço vegan": "almoço vegetariano",
-            "vegetariano": "almoço vegetariano",
-            "vegan": "almoço vegetariano",
-            "jantar vegetariano": "jantar vegetariano",
-            "jantar vegan": "jantar vegetariano"
+            "almoço veg": "almoço vegetariano",
+            "veg": "almoço vegetariano",
+            "jantar veg": "jantar vegetariano"
         }
 
 
