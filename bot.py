@@ -11,23 +11,7 @@ bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
-extensions = [
-    'games',
-    'quotes',
-    'programming',
-    'api',
-    'pokemon',
-    'ascii',
-    'youtube',
-    'menu',
-    'manage',
-    'memegenerator',
-    'interact',
-    'music',
-    'battleroyale',
-    'dogs'
-]
-
+cogs_blacklist = []
 
 def main():
     #adding to bot object directories
@@ -37,7 +21,7 @@ def main():
     bot.TMP_PATH = './Media/Tmp/'
     bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
     bot.BATTLEROYALEWINS_PATH = './modules/battleroyalewins.json'
-    bot.EXTENSIONS_PATH ='Extensions.'
+    bot.EXTENSIONS_PATH ='Extensions'
     
     #default color for embeds (yellow)
     bot.embed_color = 0xffff00
@@ -50,26 +34,33 @@ def main():
     #load media
     for f in os.listdir(bot.IMAGES_PATH):
         if path.isfile(path.join(bot.IMAGES_PATH, f)):
-            filename, file_ext = path.splitext(f)
+            filename, _ = path.splitext(f)
             bot.imagesMap[filename.lower()] = f
 
     for f in os.listdir(bot.GIFS_PATH):
         if path.isfile(path.join(bot.GIFS_PATH, f)):
-            filename, file_ext = path.splitext(f)
+            filename, _ = path.splitext(f)
             bot.gifsMap[filename.lower()] = f
 
     for f in os.listdir(bot.MUSIC_PATH):
         if path.isfile(path.join(bot.MUSIC_PATH, f)):
-            filename, file_ext = path.splitext(f)
+            filename, _ = path.splitext(f)
             bot.musicMap[filename.lower()] = f
 
     #load extensions
-    for extension in extensions:
+    def extension_loader(extension):
         try:
-            bot.load_extension(bot.EXTENSIONS_PATH + extension)
+            bot.load_extension(bot.EXTENSIONS_PATH + '.' + extension)
+            return extension
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension {}\n{}'.format(extension, exc))
+            print('Failed to load extension: {}\n{}'.format(extension, exc))
+            return('**{}**:{}'.format(extension, exc))
+    
+    bot.extensions_list = list(
+        map(
+            lambda x: extension_loader(x),
+            create_list_extensions()))
 
     bot.voice_client = None
     bot.player_client = None
@@ -79,13 +70,36 @@ def main():
 async def on_ready():
     await bot.change_presence(game=discord.Game(name='*help'))
 
+    embed = discord.Embed(
+        title="Starting up",
+        description="bot started at " + str(datetime.now()),
+        color=bot.embed_color)
+
+    embed.add_field(
+        name="Extensions log",
+        value='\n'.join(bot.extensions_list),
+        inline=False)
+    
+    blacklist = "No Cogs in Blaklist"
+    if len(cogs_blacklist) > 0:
+        blacklist = '\n'.join(cogs_blacklist)
+
+    embed.add_field(
+        name="Blacklist",
+        value=blacklist,
+        inline=False)
+
+    appInfo = await bot.application_info()
+
+    await bot.send_message(appInfo.owner, embed=embed)
+
     print('Logged in as:')
-    print('> ' +bot.user.name)
-    print('> ' +bot.user.id)
+    print(bot.user.name)
+    print(bot.user.id)
     print('-----------------------------')
     print('Servers:')
     for server in bot.servers:
-        print('> ' + server.name)
+        print(server.name)
 
 @bot.event
 async def on_message(message):
@@ -119,6 +133,26 @@ async def reactMessage(message):
 
 
 
+def create_list_extensions():
+    extensions_list = os.listdir(bot.EXTENSIONS_PATH + '/')
+    
+    def extension_splitter(x):
+        extension, _ = path.splitext(x)
+        return extension
+    
+    extensions_list = list(
+        map(
+            lambda x : extension_splitter(x),
+            extensions_list
+        ))
+    
+    extensions_list = list(
+        filter(
+            lambda x: "__" not in x and x not in cogs_blacklist,
+            extensions_list
+        ))
+    
+    return(extensions_list)
 
 def checkArray(tester, s):
     result = False
