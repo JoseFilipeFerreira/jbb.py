@@ -1,6 +1,6 @@
 import discord
 import matplotlib.pyplot as plt
-import numpy as np
+#import numpy as np
 from baseconvert import base
 from discord.ext import commands
 from random import randint
