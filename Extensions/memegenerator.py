@@ -35,8 +35,8 @@ class Memegenerator():
             fontTop, w1, h1 = getFittingFont(img, "impact.ttf", top)
             fontBottom, w2, h2 = getFittingFont(img, "impact.ttf", bottom)
 
-            drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 10)
-            drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-52)
+            drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 0)
+            drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-h2-7)
 
             img.save(self.bot.TMP_PATH + "memegenerator.png")
     
@@ -60,7 +60,7 @@ def drawTextWithOutline(draw, font, text, x, y):
 
 def getFittingFont(img, fontName, text):
     #get font that fits in image
-    textSize = 42
+    textSize = 30
     font = ImageFont.truetype(fontName, textSize)
     w, h = font.getsize(text)
     if (w > img.width and textSize > 1):
