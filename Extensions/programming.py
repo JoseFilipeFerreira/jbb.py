@@ -1,10 +1,10 @@
 import discord
 import matplotlib.pyplot as plt
-#import numpy as np
 from baseconvert import base
 from discord.ext import commands
 from random import randint
-#from math import *
+import numpy as np
+from math import *
 
 class Programming():
     
