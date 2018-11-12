@@ -1,322 +1,342 @@
 [
     {
+        "time": 1,
         "description": "{0}'s cold body was tbaged by {1}.",
-        "action": 0,
-        "time": 1
+        "action": 0
     },
     {
+        "time": 0.5,
         "description": "{0} was sniped by {1}.",
-        "action": 0,
-        "time": 0.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "{0} had an heart attack from {1}'s face.",
-        "action": 0,
-        "time": 1.5
+        "action": 0
     },
     {
+        "time": 0.5,
         "description": "{0} was 360 noscoped by {1}.",
-        "action": 0,
-        "time": 0.5
+        "action": 0
     },
     {
+        "time": 2,
         "description": "{0}'s head will make a nice addition to {1}'s collection.",
-        "action": 0,
-        "time": 2
+        "action": 0
     },
     {
+        "time": 2.5,
         "description": "{0}'s meat was a little too bland for {1}'s taste.",
-        "action": 0,
-        "time": 2.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "{0}'s scared dead face made {1}'s day.",
-        "action": 0,
-        "time": 1.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "{0}'s blood will make a delicious drink for {1}.",
-        "action": 0,
-        "time": 1.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "{0}'s anus was wrecked by {1}.",
-        "action": 0,
-        "time": 1.5
+        "action": 0
     },
     {
+        "time": 0.5,
         "description": "{0}'s body, much like Java, was killed by {1}",
-        "action": 0,
-        "time": 0.5
+        "action": 0
     },
     {
+        "time": 2.0,
         "description": "This marks the last time {0} saw {1}. {1} is a dick.",
-        "action": 0,
-        "time": 2.0
+        "action": 0
     },
     {
+        "time": 3.5,
         "description": "One for the money, two for show, {0} is dead, {1} made him blow.",
-        "action": 0,
-        "time": 3.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "Much like my ex {0} got fucked by {1}.",
-        "action": 0,
-        "time": 1.5
+        "action": 0
     },
     {
+        "time": 2.5,
         "description": "Are you Microsoft {0}? Because {1} made an Apple out of you.",
-        "action": 0,
-        "time": 2.5
+        "action": 0
     },
     {
+        "time": 0.5,
         "description": "{0} was hungry and ate a sandwich.",
-        "action": 2,
-        "time": 0.5
+        "action": 2
     },
     {
+        "time": 0.5,
         "description": "{0} saw a squirrel.",
-        "action": 2,
-        "time": 0.5
+        "action": 2
     },
     {
+        "time": 0.5,
         "description": "{0} found a dead bird and ate it.",
-        "action": 2,
-        "time": 0.5
+        "action": 2
     },
     {
+        "time": 1.0,
         "description": "{0} discovered that falling head first kills.",
-        "action": 1,
-        "time": 1.0
+        "action": 1
     },
     {
+        "time": 0.5,
         "description": "{0} forgot not to breathe under weater.",
-        "action": 1,
-        "time": 0.5
+        "action": 1
     },
     {
+        "time": 4.0,
         "description": "{0} started walking in circles.",
-        "action": 2,
-        "time": 4.0
+        "action": 2
     },
     {
+        "time": 2.0,
         "description": "{0} got absolutely destroyed by {1}.",
-        "action": 0,
-        "time": 2.0
+        "action": 0
     },
     {
+        "time": 3.0,
         "description": "{0} got the big gay from {1}.",
-        "action": 0,
-        "time": 3.0
+        "action": 0
     },
     {
+        "time": 1.0,
         "description": "{0}, please don't jump off a cliff again.",
-        "action": 1,
-        "time": 1.0
+        "action": 1
     },
     {
+        "time": 1.0,
         "description": "{0}'s entrails splattered everywhere.",
-        "action": 1,
-        "time": 1.0
+        "action": 1
     },
     {
+        "time": 0.5,
         "description": "{0} was killed by {1} while taking selfie.",
-        "action": 0,
-        "time": 0.5
+        "action": 0
     },
     {
+        "time": 2.5,
         "description": "{0}'s forceful blood donation to {1} was successful.",
-        "action": 0,
-        "time": 2.5
+        "action": 0
     },
     {
+        "time": 2.0,
         "description": "{0} got ambushed by the DC and died.",
-        "action": 1,
-        "time": 2.0
+        "action": 1
     },
     {
+        "time": 3.5,
         "description": "{0} entered a classroom and never came back",
-        "action": 1,
-        "time": 3.5
+        "action": 1
     },
     {
+        "time": 1.5,
         "description": "{0} got tired listening \"tabem\" and suicided.",
-        "action": 1,
-        "time": 1.5
+        "action": 1
     },
     {
+        "time": 2.5,
         "description": "Let's be positive, at least {0} looks cuter now that he's been decapitated by {1}.",
-        "action": 0,
-        "time": 2.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "A bird shat on {0}'s head.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} suddenly dabbed.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 3.5,
         "description": "Enlightenment fills {0}'s head.",
-        "action": 2,
-        "time": 3.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} took a dump in the hoods.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 2.0,
         "description": "{0} entered the wrong neighbourhood.",
-        "action": 1,
-        "time": 2.0
+        "action": 1
     },
     {
+        "time": 3.5,
         "description": "{0} got killed by the Big Gay.",
-        "action": 1,
-        "time": 3.5
+        "action": 1
     },
     {
+        "time": 2.5,
         "description": "{0} ate Nestum",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} is horny from bowsette memes.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 2.5,
         "description": "{0} saw a hole in a tree and thought about fucking it.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} ate cold tomato soup.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} got drunk and tried to fight a bear. The bear won.",
-        "action": 1,
-        "time": 1.5
+        "action": 1
     },
     {
+        "time": 3.5,
         "description": "{0} is looking for high ground.",
-        "action": 2,
-        "time": 3.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} ate a piece of candy from the floor.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 2.5,
         "description": "{0} tried to eat a snake. It was the other way around.",
-        "action": 1,
-        "time": 2.5
+        "action": 1
     },
     {
+        "time": 2.5,
         "description": "{0} saw bigfoot in the distance.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 2.5,
         "description": "{0} licked a big foot.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 0.5,
         "description": "{0} didnt fell so good.",
-        "action": 1,
-        "time": 0.5
+        "action": 1
     },
     {
+        "time": 1.5,
         "description": "{0} got triggered from grammar mistakes.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 2.5,
         "description": "{0} took a dick pic.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 0.5,
         "description": "{0} sent a dick pick to Cavaco Silva.",
-        "action": 2,
-        "time": 0.5
+        "action": 2
     },
     {
+        "time": 2.5,
         "description": "{0} git pushed into master and {1} killed him.",
-        "action": 0,
-        "time": 2.5
+        "action": 0
     },
     {
+        "time": 1.5,
         "description": "{0} captured a Ditto and used it as a sex slave.",
-        "action": 2,
-        "time": 1.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} died from FOXDIE.",
-        "action": 1,
-        "time": 1.5
+        "action": 1
     },
     {
+        "time": 2.5,
         "description": "{0} ate a tide pod and died.",
-        "action": 1,
-        "time": 2.5
+        "action": 1
     },
     {
+        "time": 2.5,
         "description": "{0} found CR7 and got rapped.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} slipped on {1}'s sperm and broke his neck.",
-        "action": 0,
-        "time": 1.5
+        "action": 0
     },
     {
+        "time": 2.5,
         "description": "{0} was run over by a RONC RONC.",
-        "action": 1,
-        "time": 2.5
+        "action": 1
     },
     {
+        "time": 3.5,
         "description": "{0} got megadildo'ed by {1}",
-        "action": 0,
-        "time": 3.5
+        "action": 0
     },
     {
+        "time": 4.5,
         "description": "{0} fapped too much and died.",
-        "action": 1,
-        "time": 4.5
+        "action": 1
     },
     {
+        "time": 2.5,
         "description": "{0} found Bobs and vagana.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 2.5,
         "description": "{0} drank his own piss.",
-        "action": 2,
-        "time": 2.5
+        "action": 2
     },
     {
+        "time": 1.5,
         "description": "{0} got autism from listening to 40 tabem in 20 seconds and died.",
-        "action": 1,
-        "time": 1.5
+        "action": 1
     },
     {
+        "time": 3.5,
         "description": "{0} accused CR7 of sexual assault.",
-        "action": 2,
-        "time": 3.5
+        "action": 2
     },
     {
+        "time": 3.5,
         "description": "{0} finally understood that ISD is a lost battle and committed suicide.",
-        "action": 1,
-        "time": 3.5
+        "action": 1
+    },
+    {
+        "time": 3.5,
+        "description": "The last thing {0} saw was {1} Fortnite dancing in his general direction.",
+        "action": 0
+    },
+    {
+        "time": 0.5,
+        "description": "{0} consumed some Halls.",
+        "action": 2
+    },
+    {
+        "time": 3.5,
+        "description": "{0} consumed some poisoned Halls and died.",
+        "action": 1
+    },
+    {
+        "time": 1.5,
+        "description": "{0} choked to death with some Halls",
+        "action": 1
     }
 ]
