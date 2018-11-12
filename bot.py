@@ -48,19 +48,7 @@ def main():
             bot.musicMap[filename.lower()] = f
 
     #load extensions
-    def extension_loader(extension):
-        try:
-            bot.load_extension(bot.EXTENSIONS_PATH + '.' + extension)
-            return extension
-        except Exception as e:
-            exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension: {}\n{}'.format(extension, exc))
-            return('**{}**:{}'.format(extension, exc))
-    
-    bot.extensions_list = list(
-        map(
-            lambda x: extension_loader(x),
-            create_list_extensions()))
+    extensions_loader(create_list_extensions())
 
     bot.voice_client = None
     bot.player_client = None
@@ -76,9 +64,14 @@ async def on_ready():
         color=bot.embed_color)
 
     embed.add_field(
-        name="Extensions log",
-        value='\n'.join(bot.extensions_list),
-        inline=False)
+        name="Extensions loaded",
+        value=bot.extensions_list_loaded,
+        inline=True)
+    
+    embed.add_field(
+        name="Extensions failed",
+        value=bot.extensions_list_failed,
+        inline=True)
     
     blacklist = "No Cogs in Blaklist"
     if len(cogs_blacklist) > 0:
@@ -100,6 +93,8 @@ async def on_ready():
     print('Servers:')
     for server in bot.servers:
         print(server.name)
+    print('-----------------------------')
+    print(bot.command_prefix)
 
 @bot.event
 async def on_message(message):
@@ -134,6 +129,7 @@ async def reactMessage(message):
 
 
 def create_list_extensions():
+#create a list with possible extensions
     extensions_list = os.listdir(bot.EXTENSIONS_PATH + '/')
     
     def extension_splitter(x):
@@ -153,6 +149,23 @@ def create_list_extensions():
         ))
     
     return(extensions_list)
+
+def extensions_loader(extensions):
+#try to load extensions
+    loaded = ""
+    failed = ""
+    for extension in extensions:
+        try:
+            bot.load_extension(bot.EXTENSIONS_PATH + '.' + extension)
+            loaded = loaded + "\n" + extension
+        except Exception as e:
+            exc = '{}: {}'.format(type(e).__name__, e)
+            print('Failed to load extension: {}\n{}'.format(extension, exc))
+            failed = failed + "\n" + ('**{}**:{}'.format(extension, exc))
+    
+    bot.extensions_list_loaded = loaded
+    bot.extensions_list_failed = "No cogs failed to load"
+    if not failed == "": bot.extensions_list_failed = failed
 
 def checkArray(tester, s):
     result = False

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from baseconvert import base
 from discord.ext import commands
 from random import randint
-from math import *
+#from math import *
 
 class Programming():
     

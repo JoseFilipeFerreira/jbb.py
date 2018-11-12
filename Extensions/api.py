@@ -104,7 +104,7 @@ class Api():
         defs = ud.define(query)
         print(query)
         d = defs[0]
-        embed = discord.Embed(title="Definition of {}".format(query), description=d.definition, color=0xfbfb00)
+        embed = discord.Embed(title="Definition of {}".format(query), description=d.definition, color=bot.embed_color)
         embed.set_thumbnail(url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
         embed.add_field(name="Example", value=d.example, inline=False)
         embed.add_field(name=":thumbsup:", value=d.upvotes, inline=True)
