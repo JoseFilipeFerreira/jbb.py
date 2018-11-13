@@ -9,7 +9,7 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 import datetime
 from googletrans import Translator
-import urbandictionary as ud
+import aiohttp
 
 #setup the calender API
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -98,18 +98,52 @@ class Api():
         embed.add_field(name="Translation:", value=translation.text, inline=True)
         await self.bot.say(embed =embed)
 
-    @commands.command(pass_context=True)
-    async def urban(self, ctx, *, query):
-    #gets the definition of a given query from urban dictionary (currently not working due to black magic)
-        defs = ud.define(query)
-        print(query)
-        d = defs[0]
-        embed = discord.Embed(title="Definition of {}".format(query), description=d.definition, color=bot.embed_color)
-        embed.set_thumbnail(url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
-        embed.add_field(name="Example", value=d.example, inline=False)
-        embed.add_field(name=":thumbsup:", value=d.upvotes, inline=True)
-        embed.add_field(name=":thumbsdown:", value=d.downvotes, inline=True)
-        await self.bot.say(embed =embed)
+
+    @commands.command()
+    async def urban(self, * search_terms : str):
+    #Urban Dictionary search
+    #Definition number must be between 1 and 10
+        search_terms = "+".join(search_terms)
+        url = "http://api.urbandictionary.com/v0/define?term=" + search_terms
+        try:
+            async with aiohttp.get(url) as r:
+                result = await r.json()
+            if result["list"]:
+                top_def = result['list'][0]
+
+                embed = discord.Embed(
+                    title="Definition of {}".format(top_def['word']),
+                    url=top_def['permalink'],
+                    description=top_def['definition'],
+                    color=self.bot.embed_color)
+                
+                embed.set_thumbnail(
+                    url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
+
+                embed.add_field(
+                    name="Example",
+                    value=top_def['example'],
+                    inline=False)
+                
+                embed.add_field(
+                    name=":thumbsup:",
+                    value=top_def['thumbs_up'],
+                    inline=True)
+                
+                embed.add_field(
+                    name=":thumbsdown:",
+                    value=top_def['thumbs_down'],
+                    inline=True)
+                
+                embed.set_footer(
+                    text="Submited by {}".format(top_def['author']))
+                
+                await self.bot.say(embed =embed)
+                
+            else:
+                await self.bot.say("Your search terms gave no results.")
+        except:
+            await self.bot.say("Something unexpected went wrong.")   
 
 def setup(bot):
     bot.add_cog(Api(bot))
