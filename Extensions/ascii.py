@@ -7,7 +7,11 @@ class Ascii():
     def __init__(self, bot):
         self.bot = bot
         
-    @commands.command(aliases=['hum', 'thinking'])
+    @commands.command(name='asciihum',
+                      description="gives a thinking emoji in ascii code",
+                      brief="thinking emoji",
+                      aliases=['hum', 'thinking'],
+                      pass_context=True)
     async def asciihum(self):
         a = ("▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▒▒▒▒▒▒▒▒\n"
              "▒▒▒▒▒▄█▀▀░░░░░░▀▀█▄▒▒▒▒▒\n"
