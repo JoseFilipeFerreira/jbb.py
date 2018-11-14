@@ -10,9 +10,11 @@ class Interact():
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(pass_context=True)
+    @commands.command(name='hug',
+                      description="hug somenone you love",
+                      brief="hug somenone you love",
+                      pass_context=True)
     async def hug(self, ctx):
-    #hug somenone you love
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to hug!")
@@ -23,9 +25,11 @@ class Interact():
         else:
             await self.bot.say("c⌒っ╹v╹ )っ {0}  received a hug from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='slap',
+                      description="slap somenone you hate",
+                      brief="slap somenone you hate",
+                      pass_context=True)
     async def slap(self, ctx):
-    #slap somenone you hate
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to slap!")
@@ -36,9 +40,11 @@ class Interact():
         else:
             await self.bot.say("( ‘д‘ ⊂ 彡☆))Д´) {0} received a slap from {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='punch',
+                      description="punch someone you hate",
+                      brief="punch someone you hate",
+                      pass_context=True)
     async def punch(self, ctx):
-    #punch someone you hate
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to punch!")
@@ -49,9 +55,11 @@ class Interact():
         else:
             await self.bot.say("(*＇Д＇)ﾉｼ)ﾟﾛﾟ ) {0} was punched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
     
-    @commands.command(pass_context=True)
+    @commands.command(name='whip',
+                      description="whip the sinner",
+                      brief="whip the sinner",
+                      pass_context=True)
     async def whip(self, ctx):
-    #whip the sinner
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("You have to tell me who to whip!")
@@ -62,9 +70,11 @@ class Interact():
         else:
             await self.bot.say("(˵ ͡~ ͜ʖ ͡°˵)ﾉ⌒{0} was whipped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='table',
+                      description="show the world you are flipping a table",
+                      brief="flip a table",
+                      pass_context=True)
     async def table(self, ctx):
-    #show the world you are flipping a table
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who made you flip tables!")
@@ -75,9 +85,11 @@ class Interact():
         else:
             await self.bot.say("(╯°□°）╯︵ ┻━┻ {0} just made {1} flip.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='snipe',
+                      description="shoot that guy down",
+                      brief="snipe someone",
+                      pass_context=True)
     async def snipe(self, ctx):
-    #shoot that guy down
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to snipe!")
@@ -90,9 +102,11 @@ class Interact():
         else:
             await self.bot.say("︻デ═一 {0} was sniped by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='giveup',
+                      description="give up on humanity",
+                      brief="give up on humanity",
+                      pass_context=True)
     async def giveup(self, ctx):
-    #giveup on humanity
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who made you lose fate in humanity!")
@@ -103,9 +117,11 @@ class Interact():
         else:
             await self.bot.say("¯\\_( ツ )_/¯ {0} just made {1} lose hope in humanity.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='tbag',
+                      description="tbag that noob",
+                      brief="tbag that noob",
+                      pass_context=True)
     async def tbag(self, ctx):
-    #tbag that noob
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to humiliate!")
@@ -116,9 +132,11 @@ class Interact():
         else:
             await self.bot.say("( ﾟДﾟ)┌┛Σ( ﾟ∀ﾟ)･∵ {0}, the last thing you see before you die  is {1} tbag.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='angry',
+                      description="show the world that someone made you angry",
+                      brief="show you are angry",
+                      pass_context=True)
     async def angry(self, ctx):
-    #show the world that someone made you angry
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who pissed you off!")
@@ -129,9 +147,11 @@ class Interact():
         else:
             await self.bot.say("( ╬ Ò ‸ Ó) {0} just made {1} angry.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='touch',
+                      description="touch that special someone",
+                      brief="touch that special someone",
+                      pass_context=True)
     async def touch(self, ctx):
-    #touch that special someone
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to touch!")
@@ -142,9 +162,11 @@ class Interact():
         else:
             await self.bot.say("( ͡° ͜ʖ ͡°) {0} was gently touched by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='lick',
+                      description="lick like an icecream",
+                      brief="lick like an icecream",
+                      pass_context=True)
     async def lick(self, ctx):
-    #lick like an icecream
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who to lick!")
@@ -155,9 +177,11 @@ class Interact():
         else:
             await self.bot.say("(っˆڡˆς){0} was licked by {1}.".format(ctx.message.mentions[0].mention, ctx.message.author.mention))
 
-    @commands.command(pass_context=True)  
+    commands.command(name='duel',
+                      description="duel that guy, but remenber, you migth lose",
+                      brief="duel someone",
+                      pass_context=True) 
     async def duel(self, ctx):
-    #lick like an icecream
         size = len(ctx.message.mentions)
         if size == 0:
             await self.bot.say("Tell me who is your opponent!")
