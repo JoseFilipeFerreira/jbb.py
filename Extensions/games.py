@@ -12,15 +12,18 @@ class Games():
         self.bot = bot
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='roll',
+                      description="roll a 20 faced dice",
+                      brief="roll a dice",
+                      pass_context=True)
     async def roll(self, ctx, nfaces=20):
-    #atirar um dado com 20 faces
         await self.bot.say('You rolled a ' + str(randint(1,nfaces)))
     
-
-    @commands.command(pass_context=True)
+    @commands.command(name='flip',
+                      description="flip a coin",
+                      brief="flip a coin",
+                      pass_context=True)
     async def flip(self, ctx):
-    #atirar moeda ao ar (com easteregg)
         n = randint(0,10000)
         line = 'WTF the coin landed upright!'
         if(n<5000): line = 'You got tails'
@@ -28,18 +31,21 @@ class Games():
     
         await self.bot.say(line)
     
-    
-    @commands.command(pass_context=True)
+    @commands.command(name='pick',
+                      description="pick a random card from a deck",
+                      brief="pick a card",
+                      pass_context=True)
     async def pick(self, ctx):
-    #escolher uma carta
         simbolo = ['Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei']
         naipe = ['paus', 'ouros', 'copas', 'espadas']
         await self.bot.say(choice(simbolo) + ' de ' + choice(naipe))
     
     
-    @commands.command(pass_context=True)
+    @commands.command(name='rps',
+                      description="play rock paper scissors against the bot",
+                      brief="play rock paper scissors",
+                      pass_context=True)
     async def rps(self, ctx, player):
-    #pedra papel tesoura
         if(player in ['rock','paper','scissors','r','p','s']):
             cpu = choice(['rock','paper','scissors'])
             player = simpRPS(player)
@@ -57,23 +63,29 @@ class Games():
             await self.bot.say('*Invalid*')
     
     
-    @commands.command(pass_context=True)
+    @commands.command(name='choose',
+                      description="choose from the query",
+                      brief="choose from the query",
+                      pass_context=True)
     async def choose(self, ctx, *choices : str):
-    #escolhe entre vários argumentos passados
         """Chooses between multiple choices."""
         if all(('@' not in choice) for choice in choices):
             await self.bot.say(choice(choices))
     
-    @commands.command()
-    async def magicball(self):
-    #dá resposta positiva ou negativa
+    @commands.command(name='magicball',
+                      description="gives answer from very likely to impossible",
+                      brief="like a 8ball",
+                      pass_context=True)
+    async def magicball(self, ctx):
         a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
         await self.bot.say(choice(a))
 
     
-    @commands.command(pass_context=True)
+    @commands.command(name='guess',
+                      description="guess the coin the bot is thinking about",
+                      brief="guess coin",
+                      pass_context=True)
     async def guess(self, ctx):
-    #guess coin
         await self.bot.say("Guess how the coin landed (head/tail)")
         
         def guess_check(m):
@@ -96,8 +108,11 @@ class Games():
         else:
             await self.bot.say("You're wrong. I got {}".format(answer))
 
-    
-    @commands.command(pass_context=True, aliases=['poll'])
+    @commands.command(name='vote',
+                      description="creates a poll with given query or default text",
+                      brief="create a poll",
+                      aliases=['poll'],
+                      pass_context=True)
     async def vote(self, ctx, *quote):
     #create poll
         if not quote:
