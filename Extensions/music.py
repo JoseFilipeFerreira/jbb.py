@@ -9,7 +9,10 @@ class Music():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command(name='play',
+                      description="play a given music",
+                      brief="play a given music",
+                      pass_context=True)
     async def play(self, ctx, music):
     #play a mp3 file
         #check if user in voice channel
@@ -34,9 +37,11 @@ class Music():
         else:
             await self.bot.say("You're not in a voice channel")
     
-    @commands.command(pass_context=True)
+    @commands.command(name='stop',
+                      description="stop music and leave voice channel",
+                      brief="stop music",
+                      pass_context=True)
     async def stop(self, ctx):
-    #stop music and leave voice channel
         #check if user in voice channel
         if ctx.message.author.voice_channel:
             #cheack if bot in voice channel
