@@ -13,7 +13,10 @@ class Pokemon():
         self.bot = bot
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='pokedex',
+                      description="search information on a given pokemon",
+                      brief="search pokemon",
+                      pass_context=True)
     async def pokedex(self, ctx, name):
     #get the pokedex defenition of a pokemon
         #get defenition

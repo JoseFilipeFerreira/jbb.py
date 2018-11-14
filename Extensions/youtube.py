@@ -12,10 +12,13 @@ class Youtube():
         self.bot = bot
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='video',
+                      description="top kek o youtube eliminou isto",
+                      brief="random url for yotube video",
+                      pass_context=True)
     async def video(self, ctx):
     #top kek já deu
-        print('top kek não dá')
+        print("Top kek não dá")
         
 
 #NO LONGER AVAILABLE
@@ -24,7 +27,7 @@ class Youtube():
 #    ind = 1
 #    videos = []
 #    while not foundAll:
-#        inp = urllib.request.urlopen(r'http://gdata.youtube.com/feeds/api/videos?start-index=0&max-results=50&alt=json&orderby=published&author=JBB [BOT]'.format( ind, author ) )
+#        inp = urllib.request.urlopen('http://gdata.youtube.com/feeds/api/videos?start-index=0&max-results=50&alt=json&orderby=published&author=JBB [BOT]')
 #        try:
 #            resp = json.load(inp)
 #            inp.close()

@@ -18,70 +18,87 @@ class Quotes():
         self.quotes_dict = {}
         for f in os.listdir(QUOTES_PATH):
             if path.isfile(path.join(QUOTES_PATH, f)):
-                filename, file_ext = path.splitext(f)
+                filename, _ = path.splitext(f)
                 with open(QUOTES_PATH + f, 'r', encoding="utf8") as file:
                     self.quotes_dict[filename] = json.load(file)['array']
 
-
-    @commands.command(pass_context=True)
+    @commands.command(name='quote',
+                      description="random quote from JBB",
+                      brief="quote from JBB",
+                      pass_context=True)
     async def quote(self, ctx):
-    #gives a quote from JBB
         await self.bot.say(getRLine(self.quotes_dict,'quote'))
 
-
-    @commands.command(pass_context=True)
+    @commands.command(name='quoteA',
+                      description="random quote from Students",
+                      brief="quote from Students",
+                      pass_context=True)
     async def quoteA(self, ctx):
-    #gives a quote from Students
         await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
     
-    @commands.command(pass_context=True)
+    @commands.command(name='quoteP',
+                      description="random quote from Teachers",
+                      brief="quote from Teachers",
+                      pass_context=True)
     async def quoteP(self, ctx):
-    #gives a quote from teachers
         await self.bot.say(getRLine(self.quotes_dict, 'quoteP'))
 
-
-    @commands.command(pass_context=True)
+    @commands.command(name='fact',
+                      description="random fact of JBB",
+                      brief="fact of JBB",
+                      pass_context=True)
     async def fact(self, ctx):
-    #gives a true fact of JBB
         await self.bot.say(getRLine(self.quotes_dict, 'fact'))
 
-    @commands.command(pass_context=True)
+    @commands.command(name='dadjoke',
+                      description="random dad joke",
+                      brief="random dad joke",
+                      pass_context=True)
     async def dadjoke(self, ctx):
-    #gives a dad joke
         await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'))
 
-
-    @commands.command(pass_context=True)
+    @commands.command(name='nquoteA',
+                      description="number of student quotes",
+                      brief="number of student quotes",
+                      pass_context=True)
     async def nquoteA(self, ctx):
-    #number of student quotes
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
-
-    @commands.command(pass_context=True)
+    @commands.command(name='nquote',
+                      description="number of JBB quotes",
+                      brief="number of JBB quotes",
+                      pass_context=True)
     async def nquote(self, ctx):
-    #number of JBB quotes
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
     
-    @commands.command(pass_context=True)
+    @commands.command(name='nquoteP',
+                      description="number of teachers quotes",
+                      brief="number of teachers quotes",
+                      pass_context=True)
     async def nquoteP(self, ctx):
-    #number of teachers quotes
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='nfact',
+                      description="number of JBB facts",
+                      brief="number of JBB facts",
+                      pass_context=True)
     async def nfact(self, ctx):
-    #number of JBB facts
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
-    @commands.command(pass_context=True)
+    @commands.command(name='ndadjoke',
+                      description="number of dadjokes",
+                      brief="number of dadjokes",
+                      pass_context=True)
     async def ndadjoke(self, ctx):
-    #number of dadjokes
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='ntotal',
+                      description="total number of quotes",
+                      brief="total number of quotes",
+                      pass_context=True)
     async def ntotal(self, ctx):
-    #total number of quotes
         n =  int(getNLine(self.quotes_dict, 'quoteA'))
         n += int(getNLine(self.quotes_dict, 'quoteP'))
         n += int(getNLine(self.quotes_dict, 'quote'))
@@ -92,27 +109,32 @@ class Quotes():
         await self.bot.say('Existem '+ str(n) + ' frases')
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='quoteAdmin',
+                      description="random admin quote [ADMIN ONLY]",
+                      brief="random admin quote",
+                      pass_context=True)
     async def quoteAdmin(self, ctx):
-    #gives a quote from admins
         if ctx.message.author.server_permissions.administrator:
             await self.bot.say(getRLine(self.quotes_dict, 'quoteAdmin'))
         else:
             await self.bot.say('Invalid user')
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='nquoteAdmin',
+                      description="number of admin quote [ADMIN ONLY]",
+                      brief="number of admin quote",
+                      pass_context=True)
     async def nquoteAdmin(self, ctx):
-    #number of admin quotes
         if ctx.message.author.server_permissions.administrator:
             await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'quoteAdmin') + ' quotes de Admin')
         else:
             await self.bot.say('Invalid user')
 
-
-    @commands.command(pass_context=True)
+    @commands.command(name='add',
+                      description="add a quote [OWNER ONLY]",
+                      brief="add a quote",
+                      pass_context=True)
     async def add(self, ctx, file,*, quote):
-    #add a quote
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
         #TODO optimize one day
@@ -130,9 +152,12 @@ class Quotes():
             updateQuotes(self.quotes_dict, file)
             await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
     
-    @commands.command(pass_context=True, aliases=['delete'])
+    @commands.command(name='remove',
+                      description="remove a quote [OWNER ONLY]",
+                      brief="remove a quote",
+                      aliases=['delete'],
+                      pass_context=True)
     async def remove(self, ctx, file):
-    #remove a quote
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
         #TODO optimize one day
@@ -147,7 +172,10 @@ class Quotes():
             updateQuotes(self.quotes_dict, file)
             await self.bot.say('quote "'+ quote +'" removed from file `'+ file +'`')
 
-    @commands.command(pass_context=True)
+    @commands.command(name='quoteS',
+                      description="search a quote using fuzzy search",
+                      brief="search a quote",
+                      pass_context=True)
     async def quoteS(self, ctx, *, search):
     #search a quote using fuzzysearching
         quoteA = self.quotes_dict['quoteA']

@@ -9,9 +9,9 @@ import subprocess
 
 bot = commands.Bot(command_prefix = '*')
 
-bot.remove_command('help')
+#bot.remove_command('help')
 
-cogs_blacklist = []
+cogs_blacklist = ['youtube']
 
 def main():
     #adding to bot object directories
