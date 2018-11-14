@@ -10,9 +10,11 @@ class Manage():
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(pass_context=True)
+    @commands.command(name='update',
+                      description="update the code from github and reboot [OWNER ONLY]",
+                      brief="update the bot",
+                      pass_context=True)
     async def update(self, ctx):
-    #update the code from github and recompile
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
@@ -21,18 +23,22 @@ class Manage():
             await self.bot.say("Invalid User")
     
 
-    @commands.command(pass_context=True)
+    @commands.command(name='setplay',
+                      description="change the game tag off the bot [ADMIN ONLY]",
+                      brief="change the game tag",
+                      pass_context=True)
     async def setplay(self, ctx,*, play):
-    #change the game tag off the bot
         if ctx.message.author.server_permissions.administrator:
             await self.bot.change_presence(game=discord.Game(name=play))
         else:
             await self.bot.say("Invalid User")
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='faketype',
+                      description="send typing to the channel [ADMIN ONLY]",
+                      brief="send typing",
+                      pass_context=True)
     async def faketype(self, ctx, *playing):
-    #send typing to the channel and delete trigger message
         if ctx.message.author.server_permissions.administrator:
             await self.bot.delete_message(ctx.message)
             await self.bot.send_typing(ctx.message.channel)
@@ -40,9 +46,11 @@ class Manage():
             await self.bot.say("Invalid User")
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='info',
+                      description="get info on a specific user",
+                      brief="info of a user",
+                      pass_context=True)
     async def info(self, ctx):
-    #get info on a specific user
         for user in ctx.message.mentions:
             member = ctx.message.server.get_member(user.id)
             embed_colour = self.bot.embed_color
@@ -66,9 +74,11 @@ class Manage():
             embed.add_field(name='Joined server at', value=member.joined_at, inline=True)
             await self.bot.say(embed=embed)
 
-    @commands.command(pass_context=True)
+    @commands.command(name='serverinfo',
+                      description="get info on the server",
+                      brief="server info",
+                      pass_context=True)
     async def serverinfo(self, ctx):
-    #get info on a specific user
         server = ctx.message.server
         total = len(ctx.message.server.members)
         bot  = 0
@@ -106,7 +116,10 @@ class Manage():
         embed.add_field(name='Roles', value=len(server.roles), inline=False)
         await self.bot.say(embed=embed)
         
-    @commands.command(pass_context=True)
+    @commands.command(name='say',
+                      description="bot sends query and deletes trigger message",
+                      brief="bot sends query",
+                      pass_context=True)
     async def say(self, ctx, *,word):
         await self.bot.delete_message(ctx.message)
         await self.bot.say(word)
