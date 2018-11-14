@@ -13,7 +13,10 @@ class Memegenerator():
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(pass_context=True)
+    @commands.command(name='meme',
+                      description="creates a meme with given arguments",
+                      brief="create a meme",
+                      pass_context=True)
     async def meme(self, ctx, image, *text):
     #generate meme
         image = image.lower()
