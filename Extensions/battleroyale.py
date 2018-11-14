@@ -19,11 +19,11 @@ class BattleRoyale():
         with open(bot.BATTLEROYALEWINS_PATH, 'r') as file:
             self.listWinners = json.load(file)
         
-    
-    @commands.command(pass_context=True)
+    @commands.command(name='battleroyaleFull',
+                      description="create server wide battle royale",
+                      brief="server wide battle royale",
+                      pass_context=True)
     async def battleroyaleFull(self, ctx):
-    #TODO: make it so that people don't cry by seeing this piece of code
-    #create battle royale
         if not ctx.message.author.server_permissions.administrator:
             await self.bot.say("invalid user")
             return
@@ -40,7 +40,10 @@ class BattleRoyale():
         )
         await self.bot.say(embed=embed)
     
-    @commands.command(pass_context=True)
+    @commands.command(name='battleroyale',
+                      description="create server battle royale",
+                      brief="server battle royale",
+                      pass_context=True)
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
@@ -70,7 +73,10 @@ class BattleRoyale():
 
         updateWinners(self, users[0])
     
-    @commands.command(pass_context=True)
+    @commands.command(name='battleroyaleWinners',
+                      description="battleroyale leaderboard",
+                      brief="battleroyale leaderboard",
+                      pass_context=True)
     async def battleroyaleWinners(self, ctx):
     #TODO IMPROVE THIS HOT PIECE OF GARBAGE ASAP
         winner = self.listWinners.copy()
@@ -100,9 +106,11 @@ class BattleRoyale():
 
         await self.bot.say(embed=embed)
 
-    @commands.command(pass_context=True)
+    @commands.command(name='addBattleroyale',
+                      description="add a Battleroyale event to the json",
+                      brief="add a Battleroyale event",
+                      pass_context=True)
     async def addBattleroyale(self, ctx, action, time,*, description):
-    #add a Battleroyale description
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
         action = action.lower()
@@ -133,9 +141,12 @@ class BattleRoyale():
             updateListReactions(self)
             await self.bot.say("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
 
-    @commands.command(pass_context=True, aliases=['removeBattleroyale'])
+    @commands.command(name='deleteBattleroyale',
+                      description="delete the last Battleroyale event on the json",
+                      brief="remove last Battleroyale event",
+                      aliases=['removeBattleroyale'],
+                      pass_context=True)
     async def deleteBattleroyale(self, ctx):
-    #add a Battleroyale description
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
         #TODO optimize one day
