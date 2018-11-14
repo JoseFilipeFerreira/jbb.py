@@ -9,7 +9,11 @@ class Dogs():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True, aliases=['auau'])
+    @commands.command(name='dog',
+                      description="send random dog picture",
+                      brief="send dog pic",
+                      aliases=['auau'],
+                      pass_context=True)
     async def dog(self, ctx):
         isVideo = True
         while isVideo:
@@ -24,7 +28,11 @@ class Dogs():
                 embed.set_image(url=js['url'])
                 await self.bot.say(embed=embed)
 
-    @commands.command(pass_context=True, aliases=['antiauau', 'miau'])
+    @commands.command(name='cat',
+                      description="send random cat picture",
+                      brief="send cat pic",
+                      aliases=['antiauau', 'miau'],
+                      pass_context=True)
     async def cat(self, ctx):
         r =requests.get('http://aws.random.cat/meow')
                 
