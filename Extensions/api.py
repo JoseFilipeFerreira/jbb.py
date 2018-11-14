@@ -36,9 +36,11 @@ class Api():
         }
 
 
-    @commands.command(pass_context=True)
+    @commands.command(name='ask',
+                      description="replies to a query with the short text answer of the wolfram alpha API",
+                      brief="wolfram alpha API",
+                      pass_context=True)
     async def ask(self, ctx):
-    #wolfram alpha API (replies to a query with the short text answer)
         query = ctx.message.content[5:]
         res = client.query(query)
         if res['@success'] == 'false':
@@ -49,9 +51,12 @@ class Api():
         answer = '**' + query +'**' + '\n```' + strRes + '```'
         await self.bot.say(answer)
 
-    @commands.command(pass_context=True, aliases=['ementa'])
+    @commands.command(name='cantina',
+                      description="menu of the uminho cantee",
+                      brief="menu",
+                      aliases=['ementa'],
+                      pass_context=True)
     async def cantina(self, ctx ,* menu):
-    #get the next three meals
         #call calendar API
         calendar_ids = get_calendar_ids()
         menu = convert_menu(menu)
@@ -72,9 +77,8 @@ class Api():
         embed = discord.Embed(
             title="Ementa da Cantina",
             description=calendar_name,
-            color=0xfbfb00
-        )
-            
+            color=0xfbfb00)
+
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
             
@@ -86,9 +90,11 @@ class Api():
 
         await self.bot.say(embed=embed)
 
-    @commands.command(pass_context=True)
+    @commands.command(name='translate',
+                      description="translate a given query to portuguese",
+                      brief="translate to PT",
+                      pass_context=True)
     async def translate(self, ctx, *, query):
-    #translates a given query to english
         translator = Translator()
         translation = translator.translate(query, dest='pt')
         detector = translator.detect(query)
@@ -99,10 +105,10 @@ class Api():
         await self.bot.say(embed =embed)
 
 
-    @commands.command()
+    @commands.command(name='urban',
+                      description="Get a urban defenition of a query",
+                      brief="search urban")
     async def urban(self, * search_terms : str):
-    #Urban Dictionary search
-    #Definition number must be between 1 and 10
         search_terms = "+".join(search_terms)
         url = "http://api.urbandictionary.com/v0/define?term=" + search_terms
         try:
