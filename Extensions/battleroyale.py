@@ -20,7 +20,7 @@ class BattleRoyale():
             self.listWinners = json.load(file)
         
     @commands.command(name='battleroyaleFull',
-                      description="create server wide battle royale",
+                      description="create server wide battle royale [ADMIN ONLY]",
                       brief="server wide battle royale",
                       pass_context=True)
     async def battleroyaleFull(self, ctx):
@@ -107,7 +107,7 @@ class BattleRoyale():
         await self.bot.say(embed=embed)
 
     @commands.command(name='addBattleroyale',
-                      description="add a Battleroyale event to the json",
+                      description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
                       pass_context=True)
     async def addBattleroyale(self, ctx, action, time,*, description):
@@ -142,7 +142,7 @@ class BattleRoyale():
             await self.bot.say("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
 
     @commands.command(name='deleteBattleroyale',
-                      description="delete the last Battleroyale event on the json",
+                      description="delete the last Battleroyale event on the json [OWNER ONLY]",
                       brief="remove last Battleroyale event",
                       aliases=['removeBattleroyale'],
                       pass_context=True)
