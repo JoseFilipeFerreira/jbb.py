@@ -9,7 +9,6 @@ import json
 import operator
 
 class BattleRoyale():
-    
     def __init__(self, bot):
         self.bot = bot
         self.listAction = ["kill", "die", "event"]
