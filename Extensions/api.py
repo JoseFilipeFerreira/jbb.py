@@ -40,8 +40,7 @@ class Api():
                       description="replies to a query with the short text answer of the wolfram alpha API",
                       brief="wolfram alpha API",
                       pass_context=True)
-    async def ask(self, ctx):
-        query = ctx.message.content[5:]
+    async def ask(self, ctx, *, query):
         res = client.query(query)
         if res['@success'] == 'false':
             strRes = "Couldn't find an answer"
