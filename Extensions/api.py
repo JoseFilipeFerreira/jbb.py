@@ -21,15 +21,7 @@ if not creds or creds.invalid:
     creds = tools.run_flow(flow, store)
 service = build('calendar', 'v3', http=creds.authorize(Http()))
 
-YOUTUBE_READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
-storing = file.Storage('credentialsy.json')
-credss = storing.get()
-if not credss or credss.invalid:
-    flower = client.flow_from_clientsecrets('client_secret.json', YOUTUBE_READONLY_SCOPE)
-    credss = tools.run_flow(flower, storing)
-youtube = build('youtube', 'v3', http=credss.authorize(Http()))
-
-#client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
+client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
 
 class Api():
     
@@ -57,27 +49,6 @@ class Api():
             
         answer = '**' + query +'**' + '\n```' + strRes + '```'
         await self.bot.say(answer)
-
-    @commands.command(name='videos', pass_context=True)
-    async def videos(self):
-        channels_response = youtube.channels().list(mine=True, part="contentDetails").execute()
-        for channel in channels_response["items"]:
-            # From the API response, extract the playlist ID that identifies the list
-            # of videos uploaded to the authenticated user's channel.
-            uploads_list_id = channel["contentDetails"]["relatedPlaylists"]["uploads"]
-        playlistitems_list_request = youtube.playlistItems().list(
-            playlistId=uploads_list_id,
-            part="snippet",
-            maxResults=50
-        )
-        playlistitems_list_response = playlistitems_list_request.execute()
-
-        # Print information about each video.
-        #for playlist_item in playlistitems_list_response["items"]:
-        playlist_item = choice(playlistitems_list_response["items"])
-        title = playlist_item["snippet"]["title"]
-        video_id = playlist_item["snippet"]["resourceId"]["videoId"]
-        await self.bot.say("http://youtube.com/watch?v=%s" % (video_id))
 
     @commands.command(name='cantina',
                       description="menu of the uminho cantee",
