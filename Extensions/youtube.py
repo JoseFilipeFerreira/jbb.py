@@ -10,7 +10,7 @@ from httplib2 import Http
 author = 'JBB [BOT]'
 
 YOUTUBE_READONLY_SCOPE = "https://www.googleapis.com/auth/youtube.readonly"
-storing = file.Storage('credentialsy.json')
+storing = file.Storage('credentials_youtube.json')
 credss = storing.get()
 if not credss or credss.invalid:
     flower = client.flow_from_clientsecrets('client_secret.json', YOUTUBE_READONLY_SCOPE)
@@ -22,8 +22,12 @@ class Youtube():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='videos', pass_context=True)
-    async def videos(self):
+    @commands.command(
+        name='videos',
+        description="send random video from the bot youtube channel",
+        brief="random Youtube video",
+        pass_context=True)
+    async def videos(self, ctx):
         channels_response = youtube.channels().list(mine=True, part="contentDetails").execute()
         for channel in channels_response["items"]:
             # From the API response, extract the playlist ID that identifies the list
