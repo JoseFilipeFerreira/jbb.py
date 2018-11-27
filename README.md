@@ -35,12 +35,13 @@ pip3 freeze > requirements.txt
 
 - Get a access key to wolfram alpha and place the key in a file named `WA_KEY`
 
-- Get acess to the google calendar and place them in `credentials.json` and `client_secret.json`
+- Get acess to google via `client_secret.json`
 
 ### Run the Bot
 ```
 python3 bot.py
 ```
+ - follow the instructions on screen to activate the access to youtube and google calendars
 
 ## Built With
 * [discord.py](https://github.com/Rapptz/discord.py) - API for discord
