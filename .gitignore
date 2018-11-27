@@ -106,5 +106,6 @@ venv.bak/
 auth
 WA_KEY
 client_secret.json
-credentials.json
+credentials_calendar.json
+credentials_youtube.json
 .vscode/
