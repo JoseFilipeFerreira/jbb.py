@@ -11,7 +11,7 @@ import operator
 class BattleRoyale():
     def __init__(self, bot):
         self.bot = bot
-        self.listAction = ["kill", "die", "event"]
+        self.listAction = ["kill", "die", "event", "meet"]
         self.listReactions=[]
         with open(bot.BATTLEROYALE_PATH, 'r') as file:
             self.listReactions = json.load(file)
@@ -193,21 +193,28 @@ def generateDailyReport(self, ctx, users, time):
         match = choice(self.listReactions)
         if time - match["time"] <= 0:
             break
-        elif match["action"] == 0:
+        elif match["action"] == 0: #kill
             p1 = choice(users)
             users.remove(p1)
             p2 = choice(users)
 
             figthResult = match["description"].format(p1["name"], p2["name"])
-        elif match["action"] == 1:
+
+        elif match["action"] == 1: #die
             p1 = choice(users)
             users.remove(p1)
 
             figthResult = match["description"].format(p1["name"])
-        else: #action default
+        elif match["action"] == 2: #event
             p1 = choice(users)
 
             figthResult = match["description"].format(p1["name"])
+
+        elif match["action"] == 3: #meet
+            p1 = choice(users)
+            p2 = choice(users)
+
+            figthResult = match["description"].format(p1["name"], p2["name"])
         
         time = time - match["time"]
         figthTrailer = figthTrailer + "**" + convertHour(time) + "** " + figthResult + "\n"
