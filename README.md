@@ -49,7 +49,7 @@ python3 bot.py
 * [fuzzywuzzy](https://github.com/seatgeek/fuzzywuzzy) - Search quotes
 * [pokebase](https://github.com/GregHilmes/pokebase) - Python 3 wrapper for Pokéapi v2
 * [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
-* [py-googletrans](https://github.com/ssut/py-googletrans) - Python 3 wrapper for Google Translate API.
+* [mcstatus](https://github.com/Dinnerbone/mcstatus) - check the status of a Minecraft server
 
 ## License
 
