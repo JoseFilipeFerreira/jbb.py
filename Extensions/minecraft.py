@@ -36,7 +36,7 @@ class Minecraft():
         
         embed.add_field(
             name='Ping',
-            value=status.latency,
+            value="{} ms".format(status.latency),
             inline=False)
         
         embed.set_thumbnail(url=ctx.message.server.icon_url)
