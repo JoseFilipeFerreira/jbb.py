@@ -17,6 +17,9 @@ class BattleRoyale():
             self.listReactions = json.load(file)
         with open(bot.BATTLEROYALEWINS_PATH, 'r') as file:
             self.listWinners = json.load(file)
+        with open(bot.BATTLEROYALEKDR_PATH, 'r') as file:
+            self.listKdr = json.load(file)
+            
         
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]",
@@ -31,13 +34,10 @@ class BattleRoyale():
         users = correctListUsers(ctx, ctx.message.server.members)
         await sendAllDailyReports(self, ctx, users)
 
-        #create final embed
-        embed = discord.Embed(
-            title = 'Winner',
-            description=users[0]["name"],
-            color=self.bot.embed_color
-        )
+        embed = victoryEmbed(self, users["alive"][0])
         await self.bot.say(embed=embed)
+        
+        updateKDR(self, users)
     
     @commands.command(name='battleroyale',
                       description="create server battle royale",
@@ -62,15 +62,11 @@ class BattleRoyale():
 
         await sendAllDailyReports(self, ctx, users)
 
-        #create final embed
-        embed = discord.Embed(
-            title = 'Winner',
-            description=users[0]["name"],
-            color=self.bot.embed_color
-        )
+        embed = victoryEmbed(self, users["alive"][0])
         await self.bot.say(embed=embed)
 
-        updateWinners(self, users[0])
+        updateWinners(self, users["alive"][0])
+        updateKDR(self, users)
     
     @commands.command(name='battleroyaleWinners',
                       description="battleroyale leaderboard",
@@ -82,7 +78,7 @@ class BattleRoyale():
 
         embed = discord.Embed(
             title = 'Battleroyale no DI',
-            description="Leaderboard",
+            description="Wins Leaderboard",
             color=self.bot.embed_color
         )
         for i in range(3):
@@ -105,6 +101,50 @@ class BattleRoyale():
 
         await self.bot.say(embed=embed)
 
+    @commands.command(name='battleroyaleKDR',
+                      description="battleroyale Kill/Death Ratio",
+                      brief="battleroyale Kill/Death Ratio",
+                      pass_context=True)
+    async def battleroyaleKDR(self, ctx):
+
+        arrayKDR = []
+
+        for id in self.listKdr.keys():
+            kdr = {"id": id,
+            "kills": self.listKdr[id]["kills"],
+            "death": self.listKdr[id]["death"]}
+
+            arrayKDR.append(kdr)
+        
+        def compare(kdr):
+            return kdr["kills"] / kdr["death"]
+        
+        arrayKDR.sort(key=compare, reverse=True)
+
+
+        embed = discord.Embed(
+            title = 'Battleroyale no DI',
+            description="KDR Leaderboard",
+            color=self.bot.embed_color
+        )
+        for i in range(3):
+            win = arrayKDR[i]
+            member = ctx.message.server.get_member(win["id"])
+            name = member.name
+            if member.nick != None:
+                name = member.nick
+
+            embed.add_field(
+                name="{0}. {1}".format(i + 1, name),
+                value="KDR: {0}/{1}".format(win["kills"], win["death"]),
+                inline=False
+            )
+            
+            embed.set_thumbnail(
+                url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
+            )
+
+        await self.bot.say(embed=embed)
     @commands.command(name='addBattleroyale',
                       description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
@@ -170,7 +210,7 @@ async def sendAllDailyReports(self, ctx, users):
 
     day = 1
     time = getCurrentHour()
-    while(len(users) > 1):
+    while(len(users["alive"]) > 1):
         figthTrailer, users = generateDailyReport(self, ctx, users, time)
         await sendDaylyReport(self, ctx, day, figthTrailer)
         time = 24
@@ -189,30 +229,34 @@ def getCurrentHour():
 def generateDailyReport(self, ctx, users, time):
 #generates a string with a daily report and returns a list containing survivors
     figthTrailer = ""
-    while(len(users) > 1 and time > 0):
+    while(len(users["alive"]) > 1 and time > 0):
         match = choice(self.listReactions)
         if time - match["time"] <= 0:
             break
         elif match["action"] == 0: #kill
-            p1 = choice(users)
-            users.remove(p1)
-            p2 = choice(users)
+            p1 = choice(users["alive"])
+            users["alive"].remove(p1)
+            users["dead"].append(p1)
+
+            p2 = choice(users["alive"])
+            p2["kills"] += 1
 
             figthResult = match["description"].format(p1["name"], p2["name"])
 
         elif match["action"] == 1: #die
-            p1 = choice(users)
-            users.remove(p1)
+            p1 = choice(users["alive"])
+            users["alive"].remove(p1)
+            users["dead"].append(p1)
 
             figthResult = match["description"].format(p1["name"])
         elif match["action"] == 2: #event
-            p1 = choice(users)
+            p1 = choice(users["alive"])
 
             figthResult = match["description"].format(p1["name"])
 
         elif match["action"] == 3: #meet
-            p1 = choice(users)
-            p2 = choice(users)
+            p1 = choice(users["alive"])
+            p2 = choice(users["alive"])
 
             figthResult = match["description"].format(p1["name"], p2["name"])
         
@@ -268,12 +312,13 @@ def correctListUsers(ctx, users):
             name = member.nick
         return {
                 "name": name,
-                "id": user.id
+                "id": user.id,
+                "kills": 0
             }
 
     users = list(map(changeNick , users))
     users = [i for n, i in enumerate(users) if i not in users[n+1:]]
-    return users
+    return {"alive": users, "dead": []}
 
 async def sendChallenge(self, ctx):
 #generate embed
@@ -326,6 +371,34 @@ def updateWinners(self, winner):
     
     with open(self.bot.BATTLEROYALEWINS_PATH, 'w') as file:
         json.dump(self.listWinners, file, indent=4)
+
+def updateKDR(self, users):
+#update KDR JSON file
+    for user in users["dead"]:
+        if not user["id"] in self.listKdr:
+            self.listKdr[user["id"]] = {"kills": user["kills"], "death": 1}
+        else:
+            self.listKdr[user["id"]]["kills"] += user["kills"]
+            self.listKdr[user["id"]]["death"] += 1
+
+    for user in users["alive"]:
+        if not user["id"] in self.listKdr:
+            self.listKdr[user["id"]] = {"kills": user["kills"], "death": 0}
+        else:
+            self.listKdr[user["id"]]["kills"] += user["kills"]
+
+    with open(self.bot.BATTLEROYALEKDR_PATH, 'w') as file:
+        json.dump(self.listKdr, file, indent=4)
+
+def victoryEmbed(self, user):
+#create final embed
+    embed = discord.Embed(
+        title = 'Winner',
+        description=user["name"],
+        color=self.bot.embed_color
+    )
+    embed.set_footer(text = "Kills: {}".format(user["kills"]))
+    return embed
 
 def setup(bot):
     bot.add_cog(BattleRoyale(bot))
