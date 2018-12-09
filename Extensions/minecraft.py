@@ -25,6 +25,11 @@ class Minecraft():
         )
 
         embed.add_field(
+            name='IP',
+            value=self.ip,
+            inline=False)
+        
+        embed.add_field(
             name='Online Users',
             value="{0}/{1}".format(status.players.online, status.players.max),
             inline=False)
