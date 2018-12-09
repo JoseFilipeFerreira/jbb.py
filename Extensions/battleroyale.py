@@ -107,6 +107,26 @@ class BattleRoyale():
                       pass_context=True)
     async def battleroyaleKDR(self, ctx):
 
+        if len(ctx.message.mentions) > 0:
+            for user in ctx.message.mentions:
+                member = ctx.message.server.get_member(user.id)
+                win = self.listKdr[user.id]
+                embed = discord.Embed(
+                    title = 'Battleroyale no DI',
+                    description="KDR Leaderboard",
+                    color=self.bot.embed_color
+                )
+                name = member.name
+                if member.nick != None:
+                    name = member.nick
+                embed.add_field(
+                    name=name,
+                    value="KDR: {0}/{1}".format(win["kills"], win["death"]),
+                inline=False
+                )
+                await self.bot.say(embed=embed)
+            return
+
         arrayKDR = []
 
         for id in self.listKdr.keys():
