@@ -103,32 +103,9 @@ class Quotes():
         n += int(getNLine(self.quotes_dict, 'quoteP'))
         n += int(getNLine(self.quotes_dict, 'quote'))
         n += int(getNLine(self.quotes_dict, 'fact'))
-        n += int(getNLine(self.quotes_dict, 'quoteAdmin'))
         n += int(getNLine(self.quotes_dict, 'dadjoke'))
 
         await self.bot.say('Existem '+ str(n) + ' frases')
-
-
-    @commands.command(name='quoteAdmin',
-                      description="random admin quote [ADMIN ONLY]",
-                      brief="random admin quote",
-                      pass_context=True)
-    async def quoteAdmin(self, ctx):
-        if ctx.message.author.server_permissions.administrator:
-            await self.bot.say(getRLine(self.quotes_dict, 'quoteAdmin'))
-        else:
-            await self.bot.say('Invalid user')
-
-
-    @commands.command(name='nquoteAdmin',
-                      description="number of admin quote [ADMIN ONLY]",
-                      brief="number of admin quote",
-                      pass_context=True)
-    async def nquoteAdmin(self, ctx):
-        if ctx.message.author.server_permissions.administrator:
-            await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'quoteAdmin') + ' quotes de Admin')
-        else:
-            await self.bot.say('Invalid user')
 
     @commands.command(name='add',
                       description="add a quote [OWNER ONLY]",
