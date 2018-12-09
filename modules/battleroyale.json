@@ -338,5 +338,110 @@
         "time": 1.5,
         "description": "{0} choked to death with some Halls",
         "action": 1
+    },
+    {
+        "time": 1.5,
+        "description": "{0} saw {1} in the distance.",
+        "action": 3
+    },
+    {
+        "time": 2.5,
+        "description": "{0} tried to kill {1} but failed miserably.",
+        "action": 3
+    },
+    {
+        "time": 2.5,
+        "description": "{0} tried to rape {1} but he escaped.",
+        "action": 3
+    },
+    {
+        "time": 2.5,
+        "description": "{0} made a peace offering to {1}.",
+        "action": 3
+    },
+    {
+        "time": 2.5,
+        "description": "{0} tickled {1}.",
+        "action": 3
+    },
+    {
+        "time": 0.5,
+        "description": "{0} ate ferrero morrer\u2122",
+        "action": 1
+    },
+    {
+        "time": 2.5,
+        "description": "{0} did some sexy stuff with {1}.",
+        "action": 3
+    },
+    {
+        "time": 2.5,
+        "description": "{0} fucked a tree while {1} was watching.",
+        "action": 3
+    },
+    {
+        "time": 3.5,
+        "description": "{0} found {1}'s homework folder.",
+        "action": 3
+    },
+    {
+        "time": 0.5,
+        "description": "{0} was blessed by JBB.",
+        "action": 2
+    },
+    {
+        "time": 3.5,
+        "description": "{0} started twerking.",
+        "action": 2
+    },
+    {
+        "time": 1.5,
+        "description": "{0} got {1} into a pyramid scheme.",
+        "action": 3
+    },
+    {
+        "time": 1.5,
+        "description": "{0}  joined Illuminati and never returned.",
+        "action": 1
+    },
+    {
+        "time": 3.5,
+        "description": "{0} started playing minecraft and never returned.",
+        "action": 1
+    },
+    {
+        "time": 2.5,
+        "description": "{0}'s head blew up while playing Fortnite.",
+        "action": 1
+    },
+    {
+        "time": 2.5,
+        "description": "{0} fell from a high place.",
+        "action": 1
+    },
+    {
+        "time": 2.5,
+        "description": "{0} was shot by a skeleton.",
+        "action": 1
+    },
+    {
+        "time": 3.5,
+        "description": "{0} tried to swim in lava.",
+        "action": 1
+    },
+    {
+        "time": 1.5,
+        "description": "{0} IS DA BATMAN.",
+        "action": 2
+    },
+    {
+        "time": 3.5,
+        "description": "{0} was roasted to death by {1}.",
+        "action": 0
+    },
+    {
+        "time": 3.5,
+        "description": "{0} was killed by zombie.",
+        "action": 1
     }
 ]
