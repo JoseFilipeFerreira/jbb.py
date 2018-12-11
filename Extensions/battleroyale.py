@@ -56,7 +56,7 @@ class BattleRoyale():
         await thirtysecondtyping(self, ctx)
         users = await getListUsers(self, ctx, msg.reactions[0])
         
-        if len(users) < 2:
+        if len(users["alive"]) < 2:
             await self.bot.say("Not enough players for a Battle Royale")
             return
 
