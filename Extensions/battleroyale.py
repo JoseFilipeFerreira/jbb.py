@@ -19,26 +19,7 @@ class BattleRoyale():
             self.listWinners = json.load(file)
         with open(bot.BATTLEROYALEKDR_PATH, 'r') as file:
             self.listKdr = json.load(file)
-            
-        
-    @commands.command(name='battleroyaleFull',
-                      description="create server wide battle royale [ADMIN ONLY]",
-                      brief="server wide battle royale",
-                      pass_context=True)
-    async def battleroyaleFull(self, ctx):
-        if not ctx.message.author.server_permissions.administrator:
-            await self.bot.say("invalid user")
-            return
-        await self.bot.delete_message(ctx.message)
-        await sendChallenge(self, ctx)
-        users = correctListUsers(ctx, ctx.message.server.members)
-        await sendAllDailyReports(self, ctx, users)
 
-        embed = victoryEmbed(self, users["alive"][0])
-        await self.bot.say(embed=embed)
-        
-        updateKDR(self, users)
-    
     @commands.command(name='battleroyale',
                       description="create server battle royale",
                       brief="server battle royale",
