@@ -22,7 +22,7 @@ class Help():
             await help_all(self)
         
         else:
-            command_or_cog = command_or_cog[0]:
+            command_or_cog = command_or_cog[0]
             if command_or_cog in cogs.keys():
                 await help_cog(self, command_or_cog)
             elif command_or_cog in commands.keys():
