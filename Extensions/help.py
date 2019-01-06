@@ -10,25 +10,25 @@ class Help():
         self.bot = bot
 
     @commands.command(name="help",
-                      description="Sends help for a specific command, cog or all cogs",
+                      description="Sends help for a specific command or cog",
                       brief="shows this message",
                       aliases=["man"],
                       pass_context=True)
-    async def help(self, ctx, * commands_or_cogs):
+    async def help(self, ctx, * command_or_cog):
         cogs = self.bot.cogs
         commands = self.bot.commands
 
-        if len(commands_or_cogs) == 0:
+        if len(command_or_cog) == 0:
             await help_all(self)
         
         else:
-            for command_or_cog in commands_or_cogs:
-                if command_or_cog in cogs.keys():
-                    await help_cog(self, command_or_cog)
-                elif command_or_cog in commands.keys():
-                    await help_command(self, command_or_cog)
-                else:
-                    await self.bot.say("Command or cog not found")
+            command_or_cog = command_or_cog[0]
+            if command_or_cog in cogs.keys():
+                await help_cog(self, command_or_cog)
+            elif command_or_cog in commands.keys():
+                await help_command(self, command_or_cog)
+            else:
+                await self.bot.say("Command or cog not found")
     
     @commands.command(name='helpPlay',
                       description="list all available musics",
