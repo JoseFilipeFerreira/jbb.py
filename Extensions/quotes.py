@@ -152,6 +152,7 @@ class Quotes():
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
                       brief="search a quote",
+                      aliases=['grep'],
                       pass_context=True)
     async def quoteS(self, ctx, *, search):
     #search a quote using fuzzysearching
