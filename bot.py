@@ -19,9 +19,10 @@ def main():
     bot.GIFS_PATH = './Media/Gif/'
     bot.MUSIC_PATH = './Media/Music/'
     bot.TMP_PATH = './Media/Tmp/'
-    bot.BATTLEROYALE_PATH = './modules/battleroyale.json'
-    bot.BATTLEROYALESTATS_PATH = './modules/battleroyaleStats.json'
-    bot.BIOGRAPHY_PATH = './modules/biography.json'
+    bot.QUOTES_PATH = './jdad/quotes/'
+    bot.BATTLEROYALE_PATH = './jdad/battleroyale.json'
+    bot.BATTLEROYALESTATS_PATH = './jdad/battleroyaleStats.json'
+    bot.BIOGRAPHY_PATH = './jdad/biography.json'
     bot.EXTENSIONS_PATH ='Extensions'
     
     #default color for embeds (yellow)
