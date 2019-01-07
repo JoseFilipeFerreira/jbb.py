@@ -15,10 +15,8 @@ class BattleRoyale():
         self.listReactions=[]
         with open(bot.BATTLEROYALE_PATH, 'r') as file:
             self.listReactions = json.load(file)
-        with open(bot.BATTLEROYALEWINS_PATH, 'r') as file:
-            self.listWinners = json.load(file)
-        with open(bot.BATTLEROYALEKDR_PATH, 'r') as file:
-            self.listKdr = json.load(file)
+        with open(bot.BATTLEROYALESTATS_PATH, 'r') as file:
+            self.stats = json.load(file)
             
         
     @commands.command(name='battleroyaleFull',
@@ -37,7 +35,7 @@ class BattleRoyale():
         embed = victoryEmbed(self, users["alive"][0])
         await self.bot.say(embed=embed)
         
-        updateKDR(self, users)
+        updateStats(self, users)
     
     @commands.command(name='battleroyale',
                       description="create server battle royale",
@@ -65,39 +63,50 @@ class BattleRoyale():
         embed = victoryEmbed(self, users["alive"][0])
         await self.bot.say(embed=embed)
 
-        updateWinners(self, users["alive"][0])
-        updateKDR(self, users)
+        updateStats(self, users)
     
     @commands.command(name='battleroyaleWinners',
                       description="battleroyale leaderboard",
                       brief="battleroyale leaderboard",
                       pass_context=True)
     async def battleroyaleWinners(self, ctx):
-    #TODO IMPROVE THIS HOT PIECE OF GARBAGE ASAP
-        winner = self.listWinners.copy()
-
         embed = discord.Embed(
             title = 'Battleroyale no DI',
             description="Wins Leaderboard",
             color=self.bot.embed_color
         )
+        arrayWins = []
+
+        for numId in self.stats.keys():
+            member = ctx.message.server.get_member(numId)
+            if member == None:
+                print(numId)
+            wins = {"id": numId,
+            "wins": self.stats[numId]["wins"]}
+
+            arrayWins.append(wins)
+            
+        def compare(stat):
+            return stat["wins"]
+        
+        arrayWins.sort(key=compare, reverse=True)
+
         for i in range(3):
-            win = max(winner.items(), key=operator.itemgetter(1))
-            winner.pop(win[0])
-            member = ctx.message.server.get_member(win[0])
+            win = arrayWins[i]
+            member = ctx.message.server.get_member(win["id"])
             name = member.name
             if member.nick != None:
                 name = member.nick
 
             embed.add_field(
                 name="{0}. {1}".format(i + 1, name),
-                value="Number of Wins: {0}".format(win[1]),
+                value="Number of Wins: {0}".format(win["Wins"]),
                 inline=False
             )
             
-            embed.set_thumbnail(
-                url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
-            )
+        embed.set_thumbnail(
+            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
+        )
 
         await self.bot.say(embed=embed)
 
@@ -110,7 +119,7 @@ class BattleRoyale():
         if len(ctx.message.mentions) > 0:
             for user in ctx.message.mentions:
                 member = ctx.message.server.get_member(user.id)
-                win = self.listKdr[user.id]
+                win = self.stats[user.id]
                 embed = discord.Embed(
                     title = 'Battleroyale no DI',
                     description="KDR Leaderboard",
@@ -129,10 +138,10 @@ class BattleRoyale():
 
         arrayKDR = []
 
-        for id in self.listKdr.keys():
+        for id in self.stats.keys():
             kdr = {"id": id,
-            "kills": self.listKdr[id]["kills"],
-            "death": self.listKdr[id]["death"]}
+            "kills": self.stats[id]["kills"],
+            "death": self.stats[id]["death"]}
 
             arrayKDR.append(kdr)
         
@@ -160,11 +169,12 @@ class BattleRoyale():
                 inline=False
             )
             
-            embed.set_thumbnail(
-                url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
-            )
+        embed.set_thumbnail(
+            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
+        )
 
         await self.bot.say(embed=embed)
+
     @commands.command(name='addBattleroyale',
                       description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
@@ -381,34 +391,24 @@ def updateListReactions(self):
     with open(self.bot.BATTLEROYALE_PATH, 'w') as file:
         json.dump(self.listReactions, file, indent=4)
 
-def updateWinners(self, winner):
-#update winners JSON file
-    winner = winner["id"]
-    if not winner in self.listWinners:
-        self.listWinners[winner] = 1
-    else:
-        self.listWinners[winner] += 1
-    
-    with open(self.bot.BATTLEROYALEWINS_PATH, 'w') as file:
-        json.dump(self.listWinners, file, indent=4)
-
-def updateKDR(self, users):
-#update KDR JSON file
+def updateStats(self, users):
+#update Stats JSON file
     for user in users["dead"]:
-        if not user["id"] in self.listKdr:
-            self.listKdr[user["id"]] = {"kills": user["kills"], "death": 1}
+        if not user["id"] in self.stats:
+            self.stats[user["id"]] = {"kills": user["kills"], "death": 1, "wins": 0}
         else:
-            self.listKdr[user["id"]]["kills"] += user["kills"]
-            self.listKdr[user["id"]]["death"] += 1
+            self.stats[user["id"]]["kills"] += user["kills"]
+            self.stats[user["id"]]["death"] += 1
 
     for user in users["alive"]:
-        if not user["id"] in self.listKdr:
-            self.listKdr[user["id"]] = {"kills": user["kills"], "death": 0}
+        if not user["id"] in self.stats:
+            self.stats[user["id"]] = {"kills": user["kills"], "death": 0, "wins": 1}
         else:
-            self.listKdr[user["id"]]["kills"] += user["kills"]
+            self.stats[user["id"]]["kills"] += user["kills"]
+            self.stats[user["id"]]["wins"] += 1
 
-    with open(self.bot.BATTLEROYALEKDR_PATH, 'w') as file:
-        json.dump(self.listKdr, file, indent=4)
+    with open(self.bot.BATTLEROYALESTATS_PATH, 'w') as file:
+        json.dump(self.stats, file, indent=4)
 
 def victoryEmbed(self, user):
 #create final embed
