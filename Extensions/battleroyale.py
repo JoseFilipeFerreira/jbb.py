@@ -22,6 +22,7 @@ class BattleRoyale():
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]",
                       brief="server wide battle royale",
+                      aliases=['brF'],
                       pass_context=True)
     async def battleroyaleFull(self, ctx):
         if not ctx.message.author.server_permissions.administrator:
@@ -40,6 +41,7 @@ class BattleRoyale():
     @commands.command(name='battleroyale',
                       description="create server battle royale",
                       brief="server battle royale",
+                      aliases=['br'],
                       pass_context=True)
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
@@ -68,6 +70,7 @@ class BattleRoyale():
     @commands.command(name='battleroyaleWinners',
                       description="battleroyale leaderboard",
                       brief="battleroyale leaderboard",
+                      aliases=['brW'],
                       pass_context=True)
     async def battleroyaleWinners(self, ctx):
         embed = discord.Embed(
@@ -113,6 +116,7 @@ class BattleRoyale():
     @commands.command(name='battleroyaleKDR',
                       description="battleroyale Kill/Death Ratio",
                       brief="battleroyale Kill/Death Ratio",
+                      aliases=['brKDR'],
                       pass_context=True)
     async def battleroyaleKDR(self, ctx):
 
@@ -178,6 +182,7 @@ class BattleRoyale():
     @commands.command(name='addBattleroyale',
                       description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
+                      aliases=['addBr'],
                       pass_context=True)
     async def addBattleroyale(self, ctx, action, time,*, description):
         appInfo = await self.bot.application_info()
@@ -213,7 +218,7 @@ class BattleRoyale():
     @commands.command(name='deleteBattleroyale',
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
                       brief="remove last Battleroyale event",
-                      aliases=['removeBattleroyale'],
+                      aliases=['removeBattleroyale', 'removeBr', 'deleteBr'],
                       pass_context=True)
     async def deleteBattleroyale(self, ctx):
         appInfo = await self.bot.application_info()
