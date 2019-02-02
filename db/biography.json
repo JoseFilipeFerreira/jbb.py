@@ -1,1 +1,9 @@
-{}
+{
+    "bios": {},
+    "order": [
+        "ola",
+        "potato",
+        "natata",
+        "name"
+    ]
+}
