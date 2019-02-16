@@ -21,12 +21,12 @@ make altinstall
 ```
 - Create a virtual env
 ```
-virtualenv --python=python3.6 .env3.6
+virtualenv --python=python3.6 .env
 ```
 
 - Activate the virtual env
 ```
-source .env3.6/bin/activate
+source .env/bin/activate
 ```
 
 - Install all dependencies
