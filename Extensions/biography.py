@@ -111,9 +111,8 @@ class Biography():
             
         #check member
         server = ctx.message.server
-        print(member)
-        memberId = member[3:][:-1]
-        print(memberId)
+        memberId = list(filter(lambda x: x.isdigit(), member))
+        memberId = "".join(memberId)
         if len(memberId) != 18:
             await self.bot.say("Invalid member")
             return
@@ -136,6 +135,7 @@ class Biography():
             #delete bio if empty
             if len(self.biographies[memberId].keys()) == 0:
                 self.biographies.pop(memberId, None)
+            await self.bot.say("bioKey removed")
                
         elif action == "add":
             if memberId not in self.biographies:
@@ -143,7 +143,7 @@ class Biography():
             if bioKey not in self.biographies[memberId]:
                 self.biographies[memberId][bioKey] = []
             self.biographies[memberId][bioKey].append(text)
-            self.bot.say("bioKey added")
+            await self.bot.say("bioKey added")
 
         updateBio(self)
 
