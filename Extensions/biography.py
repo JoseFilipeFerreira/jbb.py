@@ -85,23 +85,32 @@ class Biography():
             self.order[pos1], self.order[pos2] = self.order[pos2], self.order[pos1]
             await self.bot.say(textKeyOrder(self.order))
             updateBio(self)
-
-
-
+        
+        else:
+            await self.bot.say("Invalid modifier")
 
     @commands.command(
         name='addBio',
         description="add a funy description of a given user",
         brief="add one's biography",
         pass_context=True)
-    async def addbio(self, ctx, *, rawIn):
+    async def addbio(self, ctx, member,  action, bioKey, *, text):
+        #check who sent
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
             await self.bot.say("Invalid User")
             return
-
-        if len(ctx.message.mentions) != 1:
-            await self.bot.say("**Invalid Input**\n*Invalid number of mentions*")
+        #check member
+        server = ctx.message.server
+        memberId = member[2:][:-1]
+        member = server.get_member(memberId)
+        if len(memberId) != 18:
+            await self.bot.say("Invalid member")
+            return
+        #check bioKey
+        if bioKey not in self.order:
+            await self.bot.say("Invalid bioKey")
+            return
 
         rawLines = rawIn.split("\n")
         rawLines.pop(0)
