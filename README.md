@@ -4,10 +4,24 @@ Discord bot programmed in Python
 ## Getting Started
 
 ### Setting up
+- Dowload python 3.6.6 from [here](https://www.python.org/ftp/python/3.6.6/) (If not already installed)
 
+- Unpack it with
+```
+tar -xvzf Python-3.6.6.tgz
+```
+```
+cd Python-3.6.6
+```
+```
+./configure
+```
+```
+make altinstall
+```
 - Create a virtual env
 ```
-python3 -m venv .env
+virtualenv --python=python3.6 .env
 ```
 
 - Activate the virtual env
