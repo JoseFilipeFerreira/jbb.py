@@ -12,7 +12,6 @@ class Help():
     @commands.command(name="help",
                       description="Sends help for a specific command or cog",
                       brief="shows this message",
-                      aliases=["man"],
                       pass_context=True)
     async def help(self, ctx, * command_or_cog):
         cogs = self.bot.cogs
@@ -130,9 +129,6 @@ async def help_command(self, command_or_cog):
             inline=False)
 
     await self.bot.say(embed=embed)
-
-    print(command.brief)
-    print(command.cog_name)
 
 async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
 #generate a embed for a menu

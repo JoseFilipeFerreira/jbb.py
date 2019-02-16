@@ -99,7 +99,7 @@ class Biography():
 
     @commands.command(
         name='editBio',
-        description="add a funy description of a given user",
+        description="add a funy description of a given user\n**ACTIONS:**\n**delete:** delete a given position\n**add:** add a description",
         brief="add one's biography",
         pass_context=True)
     async def editBio(self, ctx, member,  action, bioKey, *, text):
