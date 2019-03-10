@@ -109,6 +109,8 @@ async def on_message_edit(before, after):
 async def reactMessage(message):
     if (message.content.lower() == 'push %ebp'):
         await bot.send_message(message.channel, 'pop %recurso')
+    elif (message.content.lower() == 'pr review'):
+        await bot.send_message(message.channel, ':clap: :clap:')
 
     if message.content.startswith(bot.command_prefix):
         content = message.content.lower()[1:]
