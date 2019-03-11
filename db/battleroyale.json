@@ -488,5 +488,10 @@
         "description": "{0} looked at some dank Memes.",
         "time": 1.5,
         "action": 2
+    },
+    {
+        "description": "{0} dropped some wet and died \ud83d\udca6",
+        "time": 2.5,
+        "action": 1
     }
 ]
