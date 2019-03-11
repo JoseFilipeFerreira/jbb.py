@@ -11,7 +11,7 @@ import subprocess
 from aux import save_stats
 from aux import hours_passed
 
-bot = commands.Bot(command_prefix = '>')
+bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
