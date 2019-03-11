@@ -87,7 +87,10 @@ class Casino():
                       brief="slot machine",
                       pass_context=True)
     async def slot(self, ctx, amount):
-        
+        wheels_array = []
+        for emoji in ctx.message.server.emojis:
+            wheels_array.append(str(emoji))
+
         if not RepresentsInt(amount):
             await self.bot.say("Invalid bet")
             return
@@ -110,7 +113,6 @@ class Casino():
         elif answer.content.lower() == 'no':
             return
         
-        wheels_array = []
         w1 = randint(0, len(wheels_array) - 1)
         w2 = randint(0, len(wheels_array) - 1)
         w3 = randint(0, len(wheels_array) - 1)
@@ -119,8 +121,13 @@ class Casino():
         prize = 0
 
         if (w1 - w2) == (w2 - w3):
-            prize = amount * 100
+            prize = amount * 80
             slot = "**YOU WON**\n"
+        
+        elif (w1 - w2) == 0 or (w2 - w3) == 0 or (w1 - w3) == 0:
+            prize = amount * 10
+            slot = "**YOU WON**\n"
+
         elif bool(abs(w1 - w2) == 1) != bool(abs(w2 - w3) == 1):
             prize = amount * 5
             slot = "**YOU WON**\n"
@@ -130,13 +137,13 @@ class Casino():
             get_prev_slot(wheels_array, w2),
             get_prev_slot(wheels_array, w3)
         )
-        slot += "----------------\n"
+        slot += "------------------\n"
         slot += " {0} | {1} | {2}\n".format(
             wheels_array[w1],
             wheels_array[w2],
             wheels_array[w3])
         
-        slot += "----------------\n"
+        slot += "------------------\n"
         slot += " {0} | {1} | {2}\n\n".format(
             get_next_slot(wheels_array, w1),
             get_next_slot(wheels_array, w2),

@@ -37,11 +37,7 @@ def spend_cash(bot, id, amount):
     
 def get_cash(bot, id, amount):
 #spend a users money
-    if bot.stats[id]["cash"] >= amount:
-        bot.stats[id]["cash"] += amount
-        return True
-    else:
-        return False
+    bot.stats[id]["cash"] += amount
 
 def RepresentsInt(s):
     try: 
