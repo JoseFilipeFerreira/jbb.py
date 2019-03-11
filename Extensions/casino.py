@@ -75,7 +75,7 @@ class Casino():
                 await self.bot.say("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
             else:
                 spend_cash(self.bot, ctx.message.author.id, amount)
-                await self.bot.say("**GAMBLE**\nYou rolled a {0}\nYou lost {1}".format(r_number, amount))
+                await self.bot.say("**GAMBLE**\nYou rolled a {0}\nYou lost {1} 💸".format(r_number, amount))
 
         else:
             await self.bot.say("Invalid bet")
@@ -87,7 +87,7 @@ class Casino():
                       brief="slot machine",
                       pass_context=True)
     async def slot(self, ctx, amount):
-
+        
         if not RepresentsInt(amount):
             await self.bot.say("Invalid bet")
             return
@@ -144,14 +144,15 @@ class Casino():
         )
 
         if prize == 0:
-            slot += "You lost {0}".format(amount)
+            slot += "You lost {0} 💸".format(amount)
             spend_cash(self.bot, ctx.message.author.id, amount)
         else:
             slot += "You won {0} 🎉".format(prize)
             get_cash(self.bot, ctx.message.author.id, prize)
+        
+        await self.bot.say(slot)
 
         save_stats(self.bot)
-
 
 def get_prev_slot(arr, pos):
     npos = pos - 1
