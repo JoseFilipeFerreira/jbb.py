@@ -3,11 +3,15 @@ import asyncio
 import json
 from discord.ext import commands
 from datetime import datetime
+import time
 import os
 from os import path
 import subprocess
 
-bot = commands.Bot(command_prefix = '*')
+from aux import save_stats
+from aux import hours_passed
+
+bot = commands.Bot(command_prefix = '>')
 
 bot.remove_command('help')
 
@@ -21,7 +25,7 @@ def main():
     bot.TMP_PATH = './Media/Tmp/'
     bot.QUOTES_PATH = './db/quotes/'
     bot.BATTLEROYALE_PATH = './db/battleroyale.json'
-    bot.BATTLEROYALESTATS_PATH = './db/battleroyaleStats.json'
+    bot.STATS_PATH = './db/stats.json'
     bot.BIOGRAPHY_PATH = './db/biography.json'
     bot.EXTENSIONS_PATH ='Extensions'
     
@@ -48,6 +52,12 @@ def main():
         if path.isfile(path.join(bot.MUSIC_PATH, f)):
             filename, _ = path.splitext(f)
             bot.musicMap[filename.lower()] = f
+    
+    #load stats
+    with open(bot.STATS_PATH, 'r') as file:
+            tmp = json.load(file)
+            bot.stats = tmp["stats"]
+            bot.last_giveaway = tmp["last_giveaway"]
 
     #load extensions
     extensions_loader(create_list_extensions())
@@ -112,6 +122,7 @@ async def reactMessage(message):
     elif (message.content.lower() == 'pr review'):
         await bot.send_message(message.channel, ':clap: :clap:')
 
+    #send media
     if message.content.startswith(bot.command_prefix):
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
@@ -123,14 +134,35 @@ async def reactMessage(message):
                 message.channel, bot.GIFS_PATH+bot.gifsMap[content])
             return
 
+    #exit voice channel
     if bot.player_client != None and bot.player_client.is_playing() == False:
         await bot.voice_client.disconnect()
         bot.voice_client = None
         bot.player_client = None
+    
+    #coin giveaway
+    if hours_passed(bot.last_giveaway, time.time()) > 24:
+        bot.last_giveaway = time.time()
+        appInfo = await bot.application_info()
+        for key in bot.stats:
+            if "cash" not in bot.stats[key]:
+                bot.stats[key]["cash"] = 10
+            else:
+                bot.stats[key]["cash"] += 10
+        save_stats(bot)
+        await bot.send_message(appInfo.owner, "Giveaway")
 
     await bot.process_commands(message)
 
+@bot.event
+async def on_member_join(member):
+    bot.stats[member.id] = {"death": 0, "wins": 0, "kills": 0, "cash": 0}
+    save_stats(bot)
 
+@bot.event
+async def on_member_remove(member):
+    bot.stats.pop(member.id, None)
+    save_stats(bot)
 
 def create_list_extensions():
 #create a list with possible extensions
@@ -170,11 +202,5 @@ def extensions_loader(extensions):
     bot.extensions_list_loaded = loaded
     bot.extensions_list_failed = "No cogs failed to load"
     if not failed == "": bot.extensions_list_failed = failed
-
-def checkArray(tester, s):
-    result = False
-    for test in tester:
-        result = result or test in s
-    return result
 
 main()

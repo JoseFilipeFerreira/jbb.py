@@ -7,6 +7,8 @@ from random import choice
 import asyncio
 import json
 import operator
+from aux import save_stats
+from aux import round_down
 
 class BattleRoyale():
     def __init__(self, bot):
@@ -15,9 +17,6 @@ class BattleRoyale():
         self.listReactions=[]
         with open(bot.BATTLEROYALE_PATH, 'r') as file:
             self.listReactions = json.load(file)
-        with open(bot.BATTLEROYALESTATS_PATH, 'r') as file:
-            self.stats = json.load(file)
-            
         
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]",
@@ -80,12 +79,12 @@ class BattleRoyale():
         )
         arrayWins = []
 
-        for numId in self.stats.keys():
+        for numId in self.bot.stats.keys():
             member = ctx.message.server.get_member(numId)
             if member == None:
                 print(numId)
             wins = {"id": numId,
-            "wins": self.stats[numId]["wins"]}
+            "wins": self.bot.stats[numId]["wins"]}
 
             arrayWins.append(wins)
             
@@ -123,7 +122,7 @@ class BattleRoyale():
         if len(ctx.message.mentions) > 0:
             for user in ctx.message.mentions:
                 member = ctx.message.server.get_member(user.id)
-                win = self.stats[user.id]
+                win = self.bot.stats[user.id]
                 embed = discord.Embed(
                     title = 'Battleroyale no DI',
                     description="KDR Leaderboard",
@@ -142,10 +141,10 @@ class BattleRoyale():
 
         arrayKDR = []
 
-        for id in self.stats.keys():
+        for id in self.bot.stats.keys():
             kdr = {"id": id,
-            "kills": self.stats[id]["kills"],
-            "death": self.stats[id]["death"]}
+            "kills": self.bot.stats[id]["kills"],
+            "death": self.bot.stats[id]["death"]}
 
             arrayKDR.append(kdr)
         
@@ -374,10 +373,6 @@ async def sendChallenge(self, ctx):
     #update sent embed so it contains the reaction
     return await self.bot.get_message(msg.channel, msg.id)
 
-def round_down(num, divisor):
-#round down a num to the nearest multiple of a divisor
-    return num - (num%divisor)
-
 def convertHour(time):
 #convert time in hours to midnigth to hour of day
     time = 24 - time
@@ -399,21 +394,20 @@ def updateListReactions(self):
 def updateStats(self, users):
 #update Stats JSON file
     for user in users["dead"]:
-        if not user["id"] in self.stats:
-            self.stats[user["id"]] = {"kills": user["kills"], "death": 1, "wins": 0}
+        if not user["id"] in self.bot.stats:
+            self.bot.stats[user["id"]] = {"kills": user["kills"], "death": 1, "wins": 0}
         else:
-            self.stats[user["id"]]["kills"] += user["kills"]
-            self.stats[user["id"]]["death"] += 1
+            self.bot.stats[user["id"]]["kills"] += user["kills"]
+            self.bot.stats[user["id"]]["death"] += 1
 
     for user in users["alive"]:
-        if not user["id"] in self.stats:
-            self.stats[user["id"]] = {"kills": user["kills"], "death": 0, "wins": 1}
+        if not user["id"] in self.bot.stats:
+            self.bot.stats[user["id"]] = {"kills": user["kills"], "death": 0, "wins": 1}
         else:
-            self.stats[user["id"]]["kills"] += user["kills"]
-            self.stats[user["id"]]["wins"] += 1
+            self.bot.stats[user["id"]]["kills"] += user["kills"]
+            self.bot.stats[user["id"]]["wins"] += 1
 
-    with open(self.bot.BATTLEROYALESTATS_PATH, 'w') as file:
-        json.dump(self.stats, file, indent=4)
+    save_stats(self.bot)
 
 def victoryEmbed(self, user):
 #create final embed
