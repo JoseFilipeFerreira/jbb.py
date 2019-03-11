@@ -21,10 +21,31 @@ def round_down(num, divisor):
 #round down a num to the nearest multiple of a divisor
     return num - (num%divisor)
 
+def enough_cash(bot, id, amount):
+    if bot.stats[id]["cash"] >= amount:
+        return True
+    else:
+        return False
+
 def spend_cash(bot, id, amount):
 #spend a users money
     if bot.stats[id]["cash"] >= amount:
         bot.stats[id]["cash"] -= amount
         return True
     else:
+        return False
+    
+def get_cash(bot, id, amount):
+#spend a users money
+    if bot.stats[id]["cash"] >= amount:
+        bot.stats[id]["cash"] += amount
+        return True
+    else:
+        return False
+
+def RepresentsInt(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
         return False

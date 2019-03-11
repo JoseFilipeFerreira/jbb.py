@@ -19,10 +19,6 @@ class Biography():
         pass_context=True)
     async def bio(self, ctx):
         for user in ctx.message.mentions:
-            if user.id not in self.biographies:
-                await self.bot.say("User doesn't have a Biography")
-                return
-
             member = ctx.message.server.get_member(user.id)
             name = member.name
             if member.nick != None:
@@ -36,14 +32,19 @@ class Biography():
                 url="https://img9.androidappsapk.co/300/e/a/2/com.sdvios.png"
             )
 
-            bio = self.biographies[user.id]
-            for key in self.order:
-                if key in bio:
-                    embed.add_field(
-                        name=key,
-                        value="\n".join(bio[key])
-                    )
+            if user.id in self.biographies:
+                bio = self.biographies[user.id]
+                for key in self.order:
+                    if key in bio:
+                        embed.add_field(
+                            name=key,
+                            value="\n".join(bio[key])
+                        )
             
+            embed.add_field(
+                name="💰Cash",
+                value=self.bot.stats[user.id]["cash"])
+
             embed.set_footer(text = "Biography")
             await self.bot.say(embed=embed)
 
