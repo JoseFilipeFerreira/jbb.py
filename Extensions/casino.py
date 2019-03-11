@@ -41,7 +41,7 @@ class Casino():
             amount  = int(bet[0])
             number  = int(bet[1])
 
-            if amount <= 0 and number < 1 and number > 20:
+            if amount <= 0 or number < 1 or number > 20:
                 await self.bot.say("Invalid bet")
                 return
 
