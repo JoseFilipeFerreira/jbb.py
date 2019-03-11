@@ -4,13 +4,32 @@ import random
 from random import randint
 from random import choice
 import asyncio
-from aux import enough_cash, spend_cash, get_cash, RepresentsInt
+from aux import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats
 
 
 class Casino():
     
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(name='setAllCash',
+                      description="set money of everyones cash [OWNER ONLY]",
+                      brief="set all cash",
+                      pass_context=True)
+    async def setAllCash(self, ctx, number):
+        appInfo = await self.bot.application_info()
+        if ctx.message.author != appInfo.owner:
+            await self.bot.say("Invalid User")
+            return
+        if not RepresentsInt(number):
+            await self.bot.say("Invalid amount")
+            return
+
+        for key in self.bot.stats:
+            self.bot.stats[key]["cash"] = int(number)
+        save_stats(self.bot)
+        
+
 
     @commands.command(name='roll',
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
@@ -23,6 +42,11 @@ class Casino():
         elif len(bet) == 2 and RepresentsInt(bet[0]) and RepresentsInt(bet[1]):
             amount  = int(bet[0])
             number  = int(bet[1])
+
+            if amount <= 0 and number < 1 and number > 20:
+                await self.bot.say("Invalid bet")
+                return
+
             win = amount * 10
             r_number = randint(1,20)
 
@@ -46,7 +70,7 @@ class Casino():
             if answer.content.lower() == 'no':
                 return
             
-            if bet == r_number:
+            if number == r_number:
                 get_cash(self.bot, ctx.message.author.id, win)
                 await self.bot.say("**GAMBLE**\nYou rolled a {0}\nYou won {1}".format(r_number, win))
             else:
