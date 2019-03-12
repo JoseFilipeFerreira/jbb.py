@@ -40,6 +40,10 @@ class Biography():
                             name=key,
                             value="\n".join(bio[key])
                         )
+
+            embed.add_field(
+                name="🔫KDR",
+                value="{0}/{1}".format(self.bot.stats[user.id]["kills"], self.bot.stats[user.id]["death"]))
             
             embed.add_field(
                 name="💰Cash",

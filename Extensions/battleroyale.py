@@ -7,8 +7,7 @@ from random import choice
 import asyncio
 import json
 import operator
-from aux import save_stats
-from aux import round_down
+from aux import save_stats, round_down,  get_cash
 
 class BattleRoyale():
     def __init__(self, bot):
@@ -19,7 +18,7 @@ class BattleRoyale():
             self.listReactions = json.load(file)
         
     @commands.command(name='battleroyaleFull',
-                      description="create server wide battle royale [ADMIN ONLY]",
+                      description="create server wide battle royale [ADMIN ONLY]\n\nWinner gets 100 coins.",
                       brief="server wide battle royale",
                       aliases=['brF'],
                       pass_context=True)
@@ -34,6 +33,8 @@ class BattleRoyale():
 
         embed = victoryEmbed(self, users["alive"][0])
         await self.bot.say(embed=embed)
+
+        get_cash(self.bot, users["alive"][0]["id"], 100 )
         
         updateStats(self, users)
     

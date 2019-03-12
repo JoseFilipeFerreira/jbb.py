@@ -22,7 +22,9 @@ def round_down(num, divisor):
     return num - (num%divisor)
 
 def enough_cash(bot, id, amount):
-    if bot.stats[id]["cash"] >= amount:
+    if "cash" not in bot.stats[id]:
+        return False 
+    elif bot.stats[id]["cash"] >= amount:
         return True
     else:
         return False
@@ -36,8 +38,10 @@ def spend_cash(bot, id, amount):
         return False
     
 def get_cash(bot, id, amount):
-#spend a users money
-    bot.stats[id]["cash"] += amount
+    if "cash" in bot.stats[id]:
+        bot.stats[id]["cash"] += amount
+    else:
+        bot.stats[id]["cash"] = amount
 
 def RepresentsInt(s):
     try: 
