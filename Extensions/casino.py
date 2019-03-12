@@ -45,7 +45,7 @@ class Casino():
                 await self.bot.say("Invalid bet")
                 return
 
-            win = amount * 10
+            win = amount * 80
             r_number = randint(1,20)
 
             #check if enough cash
