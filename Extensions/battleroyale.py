@@ -34,7 +34,7 @@ class BattleRoyale():
         embed = victoryEmbed(self, users["alive"][0])
         await self.bot.say(embed=embed)
 
-        get_cash(self.bot, users["alive"][0]["id"], 100 )
+        get_cash(self.bot, users["alive"][0]["id"], 100)
         
         updateStats(self, users)
     

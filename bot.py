@@ -156,7 +156,7 @@ async def reactMessage(message):
 
 @bot.event
 async def on_member_join(member):
-    bot.stats[member.id] = {"death": 0, "wins": 0, "kills": 0, "cash": 0}
+    bot.stats[member.id] = {"death": 0, "wins": 0, "kills": 0, "cash": 10}
     save_stats(bot)
 
 @bot.event
