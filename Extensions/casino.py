@@ -94,7 +94,16 @@ class Casino():
         if not RepresentsInt(amount):
             await self.bot.say("Invalid bet")
             return
+
         amount = int(amount)
+
+        if amount <= 0:
+            await self.bot.say("Invalid bet")
+            return
+        
+        if not enough_cash(self.bot, ctx.message.author.id, amount):
+                await self.bot.say("Not enough cash to bet")
+                return
 
         await self.bot.say(
                 "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.\n[yes/no]".format(
