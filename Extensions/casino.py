@@ -51,7 +51,7 @@ class Casino():
         
         bet = bet.lower()
 
-        if bet not in ["red", "black", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
+        if bet not in ["red", "black","green", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
             await self.bot.say("Invalid bet")
             return
         
