@@ -31,7 +31,7 @@ class Casino():
 
 
     @commands.command(name='roulette',
-                      description="Bet on a roulette spin\n\n**red/black** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
+                      description="Bet on a roulette spin\n\n**red/black/green** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
                       brief="Play roulette",
                       pass_context=True)
     async def roulette(self, ctx, amount, bet):
