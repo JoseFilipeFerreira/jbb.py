@@ -24,6 +24,7 @@ def main():
     bot.MUSIC_PATH = './Media/Music/'
     bot.TMP_PATH = './Media/Tmp/'
     bot.QUOTES_PATH = './db/quotes/'
+    bot.GAMES_PATH ='./Media/Games/'
     bot.BATTLEROYALE_PATH = './db/battleroyale.json'
     bot.STATS_PATH = './db/stats.json'
     bot.BIOGRAPHY_PATH = './db/biography.json'

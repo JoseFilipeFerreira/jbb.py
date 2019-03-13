@@ -5,7 +5,7 @@ from random import randint
 from random import choice
 import asyncio
 from aux import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats 
-
+from PIL import Image, ImageDraw
 
 class Casino():
     
@@ -28,6 +28,111 @@ class Casino():
         for key in self.bot.stats:
             self.bot.stats[key]["cash"] = int(number)
         save_stats(self.bot)
+
+
+    @commands.command(name='roulette',
+                      description="Bet on a roulette spin",
+                      brief="Play roulette",
+                      pass_context=True)
+    async def roulette(self, ctx, amount, bet):
+
+        rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
+        
+        if not RepresentsInt(amount):
+            await self.bot.say("Invalid amount")
+            return
+        amount = int(amount)
+
+        if amount <= 0:
+            await self.bot.say("Invalid amount")
+            return
+        
+        if not enough_cash(self.bot, ctx.message.author.id, amount):
+            await self.bot.say("Not enough cash to bet")
+            return
+        
+        bet = bet.lower()
+
+        if bet not in ["red", "black", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
+            await self.bot.say("Invalid bet")
+            return
+        
+        pNumbers = []
+        win = 0
+
+        if RepresentsInt(bet):
+            bet = int(bet)
+            if bet < 0 or bet > 36:
+                await self.bot.say("Invalid position")
+                return
+            pNumbers = [bet]
+            win = amount * len(rOrder)
+        elif bet == "odd":
+            pNumbers = list(range(1, 36, 2))
+            win = amount * 2
+        elif bet == "even":
+            pNumbers = list(range(2, 36, 2))
+            win = amount * 2
+        elif bet == "high":
+            pNumbers = list(range(1, 18))
+            win = amount * 2
+        elif bet == "low":
+            pNumbers = list(range(19, 36))
+            win = amount * 2
+        elif bet == "red":
+            pNumbers = rOrder[1::2]
+            win = amount * 2
+        elif bet == "black":
+            pNumbers = rOrder[2::2]
+            win = amount * 2
+        
+        await self.bot.say(
+            "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.\n[yes/no]".format(amount, win))
+        
+        def guess_check(m):
+            return m.content.lower() == 'yes' or m.content.lower() == 'no'
+        
+        answer = await self.bot.wait_for_message(
+            timeout=10.0,
+            author=ctx.message.author,
+            check=guess_check)
+            
+        if answer is None:
+            return
+        elif answer.content.lower() == 'no':
+            return
+        
+        pos = randint(0, len(rOrder) - 1)
+
+        rImage = Image.open(self.bot.GAMES_PATH + "roulette.png")
+        rImage = rImage.rotate(pos * 360 / len(rOrder))
+
+        draw = ImageDraw.Draw(rImage)
+        x = 405
+        y = 130
+        r = 18
+        draw.ellipse((x-r, y-r, x+r, y+r), outline=(255,255,255), fill=(255,255,255))
+        del draw
+
+        rImage = rImage.rotate(randint(0, 360))
+
+        rImage.save(self.bot.TMP_PATH + "roulette.png")
+
+        result = " "
+
+        if(rOrder[pos] in pNumbers):
+            result = "You Won {0}🎉".format(win)
+            get_cash(self.bot, ctx.message.author.id, win)
+        
+        else:
+            result = "You lost {0} 💸".format(amount)
+            spend_cash(self.bot, ctx.message.author.id, amount)
+
+
+        await self.bot.send_file(
+                ctx.message.channel,
+                self.bot.TMP_PATH + "roulette.png",
+                content=result)
 
     @commands.command(name='roll',
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
