@@ -73,10 +73,10 @@ class Casino():
         elif bet == "even":
             pNumbers = list(range(2, 36, 2))
             win = amount * 2
-        elif bet == "high":
+        elif bet == "low":
             pNumbers = list(range(1, 18))
             win = amount * 2
-        elif bet == "low":
+        elif bet == "high":
             pNumbers = list(range(19, 36))
             win = amount * 2
         elif bet == "red":
