@@ -35,9 +35,7 @@ class Casino():
                       brief="Play roulette",
                       pass_context=True)
     async def roulette(self, ctx, amount, bet):
-
         rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
-        
         if not RepresentsInt(amount):
             await self.bot.say("Invalid amount")
             return
@@ -85,6 +83,9 @@ class Casino():
         elif bet == "black":
             pNumbers = rOrder[2::2]
             win = amount * 2
+        elif bet == "green":
+            pNumbers = [0]
+            win = amount * len(rOrder)
         
         await self.bot.say(
             "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.\n[yes/no]".format(amount, win))
