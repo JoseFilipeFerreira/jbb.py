@@ -143,7 +143,7 @@ async def reactMessage(message):
     
     #coin giveaway
     if hours_passed(bot.last_giveaway, time.time()) > 24:
-        bot.last_giveaway = time.time()
+        bot.last_giveaway += 24*60*60 
         appInfo = await bot.application_info()
         for key in bot.stats:
             if "cash" not in bot.stats[key]:
