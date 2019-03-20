@@ -235,7 +235,7 @@ class Casino():
         slot = "**YOU LOST**\n"
         prize = 0
 
-        if (w1 - w2) == (w2 - w3):
+        if (w1 - w2) == (w2 - w3) and (w1 - w2) in [-1,0,1]:
             prize = amount * 80
             slot = "**YOU WON**\n"
         
