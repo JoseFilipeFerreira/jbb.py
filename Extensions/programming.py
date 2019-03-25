@@ -72,6 +72,7 @@ class Programming():
             else:
                 buf += (m + "\n") 
 
+    @commands.command(pass_context=True)
     async def copy(self, ctx ,*, text):
         with open(self.bot.IP_PATH, 'w') as file:
             file.write(text)
