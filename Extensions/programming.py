@@ -68,11 +68,11 @@ class Programming():
         buf = ""
         for m in r:
             if len(buf) + len(m + "\n") > 1900:
-                await self.bot.send_message(ctx.message.author, buf)
+                await self.bot.send_message(ctx.message.author, "```" + buf + "```")
                 buf = m + "\n"
             else:
                 buf += (m + "\n")
-        await self.bot.send_message(ctx.message.author, buf)
+        await self.bot.send_message(ctx.message.author, "```" + buf + "```")
 
 def setup(bot):
     bot.add_cog(Programming(bot))        
