@@ -2,6 +2,7 @@ import discord
 from baseconvert import base
 from discord.ext import commands
 from random import randint
+import requests 
 
 class Programming():
     
@@ -37,7 +38,6 @@ class Programming():
                       brief="convert between bases",
                       pass_context=True)
     async def conv(self, ctx, number, basefrom, baseto):
-    #converter entre bases
         result = base(number, int(basefrom), int(baseto), string=True)
         await self.bot.say(
             number + ' na base ' + basefrom + ' para base ' + baseto + ' dá:\n' + result)
@@ -47,9 +47,35 @@ class Programming():
                       brief="let me google that for you",
                       pass_context=True)
     async def lmgtfy(self, ctx, *query):
-    #returns a link for the website "let me google that for you" with the query given
         query = '+'.join(word for word in query)
         await self.bot.say("http://lmgtfy.com/?q={}".format(query))
+    
+    @commands.command(name='lixo3',
+                      description="answer querys LI3",
+                      brief="answer querys LI3",
+                      pass_context=True)
+    async def lixo3(self, ctx, *query):
+        with open(self.bot.IP_PATH, 'r') as file:
+            ip = file.read().strip()
+        query = '/'.join(word for word in query)
+
+        await self.bot.send_message(ctx.message.author, "**{0}**".format(query))
+
+        r = requests.get("http://{}/{}".format(ip, query)).text
+        r = r.split('\n')
+        
+        buf = ""
+        for m in r:
+            if len(buf) + len(m + "\n") > 1900:
+                await self.bot.send_message(ctx.message.author, buf)
+                buf = m + "\n"
+            else:
+                buf += (m + "\n") 
+
+    async def copy(self, ctx ,*, text):
+        with open(self.bot.IP_PATH, 'w') as file:
+            file.write(text)
+
 
 def setup(bot):
     bot.add_cog(Programming(bot))        
