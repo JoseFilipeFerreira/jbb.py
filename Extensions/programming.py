@@ -55,6 +55,7 @@ class Programming():
                       brief="answer querys LI3",
                       pass_context=True)
     async def lixo3(self, ctx, *query):
+        await self.bot.delete_message(ctx.message)
         with open(self.bot.IP_PATH, 'r') as file:
             ip = file.read().strip()
         query = '/'.join(word for word in query)
@@ -70,13 +71,8 @@ class Programming():
                 await self.bot.send_message(ctx.message.author, buf)
                 buf = m + "\n"
             else:
-                buf += (m + "\n") 
-
-    @commands.command(pass_context=True)
-    async def copy(self, ctx ,*, text):
-        with open(self.bot.IP_PATH, 'w') as file:
-            file.write(text)
-
+                buf += (m + "\n")
+        await self.bot.send_message(ctx.message.author, buf)
 
 def setup(bot):
     bot.add_cog(Programming(bot))        
