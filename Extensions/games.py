@@ -39,10 +39,11 @@ class Games():
                       brief="play rock paper scissors",
                       pass_context=True)
     async def rps(self, ctx, player):
+        appInfo = await self.bot.application_info()
         if(player in ['rock','paper','scissors','r','p','s']):
             cpu = choice(['rock','paper','scissors'])
             player = simpRPS(player)
-            result = "**JBB won!**" #assume que o JBB ganha top kek
+            result = "**" + appInfo.name + " won!**"
             if (player == cpu):
                 result = "**It´s a tie!**"
             if (player == "rock" and cpu == "scissors"):
@@ -51,7 +52,7 @@ class Games():
                 result = "**You won!**"
             if (player == "scissors" and cpu == "paper"):
                 result = "**You won!**"
-            await self.bot.say('You played ' + player + '\nJBB played ' + cpu + '\n' + result)
+            await self.bot.say('You played ' + player + '\n' + appInfo.name + ' played ' + cpu + '\n' + result)
         else:
             await self.bot.say('*Invalid*')
     

@@ -41,6 +41,7 @@ class Music():
                       brief="stop music",
                       pass_context=True)
     async def stop(self, ctx):
+        appInfo = await self.bot.application_info()
         #check if user in voice channel
         if ctx.message.author.voice_channel:
             #cheack if bot in voice channel
@@ -50,7 +51,7 @@ class Music():
                 self.bot.voice_client = None
                 self.bot.player_client = None
             else:
-                await self.bot.say("JBB not in a voice channel")
+                await self.bot.say(appInfo.name + " not in a voice channel")
         else:
             await self.bot.say("You're not in a voice channel")
 
