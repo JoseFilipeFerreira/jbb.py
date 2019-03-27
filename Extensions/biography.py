@@ -58,6 +58,9 @@ class Biography():
         brief="alter bio keys",
         pass_context=True)
     async def bioKey(self, ctx, modifier,* text):
+        if not ctx.message.author.server_permissions.administrator:
+            await self.bot.say("invalid user")
+            return
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
             await self.bot.say("Invalid User")
@@ -108,6 +111,9 @@ class Biography():
         brief="add one's biography",
         pass_context=True)
     async def editBio(self, ctx, member,  action, bioKey, *, text):
+        if not ctx.message.author.server_permissions.administrator:
+            await self.bot.say("invalid user")
+            return
         #check who sent
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
