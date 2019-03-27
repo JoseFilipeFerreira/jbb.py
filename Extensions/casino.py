@@ -35,6 +35,11 @@ class Casino():
                       brief="Play roulette",
                       pass_context=True)
     async def roulette(self, ctx, amount, bet):
+        if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
+            await self.bot.say(
+                "This command must be done in #nsfw or #bot-commands"
+            )
+            return
         rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
         if not RepresentsInt(amount):
             await self.bot.say("Invalid amount")
@@ -140,6 +145,11 @@ class Casino():
                       brief="roll a dice",
                       pass_context=True)
     async def roll(self, ctx, * bet):
+        if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
+            await self.bot.say(
+                "This command must be done in #nsfw or #bot-commands"
+            )
+            return
         if len(bet) == 0:
             await self.bot.say('You rolled a ' + str(randint(1,20)))
 
@@ -193,6 +203,11 @@ class Casino():
                       brief="slot machine",
                       pass_context=True)
     async def slot(self, ctx, amount):
+        if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
+            await self.bot.say(
+                "This command must be done in #nsfw or #bot-commands"
+            )
+            return
         wheels_array = []
         for emoji in ctx.message.server.emojis:
             wheels_array.append(str(emoji))
