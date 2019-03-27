@@ -236,15 +236,11 @@ class Casino():
         prize = 0
 
         if (w1 - w2) == (w2 - w3) and (w1 - w2) in [-1,0,1]:
-            prize = amount * 50
+            prize = amount * 20
             slot = "**YOU WON**\n"
         
         elif (w1 - w2) == 0 or (w2 - w3) == 0 or (w1 - w3) == 0:
-            prize = amount * 5
-            slot = "**YOU WON**\n"
-
-        elif bool(abs(w1 - w2) == 1) != bool(abs(w2 - w3) == 1):
-            prize = amount * 5
+            prize = amount * 2
             slot = "**YOU WON**\n"
 
         slot += " {0} | {1} | {2}\n".format(
