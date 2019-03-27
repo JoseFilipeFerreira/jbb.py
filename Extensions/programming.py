@@ -56,9 +56,13 @@ class Programming():
                       pass_context=True)
     async def lixo3(self, ctx, *query):
         await self.bot.delete_message(ctx.message)
+
+        query = '/'.join(word for word in query)
+        with open(self.bot.TMP_PATH+"log_querys.txt", 'a') as file:
+            file.write(ctx.message.author.name + "\t" + query + "\n")
+
         with open(self.bot.IP_PATH, 'r') as file:
             ip = file.read().strip()
-        query = '/'.join(word for word in query)
 
         await self.bot.send_message(ctx.message.author, "**{0}**".format(query))
 
