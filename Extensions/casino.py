@@ -95,6 +95,8 @@ class Casino():
         await self.bot.say(
             "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.\n[yes/no]".format(amount, win))
         
+        spend_cash(self.bot, ctx.message.author.id, amount)
+
         def guess_check(m):
             return m.content.lower() == 'yes' or m.content.lower() == 'no'
         
@@ -104,8 +106,10 @@ class Casino():
             check=guess_check)
             
         if answer is None:
+            get_cash(self.bot, ctx.message.author.id, amount)
             return
         elif answer.content.lower() == 'no':
+            get_cash(self.bot, ctx.message.author.id, amount)
             return
         
         pos = randint(0, len(rOrder) - 1)
@@ -132,8 +136,6 @@ class Casino():
         
         else:
             result = "You lost {0} 💸".format(amount)
-            spend_cash(self.bot, ctx.message.author.id, amount)
-
 
         await self.bot.send_file(
                 ctx.message.channel,
@@ -225,6 +227,8 @@ class Casino():
         if not enough_cash(self.bot, ctx.message.author.id, amount):
                 await self.bot.say("Not enough cash to bet")
                 return
+        
+        spend_cash(self.bot, ctx.message.author.id, amount)
 
         await self.bot.say(
                 "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.\n[yes/no]".format(
@@ -239,8 +243,10 @@ class Casino():
             check=guess_check)
             
         if answer is None:
+            get_cash(self.bot, ctx.message.author.id, amount)
             return
         elif answer.content.lower() == 'no':
+            get_cash(self.bot, ctx.message.author.id, amount)
             return
         
         w1 = randint(0, len(wheels_array) - 1)
@@ -278,7 +284,6 @@ class Casino():
 
         if prize == 0:
             slot += "You lost {0} 💸".format(amount)
-            spend_cash(self.bot, ctx.message.author.id, amount)
         else:
             slot += "You won {0} 🎉".format(prize)
             get_cash(self.bot, ctx.message.author.id, prize)
