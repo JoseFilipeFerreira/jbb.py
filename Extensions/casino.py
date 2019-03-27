@@ -213,7 +213,7 @@ class Casino():
 
         await self.bot.say(
                 "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.\n[yes/no]".format(
-                    amount, amount * 80))
+                    amount, amount * 30))
         
         def guess_check(m):
             return m.content.lower() == 'yes' or m.content.lower() == 'no'
