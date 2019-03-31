@@ -71,7 +71,7 @@ class Programming():
         
         buf = ""
         for m in r:
-            if len(buf) + len(m + "\n") > 1900:
+            if len(buf) + len(m + "\n") > 1800:
                 await self.bot.send_message(ctx.message.author, "```" + buf + "```")
                 buf = m + "\n"
             else:
