@@ -56,27 +56,22 @@ class Programming():
                       pass_context=True)
     async def lixo3(self, ctx, *query):
         await self.bot.delete_message(ctx.message)
-
+        file_name = "query_" + '_'.join(word for word in query) + ".txt"
         query = '/'.join(word for word in query)
         with open(self.bot.TMP_PATH+"log_querys.txt", 'a') as file:
             file.write(ctx.message.author.name + "\t" + query + "\n")
 
         with open(self.bot.IP_PATH, 'r') as file:
             ip = file.read().strip()
-
-        await self.bot.send_message(ctx.message.author, "**{0}**".format(query))
-
-        r = requests.get("http://{}/{}".format(ip, query)).text
-        r = r.split('\n')
         
-        buf = ""
-        for m in r:
-            if len(buf) + len(m + "\n") > 1900:
-                await self.bot.send_message(ctx.message.author, "```" + buf + "```")
-                buf = m + "\n"
-            else:
-                buf += (m + "\n")
-        await self.bot.send_message(ctx.message.author, "```" + buf + "```")
+        with open(self.bot.TMP_PATH + file_name,'w') as f:
+            f.write(requests.get("http://{}/{}".format(ip, query)).text)
+
+        await self.bot.send_file(
+            ctx.message.author,
+            self.bot.TMP_PATH + file_name,
+            content="**{0}**".format(query))
 
 def setup(bot):
-    bot.add_cog(Programming(bot))        
+    bot.add_cog(Programming(bot))     
+
