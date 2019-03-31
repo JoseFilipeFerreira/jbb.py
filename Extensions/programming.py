@@ -64,13 +64,17 @@ class Programming():
         with open(self.bot.IP_PATH, 'r') as file:
             ip = file.read().strip()
         
-        with open(self.bot.TMP_PATH + file_name,'w') as f:
-            f.write(requests.get("http://{}/{}".format(ip, query)).text)
+        r = requests.get("http://{}/{}".format(ip, query)).text
+        if len(query) == 0:
+            await self.bot.send_message(ctx.message.author, "**HOW TO USE**\n" + r)
+        else:
+            with open(self.bot.TMP_PATH + file_name,'w') as f:
+                f.write(r)
 
-        await self.bot.send_file(
-            ctx.message.author,
-            self.bot.TMP_PATH + file_name,
-            content="**{0}**".format(query))
+            await self.bot.send_file(
+                ctx.message.author,
+                self.bot.TMP_PATH + file_name,
+                content="**{0}**".format(query))
 
 def setup(bot):
     bot.add_cog(Programming(bot))     
