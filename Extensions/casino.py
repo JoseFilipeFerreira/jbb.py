@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
 import random
-from random import randint
-from random import choice
 import asyncio
-from aux import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats 
+import time
+from random import randint, choice
+from aux import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats, hours_passed 
 from PIL import Image, ImageDraw
 
 class Casino():
@@ -27,6 +27,30 @@ class Casino():
 
         for key in self.bot.stats:
             self.bot.stats[key]["cash"] = int(number)
+        save_stats(self.bot)
+    
+    @commands.command(name='beg',
+                      description="get one coin every 24 hours",
+                      brief="beg for coins",
+                      pass_context=True)
+    async def beg(self, ctx):
+        uid = ctx.message.author.id
+        if uid not in self.bot.stats:
+            self.bot.stats[uid] = {"death": 0, "wins": 0, "kills": 0, "cash": 1, "last_beg": time.time()}
+        else:
+            if "last_beg" not in self.bot.stats[uid]:
+                self.bot.stats[uid]["last_beg"] = time.time()
+                get_cash(self.bot, uid, 1)
+                await self.bot.say("Have 1 coin.")
+            
+            elif hours_passed(self.bot.stats[uid]["last_beg"], time.time()) > 24:
+                self.bot.stats[uid]["last_beg"] += 24*60*60
+                await self.bot.say("Have 1 coin.")
+                get_cash(self.bot, uid, 1)
+            
+            else:
+                await self.bot.say("No coin for you.")
+
         save_stats(self.bot)
 
 
