@@ -48,7 +48,7 @@ def normalize_stat(bot, id):
     if "last_beg" not in bot.stats[id]:
         bot.stats[id]["last_beg"] = time.time()
     if "inventory" not in bot.stats[id]:
-        bot.stats[id]["inventory"] = normalize_inventory()
+        normalize_inventory(bot, id)
 
 def get_empty_stats():
     stat = {}
