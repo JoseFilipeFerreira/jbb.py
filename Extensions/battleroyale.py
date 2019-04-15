@@ -8,6 +8,7 @@ import asyncio
 import json
 import operator
 from aux.cash import save_stats, round_down,  get_cash
+from aux.inventory import update_kills
 
 class BattleRoyale():
     def __init__(self, bot):
@@ -395,18 +396,9 @@ def updateListReactions(self):
 def updateStats(self, users):
 #update Stats JSON file
     for user in users["dead"]:
-        if not user["id"] in self.bot.stats:
-            self.bot.stats[user["id"]] = {"kills": user["kills"], "death": 1, "wins": 0}
-        else:
-            self.bot.stats[user["id"]]["kills"] += user["kills"]
-            self.bot.stats[user["id"]]["death"] += 1
-
+        update_kills(self.bot, user["id"], 1, user["kills"], 0)
     for user in users["alive"]:
-        if not user["id"] in self.bot.stats:
-            self.bot.stats[user["id"]] = {"kills": user["kills"], "death": 0, "wins": 1}
-        else:
-            self.bot.stats[user["id"]]["kills"] += user["kills"]
-            self.bot.stats[user["id"]]["wins"] += 1
+        update_kills(self.bot, user["id"], 0, user["kills"], 1)
 
     save_stats(self.bot)
 

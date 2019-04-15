@@ -2,6 +2,7 @@ import discord
 import json
 from discord.ext import commands
 from random import randint
+from aux.inventory import get_embed_inventory
 
 class Biography():
     
@@ -45,12 +46,9 @@ class Biography():
                 name="🔫KDR",
                 value="{0}/{1}".format(self.bot.stats[user.id]["kills"], self.bot.stats[user.id]["death"]))
             
-            embed.add_field(
-                name="💰Cash",
-                value=self.bot.stats[user.id]["cash"])
-
             embed.set_footer(text = "Biography")
             await self.bot.say(embed=embed)
+            await self.bot.say(embed=get_embed_inventory(self.bot, user.id, name))
 
     @commands.command(
         name='bioKey',

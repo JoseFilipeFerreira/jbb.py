@@ -8,12 +8,13 @@ import subprocess
 from os import path
 from datetime import datetime
 from aux.cash import save_stats, hours_passed
+from aux.inventory import get_empty_stats, normalize_stat
 
 bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
-cogs_blacklist = []
+cogs_blacklist = ['store']
 
 def main():
     #adding to bot object directories
@@ -144,11 +145,9 @@ async def reactMessage(message):
     if hours_passed(bot.last_giveaway, time.time()) > 24:
         bot.last_giveaway += 24*60*60 
         appInfo = await bot.application_info()
-        for key in bot.stats:
-            if "cash" not in bot.stats[key]:
-                bot.stats[key]["cash"] = 10
-            else:
-                bot.stats[key]["cash"] += 10
+        for id in bot.stats:
+            normalize_stat(bot, id)
+            bot.stats[id]["cash"] += 10
         save_stats(bot)
         await bot.send_message(appInfo.owner, "Giveaway")
 
@@ -156,7 +155,7 @@ async def reactMessage(message):
 
 @bot.event
 async def on_member_join(member):
-    bot.stats[member.id] = {"death": 0, "wins": 0, "kills": 0, "cash": 10, "last_beg": time.time()}
+    bot.stats[member.id] = get_empty_stats()
     save_stats(bot)
 
 @bot.event
