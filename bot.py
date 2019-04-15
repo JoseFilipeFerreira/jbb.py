@@ -108,6 +108,9 @@ async def on_ready():
         print(server.name)
     print('-----------------------------')
     print(bot.command_prefix)
+    for id in bot.stats:
+        normalize_stat(bot, id)
+        save_stats(bot)
 
 @bot.event
 async def on_message(message):
@@ -145,11 +148,14 @@ async def reactMessage(message):
     if hours_passed(bot.last_giveaway, time.time()) > 24:
         bot.last_giveaway += 24*60*60 
         appInfo = await bot.application_info()
+        given = 0
         for id in bot.stats:
             normalize_stat(bot, id)
-            bot.stats[id]["cash"] += 10
+            if bot.stats[id]["bet"]:
+                bot.stats[id]["cash"] += 10
+                given += 1
         save_stats(bot)
-        await bot.send_message(appInfo.owner, "Giveaway")
+        await bot.send_message(appInfo.owner, "Giveaway: {}".format(given))
 
     await bot.process_commands(message)
 

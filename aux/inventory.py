@@ -49,6 +49,8 @@ def normalize_stat(bot, id):
         bot.stats[id]["last_beg"] = time.time()
     if "inventory" not in bot.stats[id]:
         normalize_inventory(bot, id)
+    if "bet" not in bot.stats[id]:
+        bot.stats[id]["bet"] = False
 
 def get_empty_stats():
     stat = {}
@@ -58,6 +60,7 @@ def get_empty_stats():
     stat["cash"] = 10
     stat["last_beg"] = time.time()
     stat["inventory"] = get_empty_inventory()
+    stat["bet"] = False
     
 def update_kills(bot, id, death, kills, wins):
     if id not in bot.stats:

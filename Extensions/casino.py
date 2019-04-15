@@ -34,23 +34,23 @@ class Casino():
                       brief="beg for coins",
                       pass_context=True)
     async def beg(self, ctx):
-        uid = ctx.message.author.id
-        if uid not in self.bot.stats:
-            self.bot.stats[uid] = {"death": 0, "wins": 0, "kills": 0, "cash": 1, "last_beg": time.time()}
+        id = ctx.message.author.id
+        if id not in self.bot.stats:
+            self.bot.stats[id] = {"death": 0, "wins": 0, "kills": 0, "cash": 1, "last_beg": time.time()}
         else:
-            if "last_beg" not in self.bot.stats[uid]:
-                self.bot.stats[uid]["last_beg"] = time.time()
-                get_cash(self.bot, uid, 1)
+            if "last_beg" not in self.bot.stats[id]:
+                self.bot.stats[id]["last_beg"] = time.time()
+                get_cash(self.bot, id, 1)
                 await self.bot.say("Have 1 coin.")
             
-            elif hours_passed(self.bot.stats[uid]["last_beg"], time.time()) > 24:
-                self.bot.stats[uid]["last_beg"] += 24*60*60
-                get_cash(self.bot, uid, 1)
+            elif hours_passed(self.bot.stats[id]["last_beg"], time.time()) > 24:
+                self.bot.stats[id]["last_beg"] += 24*60*60
+                get_cash(self.bot, id, 1)
                 await self.bot.say("Have 1 coin.")
             
             else:
                 await self.bot.say("No coin for you.")
-
+        self.bot.stats[id]["bet"] = True
         save_stats(self.bot)
 
 
@@ -166,6 +166,9 @@ class Casino():
                 self.bot.TMP_PATH + "roulette.png",
                 content=result)
 
+        self.bot.stats[ctx.message.author.id]["bet"] = True
+        save_stats(self.bot)
+
     @commands.command(name='roll',
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
                       brief="roll a dice",
@@ -221,7 +224,8 @@ class Casino():
 
         else:
             await self.bot.say("Invalid bet")
-        
+
+        self.bot.stats[ctx.message.author.id]["bet"] = True
         save_stats(self.bot)
     
     @commands.command(name='slot',
@@ -313,7 +317,7 @@ class Casino():
             get_cash(self.bot, ctx.message.author.id, prize)
         
         await self.bot.say(slot)
-
+        self.bot.stats[id]["bet"] = True
         save_stats(self.bot)
 
 def get_prev_slot(arr, pos):
