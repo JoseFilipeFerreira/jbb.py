@@ -1,13 +1,11 @@
 import discord
 from discord.ext import commands
 import random
-from random import randint
-from random import shuffle
 import os
-from os import path
 import json
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+from os import path
+from fuzzywuzzy import fuzz, process
+from random import randint, shuffle
 
 class Quotes():
 

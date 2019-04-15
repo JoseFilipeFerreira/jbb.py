@@ -4,8 +4,6 @@ import random
 from random import randint
 from random import choice
 import asyncio
-from aux import enough_cash, spend_cash, get_cash, RepresentsInt
-
 
 class Games():
     

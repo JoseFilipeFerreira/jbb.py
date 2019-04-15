@@ -4,7 +4,7 @@ import random
 import asyncio
 import time
 from random import randint, choice
-from aux import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats, hours_passed 
+from aux.cash import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats, hours_passed 
 from PIL import Image, ImageDraw
 
 class Casino():
@@ -45,8 +45,8 @@ class Casino():
             
             elif hours_passed(self.bot.stats[uid]["last_beg"], time.time()) > 24:
                 self.bot.stats[uid]["last_beg"] += 24*60*60
-                await self.bot.say("Have 1 coin.")
                 get_cash(self.bot, uid, 1)
+                await self.bot.say("Have 1 coin.")
             
             else:
                 await self.bot.say("No coin for you.")

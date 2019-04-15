@@ -1,15 +1,13 @@
 import discord
-import asyncio
-import json
 from discord.ext import commands
-from datetime import datetime
+import asyncio 
+import json
 import time
 import os
-from os import path
 import subprocess
-
-from aux import save_stats
-from aux import hours_passed
+from os import path
+from datetime import datetime
+from aux.cash import save_stats, hours_passed
 
 bot = commands.Bot(command_prefix = '*')
 
@@ -158,7 +156,7 @@ async def reactMessage(message):
 
 @bot.event
 async def on_member_join(member):
-    bot.stats[member.id] = {"death": 0, "wins": 0, "kills": 0, "cash": 10}
+    bot.stats[member.id] = {"death": 0, "wins": 0, "kills": 0, "cash": 10, "last_beg": time.time()}
     save_stats(bot)
 
 @bot.event

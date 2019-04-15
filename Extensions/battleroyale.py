@@ -7,7 +7,7 @@ from random import choice
 import asyncio
 import json
 import operator
-from aux import save_stats, round_down,  get_cash
+from aux.cash import save_stats, round_down,  get_cash
 
 class BattleRoyale():
     def __init__(self, bot):

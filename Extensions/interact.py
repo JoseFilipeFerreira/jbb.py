@@ -3,7 +3,6 @@ import json
 import subprocess
 from random import randint
 from discord.ext import commands
-from random import randint
 
 class Interact():
     

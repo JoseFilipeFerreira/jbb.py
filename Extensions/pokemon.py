@@ -3,7 +3,6 @@ import discord
 import pokebase as pb
 from discord.ext import commands
 from random import randint
-
 import datetime
 
 
