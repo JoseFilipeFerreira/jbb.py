@@ -14,7 +14,7 @@ bot = commands.Bot(command_prefix = '*')
 
 bot.remove_command('help')
 
-cogs_blacklist = ['store']
+cogs_blacklist = []
 
 def main():
     #adding to bot object directories
