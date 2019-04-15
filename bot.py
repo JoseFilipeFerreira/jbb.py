@@ -108,9 +108,6 @@ async def on_ready():
         print(server.name)
     print('-----------------------------')
     print(bot.command_prefix)
-    for id in bot.stats:
-        normalize_stat(bot, id)
-    save_stats(bot)
 
 @bot.event
 async def on_message(message):
