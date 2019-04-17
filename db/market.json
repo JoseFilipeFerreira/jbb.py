@@ -1,0 +1,33 @@
+{
+    "weapon":{
+        "simbol":"⚔ ",
+        "description": "Anime eradicators",
+        "stat":"damage",
+        "contents":[
+            {"name": "Baguete Killer",
+                "simbol": "🥖",
+                "stat": 10,
+                "cost": 100}]
+    },
+    "armor":{
+        "simbol":"⚓",
+        "description": "Shiny or sluty armors",
+        "stat":"protection",
+        "contents":[
+            {"name": "Baguete Killer",
+                "simbol": "🥖",
+                "stat": 10,
+                "cost": 100}]
+    },
+    "shield":{
+        "simbol":"🛡 ",
+        "description": "Protect yourself",
+        "stat": "block",
+        "contents":[
+            {"name": "Baguete Killer",
+                "simbol": "🥖",
+                "stat": 10,
+                "cost": 100}]
+    }
+
+}

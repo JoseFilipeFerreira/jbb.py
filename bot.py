@@ -29,6 +29,7 @@ def main():
     bot.BIOGRAPHY_PATH = './db/biography.json'
     bot.EXTENSIONS_PATH ='Extensions'
     bot.IP_PATH ='./LI3_IP.txt'
+    bot.MARKET_PATH='./db/market.json'
     
     #default color for embeds (yellow)
     bot.embed_color = 0xffff00
@@ -59,6 +60,9 @@ def main():
             tmp = json.load(file)
             bot.stats = tmp["stats"]
             bot.last_giveaway = tmp["last_giveaway"]
+
+    with open(bot.MARKET_PATH, 'r') as file:
+        bot.market = json.load(file)
 
     #load extensions
     extensions_loader(create_list_extensions())
