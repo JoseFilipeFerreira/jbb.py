@@ -2,19 +2,26 @@ import discord
 import time
 
 def get_empty_inventory():
-    inv = {}
-    inv["gear"] = {
-            "armor": get_empty_gear_object(),
-            "weapon": get_empty_gear_object(),
-            "shield": get_empty_gear_object()}
+    inv = {
+                "gear": {
+                    "shield": {
+                        "stats": 1,
+                        "name": "glasses",
+                        "simbol": "👓"
+                    },
+                    "weapon": {
+                        "stats": 1,
+                        "name": "fists",
+                        "simbol": "🤜"
+                    },
+                    "armor": {
+                        "stats": 1,
+                        "name": "Skin",
+                        "simbol": "👤"
+                    }
+                }
+            },
     return inv
-
-def get_empty_gear_object():
-    simb = {}
-    simb["simbol"] = ":heavy_multiplication_x:"
-    simb["stats"]  = 0
-    simb["name"] = "default"
-    return simb
 
 def normalize_inventory(bot, id):
     if id not in bot.stats:
