@@ -39,9 +39,7 @@
             {"name": "point staber",
              "simbol": "🗡",
              "stat": 40,
-             "cost": 300},
-
-
+             "cost": 300}
         ]
 
     },
