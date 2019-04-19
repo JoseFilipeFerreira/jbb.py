@@ -48,7 +48,7 @@ class Store():
             embed.set_thumbnail(
                     url="http://pixelartmaker.com/art/89daa821cd53576.png") 
 
-            await self.bot.say(embed=embed)
+        await self.bot.say(embed=embed)
 
     @commands.command(name='market',
             description="Buy things to put in your iventory",
