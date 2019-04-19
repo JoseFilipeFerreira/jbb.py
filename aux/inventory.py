@@ -13,6 +13,7 @@ def get_empty_gear_object():
     simb = {}
     simb["simbol"] = ":heavy_multiplication_x:"
     simb["stats"]  = 0
+    simb["name"] = "default"
     return simb
 
 def normalize_inventory(bot, id):
@@ -31,7 +32,14 @@ def normalize_inventory(bot, id):
     if "weapon" not in bot.stats[id]["inventory"]["gear"]:
         bot.stats[id]["inventory"]["gear"]["weapon"] = get_empty_gear_object()    
     if "shield" not in bot.stats[id]["inventory"]["gear"]:
-        bot.stats[id]["inventory"]["gear"]["shield"] = get_empty_gear_object()    
+        bot.stats[id]["inventory"]["gear"]["shield"] = get_empty_gear_object()
+    for item in bot.stats[id]["inventory"]["gear"]:
+        if "simbol" not in bot.stats[id]["inventory"]["gear"][item]:
+            bot.stats[id]["inventory"]["gear"][item]["simbol"] = ":heavy_multiplication_x:"
+        if "stats" not in bot.stats[id]["inventory"]["gear"][item]:
+            bot.stats[id]["inventory"]["gear"][item]["stats"] = 0
+        if "name" not in bot.stats[id]["inventory"]["gear"][item]:
+            bot.stats[id]["inventory"]["gear"][item]["name"] = "default"
 
 def normalize_stat(bot, id):
     if id not in bot.stats:
@@ -47,10 +55,9 @@ def normalize_stat(bot, id):
         bot.stats[id]["cash"] = 10
     if "last_beg" not in bot.stats[id]:
         bot.stats[id]["last_beg"] = time.time()
-    if "inventory" not in bot.stats[id]:
-        normalize_inventory(bot, id)
     if "bet" not in bot.stats[id]:
         bot.stats[id]["bet"] = False
+    normalize_inventory(bot, id)
 
 def get_empty_stats():
     stat = {}
@@ -63,15 +70,13 @@ def get_empty_stats():
     stat["bet"] = False
     
 def update_kills(bot, id, death, kills, wins):
-    if id not in bot.stats:
-        bot.stats[id] = get_empty_stats()
+    normalize_stat(bot, id)
     bot.stats[id]["kills"] += kills
     bot.stats[id]["death"] += death
     bot.stats[id]["wins"]  += wins
 
 def get_inventory(bot, id):
-    if id not in bot.stats:
-        bot.stats[id] = get_empty_stats()
+    normalize_stat(bot, id)
     return bot.stats[id]["inventory"]
 
 def get_embed_inventory(bot, id, name):
@@ -84,23 +89,26 @@ def get_embed_inventory(bot, id, name):
     
     embed.add_field(
             name="⚔ weapon",
-            value="damage {0} -> {1}".format(
+            value="{1} {2}\ndamage: {0}".format(
                 inv["gear"]["weapon"]["stats"],
-                inv["gear"]["weapon"]["simbol"]) 
+                inv["gear"]["weapon"]["simbol"],
+                inv["gear"]["weapon"]["name"]) 
             )
 
     embed.add_field(
             name="⚓armor",
-            value="protection {0} -> {1}".format(
+            value="{1} {2}\nprotection: {0}".format(
                 inv["gear"]["armor"]["stats"],
-                inv["gear"]["armor"]["simbol"]) 
+                inv["gear"]["armor"]["simbol"],
+                inv["gear"]["armor"]["name"]) 
             )
 
     embed.add_field(
             name="🛡 shield",
-            value="block {0} -> {1}".format(
+            value="{1} {2}\nblock: {0}".format(
                 inv["gear"]["shield"]["stats"],
-                inv["gear"]["shield"]["simbol"]) 
+                inv["gear"]["shield"]["simbol"],
+                inv["gear"]["shield"]["name"]) 
             )
 
     embed.add_field(

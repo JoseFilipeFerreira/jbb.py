@@ -4,30 +4,66 @@
         "description": "Anime eradicators",
         "stat":"damage",
         "contents":[
-            {"name": "Baguete Killer",
-                "simbol": "🥖",
-                "stat": 10,
-                "cost": 100}]
+            {"name": "noob spoon",
+             "simbol": "🥄",
+             "stat": 1,
+             "cost": 10},
+            {"name": "nut tightener",
+             "simbol": "🔧",
+             "stat": 3,
+             "cost": 25},
+            {"name": "meaty bone",
+             "simbol": "🍖",
+             "stat": 5,
+             "cost": 40},
+            {"name": "pointy pencil",
+             "simbol": "✏",
+             "stat": 7,
+             "cost": 65},
+            {"name": "baguette killer",
+             "simbol": "🥖",
+             "stat": 10,
+             "cost": 100},
+            {"name": "frying pun",
+             "simbol": "🍳",
+             "stat": 20,
+             "cost": 190},
+            {"name": "hammer time",
+             "simbol": "🔨",
+             "stat": 25,
+             "cost": 200},
+            {"name": "cancer inducer",
+             "simbol": "🚬",
+             "stat": 30,
+             "cost": 250},
+            {"name": "point staber",
+             "simbol": "🗡",
+             "stat": 40,
+             "cost": 300},
+
+
+        ]
+
     },
     "armor":{
         "simbol":"⚓",
         "description": "Shiny or sluty armors",
         "stat":"protection",
         "contents":[
-            {"name": "Baguete Killer",
-                "simbol": "🥖",
-                "stat": 10,
-                "cost": 100}]
+            {"name": "baguete killer",
+             "simbol": "",
+             "stat": 10,
+             "cost": 100}]
     },
     "shield":{
         "simbol":"🛡 ",
         "description": "Protect yourself",
         "stat": "block",
         "contents":[
-            {"name": "Baguete Killer",
-                "simbol": "🥖",
-                "stat": 10,
-                "cost": 100}]
+            {"name": "baguete killer",
+             "simbol": "🥖",
+             "stat": 10,
+             "cost": 100}]
     }
 
 }
