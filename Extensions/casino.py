@@ -44,7 +44,7 @@ class Casino():
                 await self.bot.say("Have 1 coin.")
             
             elif hours_passed(self.bot.stats[id]["last_beg"], time.time()) > 24:
-                self.bot.stats[id]["last_beg"] += 24*60*60
+                self.bot.stats[id]["last_beg"] = time.time()
                 get_cash(self.bot, id, 1)
                 await self.bot.say("Have 1 coin.")
             
