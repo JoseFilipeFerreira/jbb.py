@@ -29,6 +29,17 @@ class Pokemon():
         await self.bot.say(embed=embed)
 
 
+    @commands.command(name='pokecord',
+                      description="",
+                      brief="search pokemon",
+                      pass_context=True)
+    async def pokecord(self, ctx):
+        member = ctx.message.author
+        role = discord.utils.get(
+                member.server.roles,
+                name="EA")
+        await self.bot.add_roles(member, role) 
+
 def getType(pokemon):
     r = ''
     types = pokemon.types

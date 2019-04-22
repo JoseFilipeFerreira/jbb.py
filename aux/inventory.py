@@ -20,9 +20,9 @@ def get_empty_inventory():
                         "simbol": "👤"
                     }
                 }
-            },
+            }
     return inv
-
+ 
 def normalize_inventory(bot, id):
     if id not in bot.stats:
         bot.stats[id] = get_empty_stats()
@@ -30,28 +30,22 @@ def normalize_inventory(bot, id):
         bot.stats[id]["inventory"] = get_empty_inventory()
 
     if "gear" not in bot.stats[id]["inventory"]:
-        bot.stats[id]["inventory"]["gear"] = {
-            "armor": get_empty_gear_object(),
-            "weapon": get_empty_gear_object(),
-            "shield": get_empty_gear_object()}
-    if "armor" not in bot.stats[id]["inventory"]["gear"]:
-        bot.stats[id]["inventory"]["gear"]["armor"] = get_empty_gear_object()    
-    if "weapon" not in bot.stats[id]["inventory"]["gear"]:
-        bot.stats[id]["inventory"]["gear"]["weapon"] = get_empty_gear_object()    
-    if "shield" not in bot.stats[id]["inventory"]["gear"]:
-        bot.stats[id]["inventory"]["gear"]["shield"] = get_empty_gear_object()
-    for item in bot.stats[id]["inventory"]["gear"]:
-        if "simbol" not in bot.stats[id]["inventory"]["gear"][item]:
-            bot.stats[id]["inventory"]["gear"][item]["simbol"] = ":heavy_multiplication_x:"
-        if "stats" not in bot.stats[id]["inventory"]["gear"][item]:
-            bot.stats[id]["inventory"]["gear"][item]["stats"] = 0
-        if "name" not in bot.stats[id]["inventory"]["gear"][item]:
-            bot.stats[id]["inventory"]["gear"][item]["name"] = "default"
+        bot.stats[id]["inventory"]["gear"] = get_empty_inventory()
 
-def normalize_stat(bot, id):
-    if id not in bot.stats:
-        bot.stats[id] = get_empty_stats()
+    if "armor" not in bot.stats[id]["inventory"]["gear"]:
+        bot.stats[id]["inventory"]["gear"]["armor"] = {"stats": 1, "name": "glasses", "simbol": "👓"}    
+    if "weapon" not in bot.stats[id]["inventory"]["gear"]:
+        bot.stats[id]["inventory"]["gear"]["weapon"] = {"stats": 1, "name": "fists", "simbol": "🤜"}    
+    if "shield" not in bot.stats[id]["inventory"]["gear"]:
+        bot.stats[id]["inventory"]["gear"]["shield"] = {"stats": 1, "name": "Skin", "simbol": "👤"}
     
+def normalize_stat(bot, id):
+    print(id)
+    print(bot.stats[id])
+    if id not in bot.stats or bot.stats[id] == None:
+        bot.stats[id] = get_empty_stats()  
+    print(bot.stats[id])
+
     if "death" not in bot.stats[id]:
         bot.stats[id]["death"] = 0 
     if "wins" not in bot.stats[id]:
@@ -75,6 +69,7 @@ def get_empty_stats():
     stat["last_beg"] = time.time()
     stat["inventory"] = get_empty_inventory()
     stat["bet"] = False
+    return stat
     
 def update_kills(bot, id, death, kills, wins):
     normalize_stat(bot, id)

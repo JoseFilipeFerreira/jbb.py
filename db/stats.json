@@ -1,4 +1,5 @@
 {
+    "last_giveaway": 1555953184.4804304,
     "stats": {
         "492788862960140298": {
             "wins": 0,
@@ -2451,7 +2452,7 @@
                     }
                 }
             },
-            "cash": 60,
+            "cash": 70,
             "last_beg": 1555329441.784349,
             "bet": true,
             "kills": 79,
@@ -2532,7 +2533,7 @@
                     }
                 }
             },
-            "cash": 694,
+            "cash": 704,
             "last_beg": 1555340273.8101766,
             "bet": true,
             "kills": 123,
@@ -4530,7 +4531,7 @@
                     }
                 }
             },
-            "cash": 0,
+            "cash": 10,
             "last_beg": 1555369344.7553709,
             "bet": true,
             "kills": 95,
@@ -4746,7 +4747,7 @@
                     }
                 }
             },
-            "cash": 60,
+            "cash": 70,
             "last_beg": 1554910014.4926088,
             "bet": true,
             "kills": 106,
@@ -8688,7 +8689,7 @@
                     }
                 }
             },
-            "cash": 1920,
+            "cash": 1930,
             "last_beg": 1555369344.7571342,
             "bet": true,
             "kills": 104,
@@ -8958,7 +8959,7 @@
                     }
                 }
             },
-            "cash": 229,
+            "cash": 239,
             "last_beg": 1555369344.7517884,
             "bet": true,
             "kills": 14,
@@ -10227,7 +10228,7 @@
                     }
                 }
             },
-            "cash": 25,
+            "cash": 35,
             "last_beg": 1555801344.7492843,
             "bet": true,
             "kills": 140,
@@ -10794,7 +10795,7 @@
                     }
                 }
             },
-            "cash": 30,
+            "cash": 40,
             "last_beg": 1555369344.7468436,
             "bet": true,
             "kills": 99,
@@ -11124,7 +11125,33 @@
             "kills": 96,
             "death": 200
         },
-        "260096967990968320": null,
+        "260096967990968320": {
+            "death": 0,
+            "wins": 0,
+            "kills": 0,
+            "cash": 10,
+            "last_beg": 1555965778.2131968,
+            "inventory": {
+                "gear": {
+                    "shield": {
+                        "stats": 1,
+                        "name": "glasses",
+                        "simbol": "\ud83d\udc53"
+                    },
+                    "weapon": {
+                        "stats": 1,
+                        "name": "fists",
+                        "simbol": "\ud83e\udd1c"
+                    },
+                    "armor": {
+                        "stats": 1,
+                        "name": "Skin",
+                        "simbol": "\ud83d\udc64"
+                    }
+                }
+            },
+            "bet": false
+        },
         "442760824025645056": {
             "wins": 0,
             "inventory": {
@@ -14089,7 +14116,7 @@
                     }
                 }
             },
-            "cash": 320,
+            "cash": 330,
             "last_beg": 1555369344.763461,
             "bet": true,
             "kills": 89,
@@ -14176,6 +14203,5 @@
             "kills": 78,
             "death": 200
         }
-    },
-    "last_giveaway": 1555866784.4804304
+    }
 }
