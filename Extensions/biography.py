@@ -122,7 +122,7 @@ class Biography():
         server = ctx.message.server
         memberId = list(filter(lambda x: x.isdigit(), member))
         memberId = "".join(memberId)
-        if len(memberId) != 18:
+        if not len(memberId) in [17, 18]:
             await self.bot.say("Invalid member")
             return
         member = server.get_member(memberId)
