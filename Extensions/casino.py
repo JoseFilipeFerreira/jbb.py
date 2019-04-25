@@ -34,6 +34,11 @@ class Casino():
                       brief="beg for coins",
                       pass_context=True)
     async def beg(self, ctx):
+        if ctx.message.channel.name not in ['nsfw']:
+            await self.bot.say(
+                "This command must be done in #nsfw"
+            )
+            return
         id = ctx.message.author.id
         if id not in self.bot.stats:
             self.bot.stats[id] = {"death": 0, "wins": 0, "kills": 0, "cash": 1, "last_beg": time.time()}
