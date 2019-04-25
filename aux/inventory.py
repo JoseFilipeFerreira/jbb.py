@@ -40,11 +40,8 @@ def normalize_inventory(bot, id):
         bot.stats[id]["inventory"]["gear"]["shield"] = {"stats": 1, "name": "Skin", "simbol": "👤"}
     
 def normalize_stat(bot, id):
-    print(id)
-    print(bot.stats[id])
     if id not in bot.stats or bot.stats[id] == None:
-        bot.stats[id] = get_empty_stats()  
-    print(bot.stats[id])
+        bot.stats[id] = get_empty_stats()
 
     if "death" not in bot.stats[id]:
         bot.stats[id]["death"] = 0 
