@@ -52,7 +52,7 @@ class Biography():
             
             embed.set_footer(text = "Biography")
             await self.bot.say(embed=embed)
-            await self.bot.say(embed=get_embed_inventory(self.bot, user.id, name))
+            await self.bot.say(embed=get_embed_inventory(self.bot, user.id, name, embed_colour))
 
     @commands.command(
         name='bioKey',

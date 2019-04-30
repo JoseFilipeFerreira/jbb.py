@@ -78,11 +78,11 @@ def get_inventory(bot, id):
     normalize_stat(bot, id)
     return bot.stats[id]["inventory"]
 
-def get_embed_inventory(bot, id, name):
+def get_embed_inventory(bot, id, name, embed_colour):
     inv = get_inventory(bot, id)
     embed = discord.Embed(
             title = "Inventory of {}".format(name),
-            color=bot.embed_color)
+            color=embed_colour)
     embed.set_thumbnail(
             url="https://cdn4.iconfinder.com/data/icons/video-game-items-concepts/128/inventory-bag-2-512.png")
     
