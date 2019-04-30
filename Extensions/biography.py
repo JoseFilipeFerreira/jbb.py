@@ -25,9 +25,13 @@ class Biography():
             if member.nick != None:
                 name = member.nick
   
+            embed_colour = self.bot.embed_color
+            if member.colour != member.colour.default():
+                embed_colour = member.colour.value
+            
             embed = discord.Embed(
                 title = 'Biography of {}'.format(name),
-                color=self.bot.embed_color
+                color=embed_color
             )
             embed.set_thumbnail(
                 url="https://img9.androidappsapk.co/300/e/a/2/com.sdvios.png"
