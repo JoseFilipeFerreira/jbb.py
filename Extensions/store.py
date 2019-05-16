@@ -55,6 +55,11 @@ class Store():
             brief="MiEI Market",
             pass_context=True)
     async def market(self, ctx, *arg):
+        if ctx.message.channel.name not in ['nsfw']:
+            await self.bot.say(
+                "This command must be done in #nsfw"
+            )
+            return
         embed = discord.Embed(
                 title = 'Market de {}'.format(ctx.message.server.name),
                 color=self.bot.embed_color)
