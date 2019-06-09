@@ -50,32 +50,6 @@ class Programming():
         query = '+'.join(word for word in query)
         await self.bot.say("http://lmgtfy.com/?q={}".format(query))
     
-    @commands.command(name='lixo3',
-                      description="answer querys LI3",
-                      brief="answer querys LI3",
-                      pass_context=True)
-    async def lixo3(self, ctx, *query):
-        await self.bot.delete_message(ctx.message)
-        file_name = "query_" + '_'.join(word for word in query) + ".txt"
-        query = '/'.join(word for word in query)
-        with open(self.bot.TMP_PATH+"log_querys.txt", 'a') as file:
-            file.write(ctx.message.author.name + "\t" + query + "\n")
-
-        with open(self.bot.IP_PATH, 'r') as file:
-            ip = file.read().strip()
-        
-        r = requests.get("http://{}/{}".format(ip, query)).text
-        if len(query) == 0:
-            await self.bot.send_message(ctx.message.author, "**HOW TO USE**\n" + r)
-        else:
-            with open(self.bot.TMP_PATH + file_name,'w') as f:
-                f.write(r)
-
-            await self.bot.send_file(
-                ctx.message.author,
-                self.bot.TMP_PATH + file_name,
-                content="**{0}**".format(query))
-
 def setup(bot):
     bot.add_cog(Programming(bot))     
 
