@@ -37,7 +37,7 @@ class Pokemon():
         member = ctx.message.author
         role = discord.utils.get(
                 member.server.roles,
-                name="EA")
+                name="Trainer")
         await self.bot.add_roles(member, role) 
 
 def getType(pokemon):
