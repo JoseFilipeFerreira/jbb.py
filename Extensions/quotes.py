@@ -167,10 +167,7 @@ class Quotes():
 
 def getRLine(quotes_dict, filename):
 #get a random quote
-    while True:
-        quote = random.choice(quotes_dict[filename])
-        if "not a teacher" not in quote.lower(): 
-            return quote
+    return random.choice(quotes_dict[filename])
 
 
 def getNLine(quotes_dict, filename):
