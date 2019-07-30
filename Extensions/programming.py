@@ -31,7 +31,13 @@ class Programming():
                       pass_context=True)
     async def helpC(self, ctx):
         await self.bot.say('```C\nint main()\n{\n    printf("wololo");\n    return 0;\n}\n```')
-
+        
+    @commands.command(name='quicksort',
+                      description="help understand quicksort",
+                      brief="quicksort is hard guys",
+                      pass_context=True)
+    async def quicksort(self, ctx):
+        await self.bot.say('https://www.youtube.com/watch?v=ywWBy6J5gz8')
 
     @commands.command(name='conv',
                       description="convert between numeric bases",
