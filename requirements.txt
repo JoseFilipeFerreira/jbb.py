@@ -8,7 +8,7 @@ chardet==3.0.4
 Click==7.0
 discord==0.16.12
 discord.py==0.16.12
-Django==2.1.7
+Django==2.1.11
 dnspython==1.15.0
 dnspython3==1.15.0
 fuzzywuzzy==0.17.0
