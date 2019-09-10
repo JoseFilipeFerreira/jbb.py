@@ -157,7 +157,7 @@ class Quotes():
         else:
             quote = self.quotes_dict[cat].pop()
             updateQuotes(self)
-            await self.bot.say('quote "'+ quote +'" removed from `'+ cat +'`')
+            await self.bot.say('quote "'+ str(quote) +'" removed from `'+ cat +'`')
 
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
