@@ -131,8 +131,8 @@ class Quotes():
             content = "\n".join(list(map(lambda x: x.content,msgArr)))
             
             self.quotes_dict[cat].append({
-                "name": name,
                 "content": content,
+                "name": name,
                 "id": msgArr[0].author.id})
             newQ = "{} - {}".format(content, name) 
         else:
