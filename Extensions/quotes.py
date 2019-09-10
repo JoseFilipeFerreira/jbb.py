@@ -93,11 +93,9 @@ class Quotes():
                       brief="total number of quotes",
                       pass_context=True)
     async def ntotal(self, ctx):
-        n =  int(getNLine(self.quotes_dict, 'quoteA'))
-        n += int(getNLine(self.quotes_dict, 'quoteP'))
-        n += int(getNLine(self.quotes_dict, 'quote'))
-        n += int(getNLine(self.quotes_dict, 'fact'))
-        n += int(getNLine(self.quotes_dict, 'dadjoke'))
+        n = 0
+        for k in self.quotes_dict.keys():
+            n += int(getNLine(self.quotes_dict, k))
 
         await self.bot.say('Existem '+ str(n) + ' frases')
 
@@ -105,19 +103,14 @@ class Quotes():
                       description="add a quote [OWNER ONLY]",
                       brief="add a quote",
                       pass_context=True)
-    async def add(self, ctx, file,*, quote):
+    async def add(self, ctx, file,* msgs):
         appInfo = await self.bot.application_info()
-        owner = appInfo.owner
-        #TODO optimize one day
-        if ctx.message.author != owner:
+        if ctx.message.author != appInfo.owner:
             await self.bot.say('Invalid user')
-
         elif file not in self.quotes_dict:
             await self.bot.say('Invalid category')
-
-        elif len(quote) < 1:
+        elif len(msgs) < 1:
             await self.bot.say('Invalid quote')
-
         else:
             self.quotes_dict[file].append(quote)
             updateQuotes(self)
@@ -128,20 +121,17 @@ class Quotes():
                       brief="remove a quote",
                       aliases=['delete'],
                       pass_context=True)
-    async def remove(self, ctx, file):
+    async def remove(self, ctx, cat):
         appInfo = await self.bot.application_info()
-        owner = appInfo.owner
         #TODO optimize one day
-        if ctx.message.author != owner:
+        if ctx.message.author != appInfo.owner:
             await self.bot.say('Invalid user')
-
-        elif file not in self.quotes_dict:
+        elif cat not in self.quotes_dict:
             await self.bot.say('Invalid category')
-
         else:
-            quote = self.quotes_dict[file].pop()
+            quote = self.quotes_dict[cat].pop()
             updateQuotes(self)
-            await self.bot.say('quote "'+ quote +'" removed from `'+ file +'`')
+            await self.bot.say('quote "'+ quote +'" removed from `'+ cat +'`')
 
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
