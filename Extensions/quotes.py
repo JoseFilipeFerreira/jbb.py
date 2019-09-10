@@ -12,11 +12,8 @@ class Quotes():
     def __init__(self, bot):
         self.bot = bot
         self.quotes_dict = {}
-        for f in os.listdir(bot.QUOTES_PATH):
-            if path.isfile(path.join(bot.QUOTES_PATH, f)):
-                filename, _ = path.splitext(f)
-                with open(bot.QUOTES_PATH + f, 'r', encoding="utf8") as file:
-                    self.quotes_dict[filename] = json.load(file)['array']
+        with open(bot.QUOTES_PATH, 'r', encoding="utf8") as file:
+            self.quotes_dict = json.load(file)
 
     @commands.command(name='quote',
                       description="random quote from JBB",
@@ -123,8 +120,8 @@ class Quotes():
 
         else:
             self.quotes_dict[file].append(quote)
-            updateQuotes(self, self.quotes_dict, file)
-            await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
+            updateQuotes(self)
+            await self.bot.say('quote "'+ quote +'" added to `'+ file +'`')
     
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",
@@ -143,8 +140,8 @@ class Quotes():
 
         else:
             quote = self.quotes_dict[file].pop()
-            updateQuotes(self, self.quotes_dict, file)
-            await self.bot.say('quote "'+ quote +'" removed from file `'+ file +'`')
+            updateQuotes(self)
+            await self.bot.say('quote "'+ quote +'" removed from `'+ file +'`')
 
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
@@ -175,11 +172,10 @@ def getNLine(quotes_dict, filename):
     return str(len(quotes_dict[filename]))
 
 
-def updateQuotes(self, quotes_dict, filename):
+def updateQuotes(self):
 #update a JSON file
-    with open(self.bot.QUOTES_PATH + filename + '.json', 'w', encoding='utf8') as file:
-        d = {'array': quotes_dict[filename]}
-        json.dump(d, file, indent=4)
+    with open(self.bot.QUOTES_PATH, 'w', encoding='utf8') as file:
+        json.dump(self.quotes_dict, file, indent=4)
 
 
 def setup(bot):
