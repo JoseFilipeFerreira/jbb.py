@@ -28,7 +28,6 @@ def main():
     bot.STATS_PATH = './db/stats.json'
     bot.BIOGRAPHY_PATH = './db/biography.json'
     bot.EXTENSIONS_PATH ='Extensions'
-    bot.IP_PATH ='./LI3_IP.txt'
     bot.MARKET_PATH='./db/market.json'
     
     #default color for embeds (yellow)

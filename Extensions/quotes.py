@@ -103,18 +103,44 @@ class Quotes():
                       description="add a quote [OWNER ONLY]",
                       brief="add a quote",
                       pass_context=True)
-    async def add(self, ctx, file,* msgs):
+    async def add(self, ctx, cat,*, msgs):
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
             await self.bot.say('Invalid user')
-        elif file not in self.quotes_dict:
+            return
+        if cat not in self.quotes_dict:
             await self.bot.say('Invalid category')
-        elif len(msgs) < 1:
+            return
+        if len(msgs) < 1:
             await self.bot.say('Invalid quote')
+            return
+        if cat == "quoteA":
+            msgArr = msgs.strip().split()
+            try:
+                msgArr = list(map(lambda x: int(x) ,msgArr))
+                tmp = []
+                for msgID in msgArr:
+                    tmp.append(await self.bot.get_message(ctx.message.channel, msgID))
+                msgArr = tmp
+            except:
+                await self.bot.say("Invalid Messages IDs")
+                return
+            name = msgArr[0].author.name
+            if msgArr[0].author.nick != None:
+                name = msgArr[0].author.nick
+            content = "\n".join(list(map(lambda x: x.content,msgArr)))
+            
+            self.quotes_dict[cat].append({
+                "name": name,
+                "content": content,
+                "id": msgArr[0].author.id})
+            newQ = "{} - {}".format(content, name) 
         else:
-            self.quotes_dict[file].append(quote)
-            updateQuotes(self)
-            await self.bot.say('quote "'+ quote +'" added to `'+ file +'`')
+            self.quotes_dict[cat].append(msgs)
+            newQ = msgs 
+
+        updateQuotes(self)
+        await self.bot.say('quote "'+ newQ +'" added to `'+ cat +'`')
     
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",

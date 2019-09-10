@@ -49,8 +49,7 @@ class BattleRoyale():
     #create battle royale
         if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
             await self.bot.say(
-                "This command must be done in #nsfw or #bot-commands"
-            )
+                "This command must be done in #nsfw or #bot-commands")
             return
         await self.bot.delete_message(ctx.message)
         msg = await sendChallenge(self, ctx)
