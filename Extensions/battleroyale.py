@@ -49,8 +49,7 @@ class BattleRoyale():
     #create battle royale
         if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
             await self.bot.say(
-                "This command must be done in #nsfw or #bot-commands"
-            )
+                "This command must be done in #nsfw or #bot-commands")
             return
         await self.bot.delete_message(ctx.message)
         msg = await sendChallenge(self, ctx)
@@ -68,52 +67,6 @@ class BattleRoyale():
 
         updateStats(self, users)
     
-    @commands.command(name='battleroyaleWinners',
-                      description="battleroyale leaderboard",
-                      brief="battleroyale leaderboard",
-                      aliases=['brW'],
-                      pass_context=True)
-    async def battleroyaleWinners(self, ctx):
-        embed = discord.Embed(
-            title = 'Battleroyale no DI',
-            description="Wins Leaderboard",
-            color=self.bot.embed_color
-        )
-        arrayWins = []
-
-        for numId in self.bot.stats.keys():
-            member = ctx.message.server.get_member(numId)
-            if member == None:
-                print(numId)
-            wins = {"id": numId,
-            "wins": self.bot.stats[numId]["wins"]}
-
-            arrayWins.append(wins)
-            
-        def compare(stat):
-            return stat["wins"]
-        
-        arrayWins.sort(key=compare, reverse=True)
-
-        for i in range(3):
-            win = arrayWins[i]
-            member = ctx.message.server.get_member(win["id"])
-            name = member.name
-            if member.nick != None:
-                name = member.nick
-
-            embed.add_field(
-                name="{0}. {1}".format(i + 1, name),
-                value="Number of Wins: {0}".format(win["Wins"]),
-                inline=False
-            )
-            
-        embed.set_thumbnail(
-            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
-        )
-
-        await self.bot.say(embed=embed)
-
     @commands.command(name='battleroyaleKDR',
                       description="battleroyale Kill/Death Ratio",
                       brief="battleroyale Kill/Death Ratio",

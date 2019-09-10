@@ -12,11 +12,8 @@ class Quotes():
     def __init__(self, bot):
         self.bot = bot
         self.quotes_dict = {}
-        for f in os.listdir(bot.QUOTES_PATH):
-            if path.isfile(path.join(bot.QUOTES_PATH, f)):
-                filename, _ = path.splitext(f)
-                with open(bot.QUOTES_PATH + f, 'r', encoding="utf8") as file:
-                    self.quotes_dict[filename] = json.load(file)['array']
+        with open(bot.QUOTES_PATH, 'r', encoding="utf8") as file:
+            self.quotes_dict = json.load(file)
 
     @commands.command(name='quote',
                       description="random quote from JBB",
@@ -30,7 +27,8 @@ class Quotes():
                       brief="quote from Students",
                       pass_context=True)
     async def quoteA(self, ctx):
-        await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
+        l = getRLine(self.quotes_dict, 'quoteA')
+        await self.bot.say("{} - {}".format(l["content"], l["name"]))
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
@@ -95,11 +93,9 @@ class Quotes():
                       brief="total number of quotes",
                       pass_context=True)
     async def ntotal(self, ctx):
-        n =  int(getNLine(self.quotes_dict, 'quoteA'))
-        n += int(getNLine(self.quotes_dict, 'quoteP'))
-        n += int(getNLine(self.quotes_dict, 'quote'))
-        n += int(getNLine(self.quotes_dict, 'fact'))
-        n += int(getNLine(self.quotes_dict, 'dadjoke'))
+        n = 0
+        for k in self.quotes_dict.keys():
+            n += int(getNLine(self.quotes_dict, k))
 
         await self.bot.say('Existem '+ str(n) + ' frases')
 
@@ -107,43 +103,61 @@ class Quotes():
                       description="add a quote [OWNER ONLY]",
                       brief="add a quote",
                       pass_context=True)
-    async def add(self, ctx, file,*, quote):
+    async def add(self, ctx, cat,*, msgs):
         appInfo = await self.bot.application_info()
-        owner = appInfo.owner
-        #TODO optimize one day
-        if ctx.message.author != owner:
+        if ctx.message.author != appInfo.owner:
             await self.bot.say('Invalid user')
-
-        elif file not in self.quotes_dict:
+            return
+        if cat not in self.quotes_dict:
             await self.bot.say('Invalid category')
-
-        elif len(quote) < 1:
+            return
+        if len(msgs) < 1:
             await self.bot.say('Invalid quote')
-
+            return
+        if cat == "quoteA":
+            msgArr = msgs.strip().split()
+            try:
+                msgArr = list(map(lambda x: int(x) ,msgArr))
+                tmp = []
+                for msgID in msgArr:
+                    tmp.append(await self.bot.get_message(ctx.message.channel, msgID))
+                msgArr = tmp
+            except:
+                await self.bot.say("Invalid Messages IDs")
+                return
+            name = msgArr[0].author.name
+            if msgArr[0].author.nick != None:
+                name = msgArr[0].author.nick
+            content = "\n".join(list(map(lambda x: x.content,msgArr)))
+            
+            self.quotes_dict[cat].append({
+                "content": content,
+                "name": name,
+                "id": msgArr[0].author.id})
+            newQ = "{} - {}".format(content, name) 
         else:
-            self.quotes_dict[file].append(quote)
-            updateQuotes(self, self.quotes_dict, file)
-            await self.bot.say('quote "'+ quote +'" added to file `'+ file +'`')
+            self.quotes_dict[cat].append(msgs)
+            newQ = msgs 
+
+        updateQuotes(self)
+        await self.bot.say('quote "'+ newQ +'" added to `'+ cat +'`')
     
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",
                       brief="remove a quote",
                       aliases=['delete'],
                       pass_context=True)
-    async def remove(self, ctx, file):
+    async def remove(self, ctx, cat):
         appInfo = await self.bot.application_info()
-        owner = appInfo.owner
         #TODO optimize one day
-        if ctx.message.author != owner:
+        if ctx.message.author != appInfo.owner:
             await self.bot.say('Invalid user')
-
-        elif file not in self.quotes_dict:
+        elif cat not in self.quotes_dict:
             await self.bot.say('Invalid category')
-
         else:
-            quote = self.quotes_dict[file].pop()
-            updateQuotes(self, self.quotes_dict, file)
-            await self.bot.say('quote "'+ quote +'" removed from file `'+ file +'`')
+            quote = self.quotes_dict[cat].pop()
+            updateQuotes(self)
+            await self.bot.say('quote "'+ str(quote) +'" removed from `'+ cat +'`')
 
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
@@ -152,13 +166,12 @@ class Quotes():
                       pass_context=True)
     async def quoteS(self, ctx, *, search):
     #search a quote using fuzzysearching
-        quoteA = self.quotes_dict['quoteA']
+        quoteA = list(map(
+            lambda x: "{} - {}".format(x["content"], x["name"]),
+            self.quotes_dict['quoteA']))
         quote = self.quotes_dict['quote']
         fact = self.quotes_dict['fact'] 
         candidates = quoteA + quote + fact
-        candidates = list(filter(
-            lambda x: "not a teacher" not in x.lower(),
-            candidates))
         random.shuffle(candidates)
         
         result = process.extract(search, candidates, limit=1)
@@ -175,11 +188,10 @@ def getNLine(quotes_dict, filename):
     return str(len(quotes_dict[filename]))
 
 
-def updateQuotes(self, quotes_dict, filename):
+def updateQuotes(self):
 #update a JSON file
-    with open(self.bot.QUOTES_PATH + filename + '.json', 'w', encoding='utf8') as file:
-        d = {'array': quotes_dict[filename]}
-        json.dump(d, file, indent=4)
+    with open(self.bot.QUOTES_PATH, 'w', encoding='utf8') as file:
+        json.dump(self.quotes_dict, file, indent=4)
 
 
 def setup(bot):

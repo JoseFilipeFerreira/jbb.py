@@ -28,18 +28,6 @@ class Pokemon():
         embed.add_field(name = ":dividers:Types"         , value = getType(pokemon) , inline=False)
         await self.bot.say(embed=embed)
 
-
-    @commands.command(name='pokecord',
-                      description="",
-                      brief="search pokemon",
-                      pass_context=True)
-    async def pokecord(self, ctx):
-        member = ctx.message.author
-        role = discord.utils.get(
-                member.server.roles,
-                name="Trainer")
-        await self.bot.add_roles(member, role) 
-
 def getType(pokemon):
     r = ''
     types = pokemon.types

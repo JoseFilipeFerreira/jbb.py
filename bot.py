@@ -22,13 +22,12 @@ def main():
     bot.GIFS_PATH = './Media/Gif/'
     bot.MUSIC_PATH = './Media/Music/'
     bot.TMP_PATH = './Media/Tmp/'
-    bot.QUOTES_PATH = './db/quotes/'
+    bot.QUOTES_PATH = './db/quotes.json'
     bot.GAMES_PATH ='./Media/Games/'
     bot.BATTLEROYALE_PATH = './db/battleroyale.json'
     bot.STATS_PATH = './db/stats.json'
     bot.BIOGRAPHY_PATH = './db/biography.json'
     bot.EXTENSIONS_PATH ='Extensions'
-    bot.IP_PATH ='./LI3_IP.txt'
     bot.MARKET_PATH='./db/market.json'
     
     #default color for embeds (yellow)

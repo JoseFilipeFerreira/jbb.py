@@ -8,7 +8,7 @@ chardet==3.0.4
 Click==7.0
 discord==0.16.12
 discord.py==0.16.12
-Django==2.1.7
+Django==2.1.11
 dnspython==1.15.0
 dnspython3==1.15.0
 fuzzywuzzy==0.17.0
@@ -35,7 +35,7 @@ requests==2.21.0
 rsa==4.0
 six==1.12.0
 uritemplate==3.0.0
-urllib3==1.24.1
+urllib3==1.24.2
 websockets==3.4
 wolframalpha==3.0.1
 xmltodict==0.12.0
