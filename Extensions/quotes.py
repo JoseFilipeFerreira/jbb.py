@@ -30,7 +30,8 @@ class Quotes():
                       brief="quote from Students",
                       pass_context=True)
     async def quoteA(self, ctx):
-        await self.bot.say(getRLine(self.quotes_dict, 'quoteA'))
+        l = getRLine(self.quotes_dict, 'quoteA')
+        await self.bot.say("{} - {}".format(l["content"], l["name"]))
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
@@ -152,13 +153,12 @@ class Quotes():
                       pass_context=True)
     async def quoteS(self, ctx, *, search):
     #search a quote using fuzzysearching
-        quoteA = self.quotes_dict['quoteA']
+        quoteA = list(map(
+            lambda x: "{} - {}".format(x["content"], x["name"]),
+            self.quotes_dict['quoteA']))
         quote = self.quotes_dict['quote']
         fact = self.quotes_dict['fact'] 
         candidates = quoteA + quote + fact
-        candidates = list(filter(
-            lambda x: "not a teacher" not in x.lower(),
-            candidates))
         random.shuffle(candidates)
         
         result = process.extract(search, candidates, limit=1)
