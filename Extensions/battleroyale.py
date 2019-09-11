@@ -45,7 +45,7 @@ class BattleRoyale():
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
-        if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
+        if ctx.message.channel.name not in ['nsfw', 'bot-commands'] and not ctx.message.author.server_permissions.administrator:
             await self.bot.say(
                 "This command must be done in #nsfw or #bot-commands")
             return
