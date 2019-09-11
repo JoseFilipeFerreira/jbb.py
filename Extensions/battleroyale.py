@@ -14,9 +14,7 @@ class BattleRoyale():
     def __init__(self, bot):
         self.bot = bot
         self.listAction = ["kill", "die", "event", "meet"]
-        self.listReactions=[]
-        with open(bot.BATTLEROYALE_PATH, 'r') as file:
-            self.listReactions = json.load(file)
+        self.listReactions = json.load(open(bot.BATTLEROYALE_PATH, 'r'))
         
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]\n\nWinner gets 100 coins.",

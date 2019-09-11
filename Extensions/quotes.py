@@ -11,9 +11,7 @@ class Quotes():
 
     def __init__(self, bot):
         self.bot = bot
-        self.quotes_dict = {}
-        with open(bot.QUOTES_PATH, 'r', encoding="utf8") as file:
-            self.quotes_dict = json.load(file)
+        self.quotes_dict = json.load(open(bot.QUOTES_PATH, 'r', encoding="utf8"))
 
     @commands.command(name='quote',
                       description="random quote from JBB",

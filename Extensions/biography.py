@@ -8,10 +8,8 @@ class Biography():
     
     def __init__(self, bot):
         self.bot = bot
-        with open(bot.BIOGRAPHY_PATH, 'r', encoding="utf8") as file:
-            l = json.load(file)
-            self.biographies = l["bios"]
-            self.order = l["order"]
+        self.biographies = json.load(open(bot.BIOGRAPHY_PATH, 'r', encoding="utf8"))["bios"]
+        self.order       = json.load(open(bot.BIOGRAPHY_PATH, 'r', encoding="utf8"))["order"]
 
     @commands.command(
         name='bio',

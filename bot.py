@@ -55,19 +55,18 @@ def main():
             bot.musicMap[filename.lower()] = f
     
     #load stats
-    with open(bot.STATS_PATH, 'r') as file:
-            tmp = json.load(file)
-            bot.stats = tmp["stats"]
-            bot.last_giveaway = tmp["last_giveaway"]
-
-    with open(bot.MARKET_PATH, 'r') as file:
-        bot.market = json.load(file)
+    bot.stats         = json.load(open(bot.STATS_PATH , 'r'))["stats"]
+    bot.last_giveaway = json.load(open(bot.STATS_PATH , 'r'))["last_giveaway"]
+    #load market
+    bot.market        = json.load(open(bot.MARKET_PATH, 'r'))
 
     #load extensions
     extensions_loader(create_list_extensions())
-
+    
+    #voice
     bot.voice_client = None
     bot.player_client = None
+
     bot.run(open('auth').readline().rstrip())
 
 @bot.event
@@ -177,17 +176,13 @@ def create_list_extensions():
         extension, _ = path.splitext(x)
         return extension
     
-    extensions_list = list(
-        map(
+    extensions_list = list(map(
             lambda x : extension_splitter(x),
-            extensions_list
-        ))
+            extensions_list))
     
-    extensions_list = list(
-        filter(
+    extensions_list = list(filter(
             lambda x: "__" not in x and x not in cogs_blacklist,
-            extensions_list
-        ))
+            extensions_list))
     
     return(extensions_list)
 
