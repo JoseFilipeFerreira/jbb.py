@@ -29,6 +29,7 @@ def main():
     bot.BIOGRAPHY_PATH = './db/biography.json'
     bot.EXTENSIONS_PATH ='Extensions'
     bot.MARKET_PATH='./db/market.json'
+    bot.REPLIES_PATH='./db/replies.json'
     
     #default color for embeds (yellow)
     bot.embed_color = 0xffff00
@@ -59,6 +60,7 @@ def main():
     bot.last_giveaway = json.load(open(bot.STATS_PATH , 'r'))["last_giveaway"]
     #load market
     bot.market        = json.load(open(bot.MARKET_PATH, 'r'))
+    bot.replies       = json.load(open(bot.REPLIES_PATH, 'r'))
 
     #load extensions
     extensions_loader(create_list_extensions())
@@ -120,10 +122,10 @@ async def on_message_edit(before, after):
 	await reactMessage(after)
 
 async def reactMessage(message):
-    if (message.content.lower() == 'push %ebp'):
-        await bot.send_message(message.channel, 'pop %recurso')
-    elif (message.content.lower() == 'pr review'):
-        await bot.send_message(message.channel, ':clap: :clap:')
+    if message.content.lower() in bot.replies:
+        await bot.send_message(
+            message.channel,
+            bot.replies[message.content.lower()])
 
     #send media
     if message.content.startswith(bot.command_prefix):
