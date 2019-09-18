@@ -122,7 +122,8 @@ class Manage():
                       pass_context=True)
     async def say(self, ctx, *,word):
         await self.bot.delete_message(ctx.message)
-        await self.bot.say(word)
+        if not ctx.message.mention_everyone:
+            await self.bot.say(word)
 
 def setup(bot):
     bot.add_cog(Manage(bot))
