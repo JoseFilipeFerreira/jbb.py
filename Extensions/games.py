@@ -5,7 +5,7 @@ from random import randint
 from random import choice
 import asyncio
 
-class Games():
+class Games(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

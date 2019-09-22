@@ -7,7 +7,7 @@ from os import path
 from fuzzywuzzy import fuzz, process
 from random import randint, shuffle
 
-class Quotes():
+class Quotes(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

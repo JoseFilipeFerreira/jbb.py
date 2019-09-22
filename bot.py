@@ -10,7 +10,7 @@ from datetime import datetime
 from aux.cash import save_stats, hours_passed
 from aux.inventory import get_empty_stats, normalize_stat
 
-bot = commands.Bot(command_prefix = '*')
+bot = commands.Bot(command_prefix = '>')
 
 bot.remove_command('help')
 
@@ -73,7 +73,7 @@ def main():
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name='*help'))
+    await bot.change_presence(activity=discord.Game(name='*help'))
 
     embed = discord.Embed(
         title="Starting up",
@@ -101,15 +101,15 @@ async def on_ready():
 
     appInfo = await bot.application_info()
 
-    await bot.send_message(appInfo.owner, embed=embed)
+    await appInfo.owner.send(embed=embed)
 
     print('Logged in as:')
     print(bot.user.name)
     print(bot.user.id)
     print('-----------------------------')
     print('Servers:')
-    for server in bot.servers:
-        print(server.name)
+    for guild in bot.guilds:
+        print(guild.name)
     print('-----------------------------')
     print(bot.command_prefix)
 
@@ -123,20 +123,21 @@ async def on_message_edit(before, after):
 
 async def reactMessage(message):
     if message.content.lower() in bot.replies:
-        await bot.send_message(
-            message.channel,
+        await message.channel.send(
             bot.replies[message.content.lower()])
 
     #send media
     if message.content.startswith(bot.command_prefix):
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
-            await bot.send_file(
-                message.channel, bot.IMAGES_PATH+bot.imagesMap[content])
+            await message.channel.send(
+                file = discord.File(
+                    bot.IMAGES_PATH+bot.imagesMap[content]))
             return
         elif content in bot.gifsMap:
-            await bot.send_file(
-                message.channel, bot.GIFS_PATH+bot.gifsMap[content])
+            await message.channel.send_file(
+                file = discord.File(
+                    bot.GIFS_PATH+bot.gifsMap[content]))
             return
 
     #exit voice channel
@@ -156,7 +157,7 @@ async def reactMessage(message):
                 bot.stats[id]["cash"] += 10
                 given += 1
         save_stats(bot)
-        await bot.send_message(appInfo.owner, "Giveaway: {}".format(given))
+        await appInfo.owner.send("Giveaway: {}".format(given))
 
     await bot.process_commands(message)
 
@@ -186,7 +187,7 @@ def create_list_extensions():
             lambda x: "__" not in x and x not in cogs_blacklist,
             extensions_list))
     
-    return(extensions_list)
+    return sorted(extensions_list)
 
 def extensions_loader(extensions):
 #try to load extensions
@@ -200,6 +201,7 @@ def extensions_loader(extensions):
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension: {}\n{}'.format(extension, exc))
             failed = failed + "\n" + ('**{}**:{}'.format(extension, exc))
+            traceback.print_exc()
     
     bot.extensions_list_loaded = loaded
     bot.extensions_list_failed = "No cogs failed to load"

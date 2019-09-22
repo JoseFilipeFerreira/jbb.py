@@ -4,7 +4,7 @@ from discord.ext import commands
 from random import randint
 from aux.inventory import get_embed_inventory
 
-class Biography():
+class Biography(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

@@ -3,7 +3,7 @@ import subprocess
 from discord.ext import commands
 from PIL import Image, ImageFont, ImageDraw
 
-class Memegenerator():
+class Memegenerator(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

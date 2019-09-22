@@ -6,7 +6,7 @@ from random import randint
 import datetime
 
 
-class Pokemon():
+class Pokemon(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

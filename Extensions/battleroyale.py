@@ -10,7 +10,7 @@ import operator
 from aux.cash import save_stats, round_down,  get_cash
 from aux.inventory import update_kills
 
-class BattleRoyale():
+class BattleRoyale(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.listAction = ["kill", "die", "event", "meet"]

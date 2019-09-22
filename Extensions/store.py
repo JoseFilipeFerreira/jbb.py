@@ -4,7 +4,7 @@ import asyncio
 from aux.cash import enough_cash, get_cash, spend_cash, save_stats 
 from aux.inventory import get_inventory
 
-class Store():
+class Store(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot

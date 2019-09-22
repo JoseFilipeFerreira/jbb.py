@@ -5,7 +5,7 @@ import time
 import subprocess
 from discord.ext import commands
 
-class Manage():
+class Manage(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

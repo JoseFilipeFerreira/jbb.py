@@ -4,7 +4,7 @@ from discord.ext import commands
 from random import randint
 import requests 
 
-class Programming():
+class Programming(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

@@ -4,7 +4,7 @@ import requests
 from random import choice
 from discord.ext import commands
 
-class Dogs():
+class Dogs(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
@@ -12,8 +12,7 @@ class Dogs():
     @commands.command(name='dog',
                       description="send random dog picture",
                       brief="send dog pic",
-                      aliases=['auau'],
-                      pass_context=True)
+                      aliases=['auau'])
     async def dog(self, ctx):
         isVideo = True
         while isVideo:
@@ -31,8 +30,7 @@ class Dogs():
     @commands.command(name='cat',
                       description="send random cat picture",
                       brief="send cat pic",
-                      aliases=['antiauau', 'miau'],
-                      pass_context=True)
+                      aliases=['antiauau', 'miau'])
     async def cat(self, ctx):
         r =requests.get('http://aws.random.cat/meow')
                 

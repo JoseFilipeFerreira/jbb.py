@@ -7,7 +7,7 @@ from random import randint, choice
 from aux.cash import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats, hours_passed 
 from PIL import Image, ImageDraw
 
-class Casino():
+class Casino(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

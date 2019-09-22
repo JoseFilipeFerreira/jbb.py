@@ -4,7 +4,7 @@ import subprocess
 from random import randint
 from discord.ext import commands
 
-class Interact():
+class Interact(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot

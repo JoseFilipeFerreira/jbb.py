@@ -23,7 +23,7 @@ service = build('calendar', 'v3', http=creds.authorize(Http()))
 
 client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
 
-class Api():
+class Api(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
