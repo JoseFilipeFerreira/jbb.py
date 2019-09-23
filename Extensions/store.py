@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from aux.cash import enough_cash, get_cash, spend_cash, save_stats 
+from aux.cash import enough_cash, give_cash, spend_cash, save_stats 
 from aux.inventory import get_inventory
 
 class Store(commands.Cog):
@@ -146,10 +146,10 @@ class Store(commands.Cog):
                             check=guess_check)
             
                         if answer is None:
-                            get_cash(self.bot, ctx.message.author.id, price)
+                            give_cash(self.bot, ctx.message.author.id, price)
                             return
                         elif answer.content.lower() == 'no':
-                            get_cash(self.bot,ctx.message.author.id, price)
+                            give_cash(self.bot,ctx.message.author.id, price)
                             return
 
                         

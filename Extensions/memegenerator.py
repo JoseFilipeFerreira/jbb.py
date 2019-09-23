@@ -37,11 +37,11 @@ class Memegenerator(commands.Cog):
 
             img.save(self.bot.TMP_PATH + "memegenerator.png")
     
-            await self.bot.delete_message(ctx.message)
-            await self.bot.send_file(
-                ctx.message.channel,
-                self.bot.TMP_PATH + "memegenerator.png",
-                content='by {}'.format(ctx.message.author.mention))
+            await ctx.message.delete()
+            await ctx.send(
+                'by {}'.format(ctx.message.author.mention),
+                file=discord.File(
+                    self.bot.TMP_PATH + "memegenerator.png"))
         else:
             await ctx.send("Invalid image name!")
 

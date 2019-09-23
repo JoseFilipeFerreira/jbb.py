@@ -4,7 +4,7 @@ import random
 import asyncio
 import time
 from random import randint, choice
-from aux.cash import enough_cash, spend_cash, get_cash, RepresentsInt, save_stats, hours_passed 
+from aux.cash import enough_cash, spend_cash, give_cash, RepresentsInt, save_stats, hours_passed 
 from PIL import Image, ImageDraw
 
 class Casino(commands.Cog):
@@ -27,12 +27,12 @@ class Casino(commands.Cog):
         else:
             if "last_beg" not in self.bot.stats[id]:
                 self.bot.stats[id]["last_beg"] = time.time()
-                get_cash(self.bot, id, 1)
+                give_cash(self.bot, id, 1)
                 await ctx.send("Have 1 coin.")
             
             elif hours_passed(self.bot.stats[id]["last_beg"], time.time()) > 24:
                 self.bot.stats[id]["last_beg"] = time.time()
-                get_cash(self.bot, id, 1)
+                give_cash(self.bot, id, 1)
                 await ctx.send("Have 1 coin.")
             
             else:
@@ -116,10 +116,10 @@ class Casino(commands.Cog):
             check=guess_check)
             
         if answer is None:
-            get_cash(self.bot, ctx.message.author.id, amount)
+            give_cash(self.bot, ctx.message.author.id, amount)
             return
         elif answer.content.lower() == 'no':
-            get_cash(self.bot, ctx.message.author.id, amount)
+            give_cash(self.bot, ctx.message.author.id, amount)
             return
         
         pos = randint(0, len(rOrder) - 1)
@@ -142,15 +142,15 @@ class Casino(commands.Cog):
 
         if(rOrder[pos] in pNumbers):
             result = "You Won {0}🎉".format(win)
-            get_cash(self.bot, ctx.message.author.id, win)
+            give_cash(self.bot, ctx.message.author.id, win)
         
         else:
             result = "You lost {0} 💸".format(amount)
 
-        await self.bot.send_file(
-                ctx.message.channel,
-                self.bot.TMP_PATH + "roulette.png",
-                content=result)
+        await ctx.send(
+                result,
+                file=discord.File(
+                    self.bot.TMP_PATH + "roulette.png"))
 
         self.bot.stats[ctx.message.author.id]["bet"] = True
         save_stats(self.bot)
@@ -201,7 +201,7 @@ class Casino(commands.Cog):
                 return
             
             if number == r_number:
-                get_cash(self.bot, ctx.message.author.id, win)
+                give_cash(self.bot, ctx.message.author.id, win)
                 await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
             else:
                 spend_cash(self.bot, ctx.message.author.id, amount)
@@ -255,10 +255,10 @@ class Casino(commands.Cog):
             check=guess_check)
             
         if answer is None:
-            get_cash(self.bot, ctx.message.author.id, amount)
+            give_cash(self.bot, ctx.message.author.id, amount)
             return
         elif answer.content.lower() == 'no':
-            get_cash(self.bot, ctx.message.author.id, amount)
+            give_cash(self.bot, ctx.message.author.id, amount)
             return
         
         w1 = randint(0, len(wheels_array) - 1)
@@ -298,7 +298,7 @@ class Casino(commands.Cog):
             slot += "You lost {0} 💸".format(amount)
         else:
             slot += "You won {0} 🎉".format(prize)
-            get_cash(self.bot, ctx.message.author.id, prize)
+            give_cash(self.bot, ctx.message.author.id, prize)
         
         await ctx.send(slot)
         self.bot.stats[id]["bet"] = True

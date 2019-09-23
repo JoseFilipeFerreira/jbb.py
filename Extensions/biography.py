@@ -2,7 +2,7 @@ import discord
 import json
 from discord.ext import commands
 from random import randint
-from aux.inventory import get_embed_inventory
+from aux.inventory import get_embed_inventory, get_stat
 
 class Biography(commands.Cog):
     
@@ -17,7 +17,7 @@ class Biography(commands.Cog):
         brief="get one's biography")
     async def bio(self, ctx):
         for user in ctx.message.mentions:
-            member = ctx.message.server.get_member(user.id)
+            member = ctx.message.guild.get_member(user.id)
             name = member.name
             if member.nick != None:
                 name = member.nick
@@ -45,11 +45,11 @@ class Biography(commands.Cog):
 
             embed.add_field(
                 name="🔫KDR",
-                value="{0}/{1}".format(self.bot.stats[user.id]["kills"], self.bot.stats[user.id]["death"]))
+                value="{0}/{1}".format(get_stat(ctx.bot, user.id)["kills"], get_stat(ctx.bot, user.id)["death"]))
             
             embed.set_footer(text = "Biography")
-            await self.bot.say(embed=embed)
-            await self.bot.say(embed=get_embed_inventory(self.bot, user.id, name, embed_colour))
+            await ctx.send(embed=embed)
+            await ctx.send(embed=get_embed_inventory(self.bot, user.id, name, embed_colour))
 
     @commands.command(
         name='bioKey',

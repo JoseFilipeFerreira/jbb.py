@@ -1,4 +1,5 @@
 import json
+from aux.inventory import get_stat
 
 def save_stats(bot):
 #save server stats
@@ -22,26 +23,20 @@ def round_down(num, divisor):
     return num - (num%divisor)
 
 def enough_cash(bot, id, amount):
-    if "cash" not in bot.stats[id]:
-        return False 
-    elif bot.stats[id]["cash"] >= amount:
-        return True
-    else:
-        return False
+    return (get_cash(bot, id) >= amount)
 
 def spend_cash(bot, id, amount):
 #spend a users money
-    if bot.stats[id]["cash"] >= amount:
-        bot.stats[id]["cash"] -= amount
+    if enough_cash(bot, id, amount):
+        give_cash(bot, id, (-1) * amount)
         return True
-    else:
-        return False
-    
-def get_cash(bot, id, amount):
-    if "cash" in bot.stats[id]:
-        bot.stats[id]["cash"] += amount
-    else:
-        bot.stats[id]["cash"] = amount
+    return False
+
+def get_cash(bot, id):
+    return get_stat(bot, id)["cash"] 
+
+def give_cash(bot, id, amount):
+    get_stat(bot, id)["cash"] += amount
 
 def RepresentsInt(s):
     try: 

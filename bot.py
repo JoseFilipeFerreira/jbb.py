@@ -7,14 +7,14 @@ import os
 import subprocess
 from os import path
 from datetime import datetime
-from aux.cash import save_stats, hours_passed
-from aux.inventory import get_empty_stats, normalize_stat
+from aux.cash import save_stats, hours_passed, give_cash
+from aux.inventory import get_empty_stats, get_stat
 
 bot = commands.Bot(command_prefix = '>')
 
-bot.remove_command('help')
+#bot.remove_command('help')
 
-cogs_blacklist = []
+cogs_blacklist = ["help"]
 
 def main():
     #adding to bot object directories
@@ -56,7 +56,8 @@ def main():
             bot.musicMap[filename.lower()] = f
     
     #load stats
-    bot.stats         = json.load(open(bot.STATS_PATH , 'r'))["stats"]
+    #Keys convert to string when writing to json
+    bot.stats         = {int(key): value for key, value in json.load(open(bot.STATS_PATH , 'r'))["stats"].items()}
     bot.last_giveaway = json.load(open(bot.STATS_PATH , 'r'))["last_giveaway"]
     #load market
     bot.market        = json.load(open(bot.MARKET_PATH, 'r'))
@@ -152,9 +153,9 @@ async def reactMessage(message):
         appInfo = await bot.application_info()
         given = 0
         for id in bot.stats:
-            normalize_stat(bot, id)
-            if bot.stats[id]["bet"]:
-                bot.stats[id]["cash"] += 10
+            stat = get_stat(bot, id)
+            if stat["bet"]:
+                give_cash(bot, id, 10)
                 given += 1
         save_stats(bot)
         await appInfo.owner.send("Giveaway: {}".format(given))

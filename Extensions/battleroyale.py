@@ -7,7 +7,7 @@ from random import choice
 import asyncio
 import json
 import operator
-from aux.cash import save_stats, round_down,  get_cash
+from aux.cash import save_stats, round_down,  give_cash
 from aux.inventory import update_kills
 
 class BattleRoyale(commands.Cog):
@@ -22,15 +22,15 @@ class BattleRoyale(commands.Cog):
                       aliases=['brF'])
     @commands.has_permissions(administrator=True)
     async def battleroyaleFull(self, ctx):
-        await self.bot.delete_message(ctx.message)
+        await ctx.message.delete()
         await sendChallenge(self, ctx)
-        users = correctListUsers(ctx, ctx.message.server.members)
+        users = correctListUsers(ctx, ctx.message.guild.members)
         await sendAllDailyReports(self, ctx, users)
 
         embed = victoryEmbed(self, users["alive"][0])
         await ctx.send(embed=embed)
 
-        get_cash(self.bot, users["alive"][0]["id"], 100)
+        give_cash(self.bot, users["alive"][0]["id"], 100)
         
         updateStats(self, users)
     
@@ -42,7 +42,7 @@ class BattleRoyale(commands.Cog):
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
-        await self.bot.delete_message(ctx.message)
+        await ctx.message.delete()
         msg = await sendChallenge(self, ctx)
         await thirtysecondtyping(self, ctx)
         users = await getListUsers(self, ctx, msg.reactions[0])
@@ -239,7 +239,7 @@ async def sendDaylyReport(self, ctx, day, result):
         description=result,
         color=self.bot.embed_color
     )
-    await self .bot.send_message(ctx.message.channel, embed=embed)
+    await ctx.send(embed=embed)
 
 async def sendInitialReport(self,ctx):
 #send first embed of report
@@ -272,7 +272,7 @@ def correctListUsers(ctx, users):
     users = list(filter(lambda x: not x.bot, users))
 
     def changeNick(user):
-        member = ctx.message.server.get_member(user.id)
+        member = ctx.message.guild.get_member(user.id)
         name = member.name
         if member.nick != None:
             name = member.nick
@@ -300,10 +300,10 @@ async def sendChallenge(self, ctx):
         name='Pick your weapon below if you wish to participate',
         value='(you have approximately 30 seconds)'
     )
-    msg = await self.bot.send_message(ctx.message.channel,embed=embed)
-    await self.bot.add_reaction(msg, '\U0001F52B')
+    msg = await ctx.send(embed=embed)
+    await msg.add_reaction('\U0001F52B')
     #update sent embed so it contains the reaction
-    return await self.bot.get_message(msg.channel, msg.id)
+    return await ctx.fetch_message(msg.id)
 
 def convertHour(time):
 #convert time in hours to midnigth to hour of day

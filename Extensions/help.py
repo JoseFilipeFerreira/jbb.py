@@ -12,21 +12,15 @@ class Help(commands.Cog):
     @commands.command(name="help",
                       description="Sends help for a specific command or cog",
                       brief="shows this message")
-    async def help(self, ctx, * command_or_cog):
-        cogs = self.bot.cogs
-        commands = self.bot.commands
-
-        if len(command_or_cog) == 0:
-            await help_all(self)
-        
+    async def help(self, ctx, *, command_or_cog=None):
+        if not command_or_cog:
+            await help_all(self, ctx)
+        elif command_or_cog in self.bot.cogs:
+            await help_cog(self, ctx, command_or_cog)
+        elif command_or_cog in self.bot.walk_commands():
+            await help_command(self, ctx, command_or_cog)
         else:
-            command_or_cog = command_or_cog[0]
-            if command_or_cog in cogs.keys():
-                await help_cog(self, command_or_cog)
-            elif command_or_cog in commands.keys():
-                await help_command(self, command_or_cog)
-            else:
-                await ctx.send("Command or cog not found")
+            await ctx.send("Command or cog not found")
     
     @commands.command(name='helpPlay',
                       description="list all available musics",
@@ -49,7 +43,7 @@ class Help(commands.Cog):
 def setup(bot):
     bot.add_cog(Help(bot))
 
-async def help_all(self):
+async def help_all(self, ctx):
 #send help
     cogs = self.bot.cogs
 
@@ -67,10 +61,8 @@ async def help_all(self):
     
     await ctx.send(embed=embed)
 
-async def help_cog(self, command_or_cog):
+async def help_cog(self, ctx, command_or_cog):
 #send help for a cog
-    commands = self.bot.commands
-            
     embed = discord.Embed(
         title=command_or_cog,
         description="help command shitshow",
@@ -78,8 +70,7 @@ async def help_cog(self, command_or_cog):
 
     string_commands = ""
     list_commands = []
-    for command in commands.keys():
-        command = commands[command]
+    for command in self.bot.commands:
         if command.cog_name == command_or_cog and command not in list_commands:
             string_commands = string_commands + "**{0}** -> {1}\n".format(command.name, command.brief)
             list_commands.append(command)
@@ -94,7 +85,7 @@ async def help_cog(self, command_or_cog):
             
     await ctx.send(embed=embed)
 
-async def help_command(self, command_or_cog):
+async def help_command(self, ctx, command_or_cog):
 #send help for a command
     commands = self.bot.commands
     command = commands[command_or_cog]
@@ -139,4 +130,4 @@ async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
     musicArray.sort()
     embed.add_field(name=section, value='\n'.join(musicArray), inline=True)
     await self.bot.send_message(ctx.message.author, embed=embed)
-    await self.bot.delete_message(ctx.message)
+    await ctx.message.delete()

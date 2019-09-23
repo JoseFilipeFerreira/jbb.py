@@ -98,7 +98,7 @@ class Manage(commands.Cog):
                       description="bot sends query and deletes trigger message",
                       brief="bot sends query")
     async def say(self, ctx, *,word):
-        await self.bot.delete_message(ctx.message)
+        await ctx.message.delete()
         await ctx.send(word)
 
 def setup(bot):

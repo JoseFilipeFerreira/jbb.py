@@ -103,7 +103,7 @@ class Games(commands.Cog):
            quote = 'Vote here'
         else:
            quote = ' '.join(word for word in quote)
-        await self.bot.delete_message(ctx.message)
+        await ctx.message.delete()
         vote = await ctx.send('**{0}** (poll by {1})'.format(quote, ctx.message.author.mention))
         await self.bot.add_reaction(vote, '\U0000274C')
         await self.bot.add_reaction(vote, '\U00002705')
