@@ -55,15 +55,8 @@ class Biography(commands.Cog):
         name='bioKey',
         description="**MODIFIERS:**\n**list:**   send all available bio keys\n**add:**    add a bio key\n**swap:**   swap two bioKeys' position\n**delete:** delete a given position",
         brief="alter bio keys")
+    @commands.is_owner()
     async def bioKey(self, ctx, modifier,* text):
-        if not ctx.message.author.server_permissions.administrator:
-            await self.bot.say("invalid user")
-            return
-        appInfo = await self.bot.application_info()
-        if ctx.message.author != appInfo.owner:
-            await self.bot.say("Invalid User")
-            return
-
         #list all bioKeys
         if modifier == "list":
             await self.bot.say(textKeyOrder(self.order))
@@ -107,16 +100,8 @@ class Biography(commands.Cog):
         name='editBio',
         description="add a funy description of a given user\n**ACTIONS:**\n**delete:** delete a given position\n**add:** add a description",
         brief="add one's biography")
+    @commands.is_owner()
     async def editBio(self, ctx, member,  action, bioKey, *, text):
-        if not ctx.message.author.server_permissions.administrator:
-            await self.bot.say("invalid user")
-            return
-        #check who sent
-        appInfo = await self.bot.application_info()
-        if ctx.message.author != appInfo.owner:
-            await self.bot.say("Invalid User")
-            return
-            
         #check member
         server = ctx.message.server
         memberId = list(filter(lambda x: x.isdigit(), member))

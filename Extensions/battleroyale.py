@@ -20,10 +20,8 @@ class BattleRoyale(commands.Cog):
                       description="create server wide battle royale [ADMIN ONLY]\n\nWinner gets 100 coins.",
                       brief="server wide battle royale",
                       aliases=['brF'])
+    @commands.has_permissions(administrator=True)
     async def battleroyaleFull(self, ctx):
-        if not ctx.message.author.server_permissions.administrator:
-            await ctx.send("invalid user")
-            return
         await self.bot.delete_message(ctx.message)
         await sendChallenge(self, ctx)
         users = correctListUsers(ctx, ctx.message.server.members)
@@ -40,13 +38,10 @@ class BattleRoyale(commands.Cog):
                       description="create server battle royale",
                       brief="server battle royale",
                       aliases=['br'])
+    @commands.is_nsfw()
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
-        if ctx.message.channel.name not in ['nsfw', 'bot-commands'] and not ctx.message.author.server_permissions.administrator:
-            await ctx.send(
-                "This command must be done in #nsfw or #bot-commands")
-            return
         await self.bot.delete_message(ctx.message)
         msg = await sendChallenge(self, ctx)
         await thirtysecondtyping(self, ctx)
@@ -68,7 +63,6 @@ class BattleRoyale(commands.Cog):
                       brief="battleroyale Kill/Death Ratio",
                       aliases=['brKDR'])
     async def battleroyaleKDR(self, ctx):
-
         if len(ctx.message.mentions) > 0:
             for user in ctx.message.mentions:
                 member = ctx.message.server.get_member(user.id)
@@ -130,18 +124,14 @@ class BattleRoyale(commands.Cog):
                       description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
                       aliases=['addBr'])
+    @commands.is_owner()
     async def addBattleroyale(self, ctx, action, time,*, description):
-        appInfo = await self.bot.application_info()
         owner = appInfo.owner
         action = action.lower()
         time = round(float(time), 1)
         time = round_down(time * 10, 5)
         time = time /10
-        #TODO optimize one day
-        if ctx.message.author != owner:
-            await ctx.send('Invalid user')
-
-        elif len(description) < 1:
+        if len(description) < 1:
             await ctx.send('Invalid description')
         
         elif action not in self.listAction:
@@ -165,23 +155,19 @@ class BattleRoyale(commands.Cog):
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
                       brief="remove last Battleroyale event",
                       aliases=['removeBattleroyale', 'removeBr', 'deleteBr'])
+    @commands.is_owner()
     async def deleteBattleroyale(self, ctx):
-        appInfo = await self.bot.application_info()
         owner = appInfo.owner
-        #TODO optimize one day
-        if ctx.message.author != owner:
-            await ctx.send('Invalid user')
-        else:
-            deleted = self.listReactions.pop()
-            updateListReactions(self)
-            await ctx.send(
-                "__**DELETED**__\n**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`"
-                    .format(
-                        deleted["action"],
-                        deleted["time"],
-                        deleted["description"]
-                    )
-            )  
+        deleted = self.listReactions.pop()
+        updateListReactions(self)
+        await ctx.send(
+            "__**DELETED**__\n**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`"
+                .format(
+                    deleted["action"],
+                    deleted["time"],
+                    deleted["description"]
+                )
+        )  
 
 async def sendAllDailyReports(self, ctx, users):
 #gets a list of all users and sends all days

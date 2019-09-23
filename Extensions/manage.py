@@ -13,35 +13,18 @@ class Manage(commands.Cog):
     @commands.command(name='update',
                       description="update the code from github and reboot [OWNER ONLY]",
                       brief="update the bot")
+    @commands.is_owner()
     async def update(self, ctx):
-        appInfo = await self.bot.application_info()
-        if ctx.message.author == appInfo.owner:
-            await self.bot.change_presence(game=discord.Game(name='rebooting'))
-            subprocess.call("./update.sh")
-        else:
-            await ctx.send("Invalid User")
+        await self.bot.change_presence(game=discord.Game(name='rebooting'))
+        subprocess.call("./update.sh")
     
 
     @commands.command(name='setplay',
                       description="change the game tag off the bot [ADMIN ONLY]",
                       brief="change the game tag")
+    @commands.has_permissions(administrator=True)
     async def setplay(self, ctx,*, play):
-        if ctx.message.author.server_permissions.administrator:
-            await self.bot.change_presence(game=discord.Game(name=play))
-        else:
-            await ctx.send("Invalid User")
-
-
-    @commands.command(name='faketype',
-                      description="send typing to the channel [ADMIN ONLY]",
-                      brief="send typing")
-    async def faketype(self, ctx, *playing):
-        if ctx.message.author.server_permissions.administrator:
-            await self.bot.delete_message(ctx.message)
-            await self.bot.send_typing(ctx.message.channel)
-        else:
-            await ctx.send("Invalid User")
-
+        await self.bot.change_presence(game=discord.Game(name=play))
 
     @commands.command(name='info',
                       description="get info on a specific user",
@@ -74,29 +57,29 @@ class Manage(commands.Cog):
                       description="get info on the server",
                       brief="server info")
     async def serverinfo(self, ctx):
-        server = ctx.message.server
-        total = len(ctx.message.server.members)
+        guild = ctx.message.guild
+        total = len(ctx.message.guild.members)
         bot  = 0
         online = 0
         gaming = 0
-        for member in server.members:
+        for member in guild.members:
             if member.bot:
                 bot += 1
             if member.status != discord.Status.offline:
                 online += 1
-            if member.game and not member.bot:
+            if member.activity:
                 gaming += 1
         embed = discord.Embed(
             title="serverInfo",
-            description=server.name,
+            description=guild.name,
             color=self.bot.embed_color
         )
-        embed.set_thumbnail(url=server.icon_url)
-        embed.add_field(name='Owner', value=server.owner, inline=False)
-        embed.add_field(name='Region', value=server.region, inline=False)
+        embed.set_thumbnail(url=guild.icon_url)
+        embed.add_field(name='Owner', value=guild.owner, inline=False)
+        embed.add_field(name='Region', value=guild.region, inline=False)
         text_channel = 0
         voice_channel = 0
-        for channel in server.channels:
+        for channel in guild.channels:
             if channel.type == discord.ChannelType.text:
                 text_channel += 1
             elif channel.type == discord.ChannelType.voice:
@@ -108,7 +91,7 @@ class Manage(commands.Cog):
         embed.add_field(name='Bots', value=bot, inline=False)
         embed.add_field(name='Gaming', value=gaming, inline=False)
         embed.add_field(name='Online', value=online, inline=False)
-        embed.add_field(name='Roles', value=len(server.roles), inline=False)
+        embed.add_field(name='Roles', value=len(guild.roles), inline=False)
         await ctx.send(embed=embed)
         
     @commands.command(name='say',

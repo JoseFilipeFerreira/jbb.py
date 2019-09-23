@@ -89,11 +89,8 @@ class Quotes(commands.Cog):
     @commands.command(name='add',
                       description="add a quote [OWNER ONLY]",
                       brief="add a quote")
+    @commands.is_owner()
     async def add(self, ctx, cat,*, msgs):
-        appInfo = await self.bot.application_info()
-        if ctx.message.author != appInfo.owner:
-            await ctx.send('Invalid user')
-            return
         if cat not in self.quotes_dict:
             await ctx.send('Invalid category')
             return

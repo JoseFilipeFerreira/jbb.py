@@ -12,22 +12,6 @@ class Casino(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='setAllCash',
-                      description="set money of everyones cash [OWNER ONLY]",
-                      brief="set all cash")
-    async def setAllCash(self, ctx, number):
-        appInfo = await self.bot.application_info()
-        if ctx.message.author != appInfo.owner:
-            await ctx.send("Invalid User")
-            return
-        if not RepresentsInt(number):
-            await ctx.send("Invalid amount")
-            return
-
-        for key in self.bot.stats:
-            self.bot.stats[key]["cash"] = int(number)
-        save_stats(self.bot)
-    
     @commands.command(name='beg',
                       description="get one coin every 24 hours",
                       brief="beg for coins")
