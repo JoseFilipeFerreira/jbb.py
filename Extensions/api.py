@@ -108,8 +108,9 @@ class Api(commands.Cog):
         search_terms = "+".join(search_terms)
         url = "http://api.urbandictionary.com/v0/define?term=" + search_terms
         try:
-            async with aiohttp.get(url) as r:
-                result = await r.json()
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    result = await response.json()
             if result["list"]:
                 top_def = result['list'][0]
 
@@ -145,7 +146,7 @@ class Api(commands.Cog):
             else:
                 await ctx.send("Your search terms gave no results.")
         except:
-            await ctx.send("Something unexpected went wrong.")   
+            await self.bot.say("Something unexpected went wrong.")   
 
 def setup(bot):
     bot.add_cog(Api(bot))
