@@ -14,7 +14,7 @@ class Store(commands.Cog):
             brief="richests users")
     async def richest(self, ctx):
         if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw or #bot-commands"
             )
             return
@@ -47,14 +47,14 @@ class Store(commands.Cog):
             embed.set_thumbnail(
                     url="http://pixelartmaker.com/art/89daa821cd53576.png") 
 
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name='market',
             description="Buy things to put in your iventory",
             brief="MiEI Market")
     async def market(self, ctx, *arg):
         if ctx.message.channel.name not in ['nsfw']:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw"
             )
             return
@@ -75,7 +75,7 @@ class Store(commands.Cog):
             
             embed.set_footer(text="*market [store] to see one store")
 
-            await self.bot.say(embed=embed)
+            await ctx.send(embed=embed)
         
         elif len(arg) == 1:
             store = arg[0].lower()
@@ -91,7 +91,7 @@ class Store(commands.Cog):
                 embed.add_field(
                     name="Invalid Store",
                     value="*market to get valid stores")
-            await self.bot.say(embed=embed)
+            await ctx.send(embed=embed)
 
         elif len(arg) > 1:
             store = arg[0].lower()
@@ -113,7 +113,7 @@ class Store(commands.Cog):
                         embed.add_field(
                             name="Not enough money",
                             value="Item is too expensive")
-                        await self.bot.say(embed=embed)
+                        await ctx.send(embed=embed)
                     else:
                         embed.add_field(
                             name="{0}{1}".format(
@@ -135,7 +135,7 @@ class Store(commands.Cog):
 
                         spend_cash(self.bot, ctx.message.author.id, price)
                         
-                        await self.bot.say(embed=embed)
+                        await ctx.send(embed=embed)
 
                         def guess_check(m):
                              return m.content.lower() == 'yes' or m.content.lower() == 'no'
@@ -158,7 +158,7 @@ class Store(commands.Cog):
                         inventory["gear"][store]["stats"]  = prod_dic["stat"]
 
                         
-                        await self.bot.say("Transaction was successfull")
+                        await ctx.send("Transaction was successfull")
                         save_stats(bot)
 
 def store_items(embed, stat, items):

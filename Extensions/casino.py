@@ -18,10 +18,10 @@ class Casino(commands.Cog):
     async def setAllCash(self, ctx, number):
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
-            await self.bot.say("Invalid User")
+            await ctx.send("Invalid User")
             return
         if not RepresentsInt(number):
-            await self.bot.say("Invalid amount")
+            await ctx.send("Invalid amount")
             return
 
         for key in self.bot.stats:
@@ -33,7 +33,7 @@ class Casino(commands.Cog):
                       brief="beg for coins")
     async def beg(self, ctx):
         if ctx.message.channel.name not in ['nsfw']:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw"
             )
             return
@@ -44,15 +44,15 @@ class Casino(commands.Cog):
             if "last_beg" not in self.bot.stats[id]:
                 self.bot.stats[id]["last_beg"] = time.time()
                 get_cash(self.bot, id, 1)
-                await self.bot.say("Have 1 coin.")
+                await ctx.send("Have 1 coin.")
             
             elif hours_passed(self.bot.stats[id]["last_beg"], time.time()) > 24:
                 self.bot.stats[id]["last_beg"] = time.time()
                 get_cash(self.bot, id, 1)
-                await self.bot.say("Have 1 coin.")
+                await ctx.send("Have 1 coin.")
             
             else:
-                await self.bot.say("No coin for you.")
+                await ctx.send("No coin for you.")
         self.bot.stats[id]["bet"] = True
         save_stats(self.bot)
 
@@ -62,28 +62,28 @@ class Casino(commands.Cog):
                       brief="Play roulette")
     async def roulette(self, ctx, amount, bet):
         if ctx.message.channel.name not in ['nsfw']:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw"
             )
             return
         rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
         if not RepresentsInt(amount):
-            await self.bot.say("Invalid amount")
+            await ctx.send("Invalid amount")
             return
         amount = int(amount)
 
         if amount <= 0:
-            await self.bot.say("Invalid amount")
+            await ctx.send("Invalid amount")
             return
         
         if not enough_cash(self.bot, ctx.message.author.id, amount):
-            await self.bot.say("Not enough cash to bet")
+            await ctx.send("Not enough cash to bet")
             return
         
         bet = bet.lower()
 
         if bet not in ["red", "black","green", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
-            await self.bot.say("Invalid bet")
+            await ctx.send("Invalid bet")
             return
         
         pNumbers = []
@@ -92,7 +92,7 @@ class Casino(commands.Cog):
         if RepresentsInt(bet):
             bet = int(bet)
             if bet < 0 or bet > 36:
-                await self.bot.say("Invalid position")
+                await ctx.send("Invalid position")
                 return
             pNumbers = [bet]
             win = amount * len(rOrder)
@@ -118,7 +118,7 @@ class Casino(commands.Cog):
             pNumbers = [0]
             win = amount * len(rOrder)
         
-        await self.bot.say(
+        await ctx.send(
             "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.\n[yes/no]".format(amount, win))
         
         spend_cash(self.bot, ctx.message.author.id, amount)
@@ -176,19 +176,19 @@ class Casino(commands.Cog):
                       brief="roll a dice")
     async def roll(self, ctx, * bet):
         if ctx.message.channel.name not in ['nsfw']:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw"
             )
             return
         if len(bet) == 0:
-            await self.bot.say('You rolled a ' + str(randint(1,20)))
+            await ctx.send('You rolled a ' + str(randint(1,20)))
 
         elif len(bet) == 2 and RepresentsInt(bet[0]) and RepresentsInt(bet[1]):
             amount  = int(bet[0])
             number  = int(bet[1])
 
             if amount <= 0 or number < 1 or number > 20:
-                await self.bot.say("Invalid bet")
+                await ctx.send("Invalid bet")
                 return
 
             win = amount * 20
@@ -196,10 +196,10 @@ class Casino(commands.Cog):
 
             #check if enough cash
             if not enough_cash(self.bot, ctx.message.author.id, amount):
-                await self.bot.say("Not enough cash to bet")
+                await ctx.send("Not enough cash to bet")
                 return
 
-            await self.bot.say(
+            await ctx.send(
                 "**GAMBLE**\nBet {0} points in the number {1} in a D20 roll.\nWin {2} if correct.\n[yes/no]".format(
                     amount, number, win))
         
@@ -218,13 +218,13 @@ class Casino(commands.Cog):
             
             if number == r_number:
                 get_cash(self.bot, ctx.message.author.id, win)
-                await self.bot.say("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
+                await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
             else:
                 spend_cash(self.bot, ctx.message.author.id, amount)
-                await self.bot.say("**GAMBLE**\nYou rolled a {0}\nYou lost {1} 💸".format(r_number, amount))
+                await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou lost {1} 💸".format(r_number, amount))
 
         else:
-            await self.bot.say("Invalid bet")
+            await ctx.send("Invalid bet")
 
         self.bot.stats[ctx.message.author.id]["bet"] = True
         save_stats(self.bot)
@@ -234,7 +234,7 @@ class Casino(commands.Cog):
                       brief="slot machine")
     async def slot(self, ctx, amount):
         if ctx.message.channel.name not in ['nsfw']:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw"
             )
             return
@@ -243,22 +243,22 @@ class Casino(commands.Cog):
             wheels_array.append(str(emoji))
 
         if not RepresentsInt(amount):
-            await self.bot.say("Invalid bet")
+            await ctx.send("Invalid bet")
             return
 
         amount = int(amount)
 
         if amount <= 0:
-            await self.bot.say("Invalid bet")
+            await ctx.send("Invalid bet")
             return
         
         if not enough_cash(self.bot, ctx.message.author.id, amount):
-                await self.bot.say("Not enough cash to bet")
+                await ctx.send("Not enough cash to bet")
                 return
         
         spend_cash(self.bot, ctx.message.author.id, amount)
 
-        await self.bot.say(
+        await ctx.send(
                 "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.\n[yes/no]".format(
                     amount, amount * 30))
         
@@ -316,7 +316,7 @@ class Casino(commands.Cog):
             slot += "You won {0} 🎉".format(prize)
             get_cash(self.bot, ctx.message.author.id, prize)
         
-        await self.bot.say(slot)
+        await ctx.send(slot)
         self.bot.stats[id]["bet"] = True
         save_stats(self.bot)
 

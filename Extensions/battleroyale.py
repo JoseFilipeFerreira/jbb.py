@@ -22,7 +22,7 @@ class BattleRoyale(commands.Cog):
                       aliases=['brF'])
     async def battleroyaleFull(self, ctx):
         if not ctx.message.author.server_permissions.administrator:
-            await self.bot.say("invalid user")
+            await ctx.send("invalid user")
             return
         await self.bot.delete_message(ctx.message)
         await sendChallenge(self, ctx)
@@ -30,7 +30,7 @@ class BattleRoyale(commands.Cog):
         await sendAllDailyReports(self, ctx, users)
 
         embed = victoryEmbed(self, users["alive"][0])
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
 
         get_cash(self.bot, users["alive"][0]["id"], 100)
         
@@ -44,7 +44,7 @@ class BattleRoyale(commands.Cog):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
         if ctx.message.channel.name not in ['nsfw', 'bot-commands'] and not ctx.message.author.server_permissions.administrator:
-            await self.bot.say(
+            await ctx.send(
                 "This command must be done in #nsfw or #bot-commands")
             return
         await self.bot.delete_message(ctx.message)
@@ -53,13 +53,13 @@ class BattleRoyale(commands.Cog):
         users = await getListUsers(self, ctx, msg.reactions[0])
         
         if len(users["alive"]) < 2:
-            await self.bot.say("Not enough players for a Battle Royale")
+            await ctx.send("Not enough players for a Battle Royale")
             return
 
         await sendAllDailyReports(self, ctx, users)
 
         embed = victoryEmbed(self, users["alive"][0])
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
 
         updateStats(self, users)
     
@@ -86,7 +86,7 @@ class BattleRoyale(commands.Cog):
                     value="KDR: {0}/{1}".format(win["kills"], win["death"]),
                 inline=False
                 )
-                await self.bot.say(embed=embed)
+                await ctx.send(embed=embed)
             return
 
         arrayKDR = []
@@ -107,8 +107,8 @@ class BattleRoyale(commands.Cog):
         embed = discord.Embed(
             title = 'Battleroyale no DI',
             description="KDR Leaderboard",
-            color=self.bot.embed_color
-        )
+            color=self.bot.embed_color)
+
         for i in range(3):
             win = arrayKDR[i]
             member = ctx.message.server.get_member(win["id"])
@@ -119,14 +119,12 @@ class BattleRoyale(commands.Cog):
             embed.add_field(
                 name="{0}. {1}".format(i + 1, name),
                 value="KDR: {0}/{1}".format(win["kills"], win["death"]),
-                inline=False
-            )
+                inline=False)
             
         embed.set_thumbnail(
-            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
-        )
+            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
 
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name='addBattleroyale',
                       description="add a Battleroyale event to the json [OWNER ONLY]",
@@ -141,16 +139,16 @@ class BattleRoyale(commands.Cog):
         time = time /10
         #TODO optimize one day
         if ctx.message.author != owner:
-            await self.bot.say('Invalid user')
+            await ctx.send('Invalid user')
 
         elif len(description) < 1:
-            await self.bot.say('Invalid description')
+            await ctx.send('Invalid description')
         
         elif action not in self.listAction:
-            await self.bot.say('Invalid action')
+            await ctx.send('Invalid action')
 
         elif time <= 0 or time > 12:
-            await self.bot.say('Invalid time')
+            await ctx.send('Invalid time')
 
         else:
             event = {
@@ -161,7 +159,7 @@ class BattleRoyale(commands.Cog):
             print(event)
             self.listReactions.append(event)
             updateListReactions(self)
-            await self.bot.say("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
+            await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
 
     @commands.command(name='deleteBattleroyale',
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
@@ -172,11 +170,11 @@ class BattleRoyale(commands.Cog):
         owner = appInfo.owner
         #TODO optimize one day
         if ctx.message.author != owner:
-            await self.bot.say('Invalid user')
+            await ctx.send('Invalid user')
         else:
             deleted = self.listReactions.pop()
             updateListReactions(self)
-            await self.bot.say(
+            await ctx.send(
                 "__**DELETED**__\n**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`"
                     .format(
                         deleted["action"],
@@ -267,7 +265,7 @@ async def sendInitialReport(self,ctx):
     embed.set_thumbnail(
     url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
     )
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
 async def thirtysecondtyping(self, ctx):
 #wait 30 seconds for people to join while typing

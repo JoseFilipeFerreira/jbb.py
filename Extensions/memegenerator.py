@@ -43,7 +43,7 @@ class Memegenerator(commands.Cog):
                 self.bot.TMP_PATH + "memegenerator.png",
                 content='by {}'.format(ctx.message.author.mention))
         else:
-            await self.bot.say("Invalid image name!")
+            await ctx.send("Invalid image name!")
 
 
 def drawTextWithOutline(draw, font, text, x, y):

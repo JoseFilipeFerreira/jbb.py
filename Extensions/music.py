@@ -24,16 +24,16 @@ class Music(commands.Cog):
                    self.bot.voice_client = voice
                 #if bot is connected and is playing dont play
                 if self.bot.player_client != None and self.bot.player_client.is_playing():
-                    await self.bot.say("Already Playing")
+                    await ctx.send("Already Playing")
                 else:
                     #create player and play file
                     player = self.bot.voice_client.create_ffmpeg_player(self.bot.MUSIC_PATH + self.bot.musicMap[music])
                     self.bot.player_client = player
                     player.start()
             else:
-                await self.bot.say("Invalid Music")
+                await ctx.send("Invalid Music")
         else:
-            await self.bot.say("You're not in a voice channel")
+            await ctx.send("You're not in a voice channel")
     
     @commands.command(name='stop',
                       description="stop music and leave voice channel",
@@ -49,9 +49,9 @@ class Music(commands.Cog):
                 self.bot.voice_client = None
                 self.bot.player_client = None
             else:
-                await self.bot.say(appInfo.name + " not in a voice channel")
+                await ctx.send(appInfo.name + " not in a voice channel")
         else:
-            await self.bot.say("You're not in a voice channel")
+            await ctx.send("You're not in a voice channel")
 
 def setup(bot):
     bot.add_cog(Music(bot))

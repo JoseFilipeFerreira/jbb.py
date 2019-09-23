@@ -26,7 +26,7 @@ class Help(commands.Cog):
             elif command_or_cog in commands.keys():
                 await help_command(self, command_or_cog)
             else:
-                await self.bot.say("Command or cog not found")
+                await ctx.send("Command or cog not found")
     
     @commands.command(name='helpPlay',
                       description="list all available musics",
@@ -65,7 +65,7 @@ async def help_all(self):
     embed.set_footer(
         text="{}help [cog] para saberes mais sobre alguma cog".format(self.bot.command_prefix))
     
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
 async def help_cog(self, command_or_cog):
 #send help for a cog
@@ -92,7 +92,7 @@ async def help_cog(self, command_or_cog):
     embed.set_footer(
         text="{}help [comando] para saberes mais sobre algum comando".format(self.bot.command_prefix))
             
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
 async def help_command(self, command_or_cog):
 #send help for a command
@@ -124,7 +124,7 @@ async def help_command(self, command_or_cog):
             value=command.aliases,
             inline=False)
 
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
 async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
 #generate a embed for a menu

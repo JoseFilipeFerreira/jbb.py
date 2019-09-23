@@ -19,7 +19,7 @@ class Manage(commands.Cog):
             await self.bot.change_presence(game=discord.Game(name='rebooting'))
             subprocess.call("./update.sh")
         else:
-            await self.bot.say("Invalid User")
+            await ctx.send("Invalid User")
     
 
     @commands.command(name='setplay',
@@ -29,7 +29,7 @@ class Manage(commands.Cog):
         if ctx.message.author.server_permissions.administrator:
             await self.bot.change_presence(game=discord.Game(name=play))
         else:
-            await self.bot.say("Invalid User")
+            await ctx.send("Invalid User")
 
 
     @commands.command(name='faketype',
@@ -40,7 +40,7 @@ class Manage(commands.Cog):
             await self.bot.delete_message(ctx.message)
             await self.bot.send_typing(ctx.message.channel)
         else:
-            await self.bot.say("Invalid User")
+            await ctx.send("Invalid User")
 
 
     @commands.command(name='info',
@@ -68,7 +68,7 @@ class Manage(commands.Cog):
             embed.add_field(name='Playing', value=member.game, inline=False)
             embed.add_field(name='Joined discord at', value=user.created_at, inline=True)
             embed.add_field(name='Joined server at', value=member.joined_at, inline=True)
-            await self.bot.say(embed=embed)
+            await ctx.send(embed=embed)
 
     @commands.command(name='serverinfo',
                       description="get info on the server",
@@ -109,14 +109,14 @@ class Manage(commands.Cog):
         embed.add_field(name='Gaming', value=gaming, inline=False)
         embed.add_field(name='Online', value=online, inline=False)
         embed.add_field(name='Roles', value=len(server.roles), inline=False)
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
         
     @commands.command(name='say',
                       description="bot sends query and deletes trigger message",
                       brief="bot sends query")
     async def say(self, ctx, *,word):
         await self.bot.delete_message(ctx.message)
-        await self.bot.say(word)
+        await ctx.send(word)
 
 def setup(bot):
     bot.add_cog(Manage(bot))

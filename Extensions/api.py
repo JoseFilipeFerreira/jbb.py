@@ -47,7 +47,7 @@ class Api(commands.Cog):
             strRes = next(res.results).text
             
         answer = '**' + query +'**' + '\n```' + strRes + '```'
-        await self.bot.say(answer)
+        await ctx.send(answer)
 
     @commands.command(name='cantina',
                       description="menu of the uminho cantee",
@@ -85,7 +85,7 @@ class Api(commands.Cog):
                 value = event['summary'],
                 inline=False)
 
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name='translate',
                       description="translate a given query to portuguese",
@@ -98,13 +98,13 @@ class Api(commands.Cog):
         embed.set_thumbnail(url = "http://logonoid.com/images/google-translate-logo.png")
         embed.add_field(name="Detected Language:", value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)), inline=False)
         embed.add_field(name="Translation:", value=translation.text, inline=True)
-        await self.bot.say(embed =embed)
+        await ctx.send(embed =embed)
 
 
     @commands.command(name='urban',
                       description="Get a urban defenition of a query",
                       brief="search urban")
-    async def urban(self, * search_terms : str):
+    async def urban(self, ctx, * search_terms : str):
         search_terms = "+".join(search_terms)
         url = "http://api.urbandictionary.com/v0/define?term=" + search_terms
         try:
@@ -140,12 +140,12 @@ class Api(commands.Cog):
                 embed.set_footer(
                     text="Submited by {}".format(top_def['author']))
                 
-                await self.bot.say(embed =embed)
+                await ctx.send(embed =embed)
                 
             else:
-                await self.bot.say("Your search terms gave no results.")
+                await ctx.send("Your search terms gave no results.")
         except:
-            await self.bot.say("Something unexpected went wrong.")   
+            await ctx.send("Something unexpected went wrong.")   
 
 def setup(bot):
     bot.add_cog(Api(bot))

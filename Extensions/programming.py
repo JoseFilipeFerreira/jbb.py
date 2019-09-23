@@ -21,27 +21,27 @@ class Programming(commands.Cog):
             'double = succ . (!!2) . enumFromThen 1',
             'double = uncurry (+) . dup',
             'double x = x + x']
-        await self.bot.say('```Haskell\ndouble :: Double -> Double\n' + doublFct[randint(0, len(doublFct) - 1)] + '```')
+        await ctx.send('```Haskell\ndouble :: Double -> Double\n' + doublFct[randint(0, len(doublFct) - 1)] + '```')
 
 
     @commands.command(name='helpC',
                       description="give simple function in C",
                       brief="small program in C")
     async def helpC(self, ctx):
-        await self.bot.say('```C\nint main()\n{\n    printf("wololo");\n    return 0;\n}\n```')
+        await ctx.send('```C\nint main()\n{\n    printf("wololo");\n    return 0;\n}\n```')
         
     @commands.command(name='quicksort',
                       description="help understand quicksort",
                       brief="quicksort is hard guys")
     async def quicksort(self, ctx):
-        await self.bot.say('https://www.youtube.com/watch?v=ywWBy6J5gz8')
+        await ctx.send('https://www.youtube.com/watch?v=ywWBy6J5gz8')
 
     @commands.command(name='conv',
                       description="convert between numeric bases",
                       brief="convert between bases")
     async def conv(self, ctx, number, basefrom, baseto):
         result = base(number, int(basefrom), int(baseto), string=True)
-        await self.bot.say(
+        await ctx.send(
             number + ' na base ' + basefrom + ' para base ' + baseto + ' dá:\n' + result)
 
     @commands.command(name='lmgtfy',
@@ -49,7 +49,7 @@ class Programming(commands.Cog):
                       brief="let me google that for you")
     async def lmgtfy(self, ctx, *query):
         query = '+'.join(word for word in query)
-        await self.bot.say("http://lmgtfy.com/?q={}".format(query))
+        await ctx.send("http://lmgtfy.com/?q={}".format(query))
     
 def setup(bot):
     bot.add_cog(Programming(bot))     

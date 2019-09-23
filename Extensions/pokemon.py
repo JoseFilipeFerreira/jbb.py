@@ -25,7 +25,7 @@ class Pokemon(commands.Cog):
         embed.add_field(name = ":scales:Weight"          , value = pokemon.weight   , inline=True)
         embed.add_field(name = ":triangular_ruler:Height", value = pokemon.height   , inline=True)
         embed.add_field(name = ":dividers:Types"         , value = getType(pokemon) , inline=False)
-        await self.bot.say(embed=embed)
+        await ctx.send(embed=embed)
 
 def getType(pokemon):
     r = ''

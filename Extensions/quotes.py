@@ -17,63 +17,63 @@ class Quotes(commands.Cog):
                       description="random quote from JBB",
                       brief="quote from JBB")
     async def quote(self, ctx):
-        await self.bot.say(getRLine(self.quotes_dict,'quote'))
+        await ctx.send(getRLine(self.quotes_dict,'quote'))
 
     @commands.command(name='quoteA',
                       description="random quote from Students",
                       brief="quote from Students")
     async def quoteA(self, ctx):
         l = getRLine(self.quotes_dict, 'quoteA')
-        await self.bot.say("{} - {}".format(l["content"], l["name"]))
+        await ctx.send("{} - {}".format(l["content"], l["name"]))
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
                       brief="quote from Teachers")
     async def quoteP(self, ctx):
-        await self.bot.say(getRLine(self.quotes_dict, 'quoteP'))
+        await ctx.send(getRLine(self.quotes_dict, 'quoteP'))
 
     @commands.command(name='fact',
                       description="random fact of JBB",
                       brief="fact of JBB")
     async def fact(self, ctx):
-        await self.bot.say(getRLine(self.quotes_dict, 'fact'))
+        await ctx.send(getRLine(self.quotes_dict, 'fact'))
 
     @commands.command(name='dadjoke',
                       description="random dad joke",
                       brief="random dad joke")
     async def dadjoke(self, ctx):
-        await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'))
+        await ctx.send(getRLine(self.quotes_dict, 'dadjoke'))
 
     @commands.command(name='nquoteA',
                       description="number of student quotes",
                       brief="number of student quotes")
     async def nquoteA(self, ctx):
-        await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
+        await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
     @commands.command(name='nquote',
                       description="number of JBB quotes",
                       brief="number of JBB quotes")
     async def nquote(self, ctx):
-        await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
+        await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
     
     @commands.command(name='nquoteP',
                       description="number of teachers quotes",
                       brief="number of teachers quotes")
     async def nquoteP(self, ctx):
-        await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
+        await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
 
 
     @commands.command(name='nfact',
                       description="number of JBB facts",
                       brief="number of JBB facts")
     async def nfact(self, ctx):
-        await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
+        await ctx.send('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
     @commands.command(name='ndadjoke',
                       description="number of dadjokes",
                       brief="number of dadjokes")
     async def ndadjoke(self, ctx):
-        await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
+        await ctx.send('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
 
 
     @commands.command(name='ntotal',
@@ -84,7 +84,7 @@ class Quotes(commands.Cog):
         for k in self.quotes_dict.keys():
             n += int(getNLine(self.quotes_dict, k))
 
-        await self.bot.say('Existem '+ str(n) + ' frases')
+        await ctx.send('Existem '+ str(n) + ' frases')
 
     @commands.command(name='add',
                       description="add a quote [OWNER ONLY]",
@@ -92,13 +92,13 @@ class Quotes(commands.Cog):
     async def add(self, ctx, cat,*, msgs):
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
-            await self.bot.say('Invalid user')
+            await ctx.send('Invalid user')
             return
         if cat not in self.quotes_dict:
-            await self.bot.say('Invalid category')
+            await ctx.send('Invalid category')
             return
         if len(msgs) < 1:
-            await self.bot.say('Invalid quote')
+            await ctx.send('Invalid quote')
             return
         if cat == "quoteA":
             msgArr = msgs.strip().split()
@@ -109,7 +109,7 @@ class Quotes(commands.Cog):
                     tmp.append(await self.bot.get_message(ctx.message.channel, msgID))
                 msgArr = tmp
             except:
-                await self.bot.say("Invalid Messages IDs")
+                await ctx.send("Invalid Messages IDs")
                 return
             name = msgArr[0].author.name
             if msgArr[0].author.nick != None:
@@ -126,7 +126,7 @@ class Quotes(commands.Cog):
             newQ = msgs 
 
         updateQuotes(self)
-        await self.bot.say('quote "'+ newQ +'" added to `'+ cat +'`')
+        await ctx.send('quote "'+ newQ +'" added to `'+ cat +'`')
     
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",
@@ -136,13 +136,13 @@ class Quotes(commands.Cog):
         appInfo = await self.bot.application_info()
         #TODO optimize one day
         if ctx.message.author != appInfo.owner:
-            await self.bot.say('Invalid user')
+            await ctx.send('Invalid user')
         elif cat not in self.quotes_dict:
-            await self.bot.say('Invalid category')
+            await ctx.send('Invalid category')
         else:
             quote = self.quotes_dict[cat].pop()
             updateQuotes(self)
-            await self.bot.say('quote "'+ str(quote) +'" removed from `'+ cat +'`')
+            await ctx.send('quote "'+ str(quote) +'" removed from `'+ cat +'`')
 
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
@@ -160,7 +160,7 @@ class Quotes(commands.Cog):
         
         result = process.extract(search, candidates, limit=1)
 
-        await self.bot.say(result[0][0])
+        await ctx.send(result[0][0])
 
 def getRLine(quotes_dict, filename):
 #get a random quote
