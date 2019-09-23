@@ -126,12 +126,10 @@ class Quotes(commands.Cog):
                       description="remove a quote [OWNER ONLY]",
                       brief="remove a quote",
                       aliases=['delete'])
+    @commands.is_owner()
     async def remove(self, ctx, cat):
-        appInfo = await self.bot.application_info()
         #TODO optimize one day
-        if ctx.message.author != appInfo.owner:
-            await ctx.send('Invalid user')
-        elif cat not in self.quotes_dict:
+        if cat not in self.quotes_dict:
             await ctx.send('Invalid category')
         else:
             quote = self.quotes_dict[cat].pop()

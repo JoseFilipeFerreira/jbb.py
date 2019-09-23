@@ -120,7 +120,6 @@ class BattleRoyale(commands.Cog):
                       aliases=['addBr'])
     @commands.is_owner()
     async def addBattleroyale(self, ctx, action, time,*, description):
-        owner = appInfo.owner
         action = action.lower()
         time = round(float(time), 1)
         time = round_down(time * 10, 5)
@@ -151,7 +150,6 @@ class BattleRoyale(commands.Cog):
                       aliases=['removeBattleroyale', 'removeBr', 'deleteBr'])
     @commands.is_owner()
     async def deleteBattleroyale(self, ctx):
-        owner = appInfo.owner
         deleted = self.listReactions.pop()
         updateListReactions(self)
         await ctx.send(
