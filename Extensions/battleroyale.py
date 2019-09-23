@@ -19,8 +19,7 @@ class BattleRoyale(commands.Cog):
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]\n\nWinner gets 100 coins.",
                       brief="server wide battle royale",
-                      aliases=['brF'],
-                      pass_context=True)
+                      aliases=['brF'])
     async def battleroyaleFull(self, ctx):
         if not ctx.message.author.server_permissions.administrator:
             await self.bot.say("invalid user")
@@ -40,8 +39,7 @@ class BattleRoyale(commands.Cog):
     @commands.command(name='battleroyale',
                       description="create server battle royale",
                       brief="server battle royale",
-                      aliases=['br'],
-                      pass_context=True)
+                      aliases=['br'])
     async def battleroyale(self, ctx):
     #TODO: make it so that people don't cry by seeing this piece of code
     #create battle royale
@@ -68,8 +66,7 @@ class BattleRoyale(commands.Cog):
     @commands.command(name='battleroyaleKDR',
                       description="battleroyale Kill/Death Ratio",
                       brief="battleroyale Kill/Death Ratio",
-                      aliases=['brKDR'],
-                      pass_context=True)
+                      aliases=['brKDR'])
     async def battleroyaleKDR(self, ctx):
 
         if len(ctx.message.mentions) > 0:
@@ -134,8 +131,7 @@ class BattleRoyale(commands.Cog):
     @commands.command(name='addBattleroyale',
                       description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
-                      aliases=['addBr'],
-                      pass_context=True)
+                      aliases=['addBr'])
     async def addBattleroyale(self, ctx, action, time,*, description):
         appInfo = await self.bot.application_info()
         owner = appInfo.owner
@@ -170,8 +166,7 @@ class BattleRoyale(commands.Cog):
     @commands.command(name='deleteBattleroyale',
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
                       brief="remove last Battleroyale event",
-                      aliases=['removeBattleroyale', 'removeBr', 'deleteBr'],
-                      pass_context=True)
+                      aliases=['removeBattleroyale', 'removeBr', 'deleteBr'])
     async def deleteBattleroyale(self, ctx):
         appInfo = await self.bot.application_info()
         owner = appInfo.owner

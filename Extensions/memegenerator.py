@@ -10,8 +10,7 @@ class Memegenerator(commands.Cog):
     
     @commands.command(name='meme',
                       description="creates a meme with given arguments",
-                      brief="create a meme",
-                      pass_context=True)
+                      brief="create a meme")
     async def meme(self, ctx, image, *text):
     #generate meme
         image = image.lower()

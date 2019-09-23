@@ -14,8 +14,7 @@ class Casino(commands.Cog):
 
     @commands.command(name='setAllCash',
                       description="set money of everyones cash [OWNER ONLY]",
-                      brief="set all cash",
-                      pass_context=True)
+                      brief="set all cash")
     async def setAllCash(self, ctx, number):
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
@@ -31,8 +30,7 @@ class Casino(commands.Cog):
     
     @commands.command(name='beg',
                       description="get one coin every 24 hours",
-                      brief="beg for coins",
-                      pass_context=True)
+                      brief="beg for coins")
     async def beg(self, ctx):
         if ctx.message.channel.name not in ['nsfw']:
             await self.bot.say(
@@ -61,8 +59,7 @@ class Casino(commands.Cog):
 
     @commands.command(name='roulette',
                       description="Bet on a roulette spin\n\n**red/black/green** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
-                      brief="Play roulette",
-                      pass_context=True)
+                      brief="Play roulette")
     async def roulette(self, ctx, amount, bet):
         if ctx.message.channel.name not in ['nsfw']:
             await self.bot.say(
@@ -176,8 +173,7 @@ class Casino(commands.Cog):
 
     @commands.command(name='roll',
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
-                      brief="roll a dice",
-                      pass_context=True)
+                      brief="roll a dice")
     async def roll(self, ctx, * bet):
         if ctx.message.channel.name not in ['nsfw']:
             await self.bot.say(
@@ -235,8 +231,7 @@ class Casino(commands.Cog):
     
     @commands.command(name='slot',
                       description="play on a slot machine",
-                      brief="slot machine",
-                      pass_context=True)
+                      brief="slot machine")
     async def slot(self, ctx, amount):
         if ctx.message.channel.name not in ['nsfw']:
             await self.bot.say(

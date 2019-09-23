@@ -12,8 +12,7 @@ class Manage(commands.Cog):
     
     @commands.command(name='update',
                       description="update the code from github and reboot [OWNER ONLY]",
-                      brief="update the bot",
-                      pass_context=True)
+                      brief="update the bot")
     async def update(self, ctx):
         appInfo = await self.bot.application_info()
         if ctx.message.author == appInfo.owner:
@@ -25,8 +24,7 @@ class Manage(commands.Cog):
 
     @commands.command(name='setplay',
                       description="change the game tag off the bot [ADMIN ONLY]",
-                      brief="change the game tag",
-                      pass_context=True)
+                      brief="change the game tag")
     async def setplay(self, ctx,*, play):
         if ctx.message.author.server_permissions.administrator:
             await self.bot.change_presence(game=discord.Game(name=play))
@@ -36,8 +34,7 @@ class Manage(commands.Cog):
 
     @commands.command(name='faketype',
                       description="send typing to the channel [ADMIN ONLY]",
-                      brief="send typing",
-                      pass_context=True)
+                      brief="send typing")
     async def faketype(self, ctx, *playing):
         if ctx.message.author.server_permissions.administrator:
             await self.bot.delete_message(ctx.message)
@@ -48,8 +45,7 @@ class Manage(commands.Cog):
 
     @commands.command(name='info',
                       description="get info on a specific user",
-                      brief="info of a user",
-                      pass_context=True)
+                      brief="info of a user")
     async def info(self, ctx):
         for user in ctx.message.mentions:
             member = ctx.message.server.get_member(user.id)
@@ -76,8 +72,7 @@ class Manage(commands.Cog):
 
     @commands.command(name='serverinfo',
                       description="get info on the server",
-                      brief="server info",
-                      pass_context=True)
+                      brief="server info")
     async def serverinfo(self, ctx):
         server = ctx.message.server
         total = len(ctx.message.server.members)
@@ -118,8 +113,7 @@ class Manage(commands.Cog):
         
     @commands.command(name='say',
                       description="bot sends query and deletes trigger message",
-                      brief="bot sends query",
-                      pass_context=True)
+                      brief="bot sends query")
     async def say(self, ctx, *,word):
         await self.bot.delete_message(ctx.message)
         await self.bot.say(word)

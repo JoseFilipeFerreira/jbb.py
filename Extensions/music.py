@@ -10,8 +10,7 @@ class Music(commands.Cog):
 
     @commands.command(name='play',
                       description="play a given music",
-                      brief="play a given music",
-                      pass_context=True)
+                      brief="play a given music")
     async def play(self, ctx, music):
     #play a mp3 file
         #check if user in voice channel
@@ -38,8 +37,7 @@ class Music(commands.Cog):
     
     @commands.command(name='stop',
                       description="stop music and leave voice channel",
-                      brief="stop music",
-                      pass_context=True)
+                      brief="stop music")
     async def stop(self, ctx):
         appInfo = await self.bot.application_info()
         #check if user in voice channel

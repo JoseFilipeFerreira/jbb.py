@@ -11,8 +11,7 @@ class Interact(commands.Cog):
     
     @commands.command(name='hug',
                       description="hug somenone you love",
-                      brief="hug somenone you love",
-                      pass_context=True)
+                      brief="hug somenone you love")
     async def hug(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -26,8 +25,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='slap',
                       description="slap somenone you hate",
-                      brief="slap somenone you hate",
-                      pass_context=True)
+                      brief="slap somenone you hate")
     async def slap(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -41,8 +39,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='punch',
                       description="punch someone you hate",
-                      brief="punch someone you hate",
-                      pass_context=True)
+                      brief="punch someone you hate")
     async def punch(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -56,8 +53,7 @@ class Interact(commands.Cog):
     
     @commands.command(name='whip',
                       description="whip the sinner",
-                      brief="whip the sinner",
-                      pass_context=True)
+                      brief="whip the sinner")
     async def whip(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -71,8 +67,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='table',
                       description="show the world you are flipping a table",
-                      brief="flip a table",
-                      pass_context=True)
+                      brief="flip a table")
     async def table(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -86,8 +81,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='snipe',
                       description="shoot that guy down",
-                      brief="snipe someone",
-                      pass_context=True)
+                      brief="snipe someone")
     async def snipe(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -103,8 +97,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='giveup',
                       description="give up on humanity",
-                      brief="give up on humanity",
-                      pass_context=True)
+                      brief="give up on humanity")
     async def giveup(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -118,8 +111,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='tbag',
                       description="tbag that noob",
-                      brief="tbag that noob",
-                      pass_context=True)
+                      brief="tbag that noob")
     async def tbag(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -133,8 +125,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='angry',
                       description="show the world that someone made you angry",
-                      brief="show you are angry",
-                      pass_context=True)
+                      brief="show you are angry")
     async def angry(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -148,8 +139,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='touch',
                       description="touch that special someone",
-                      brief="touch that special someone",
-                      pass_context=True)
+                      brief="touch that special someone")
     async def touch(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -163,8 +153,7 @@ class Interact(commands.Cog):
 
     @commands.command(name='lick',
                       description="lick like an icecream",
-                      brief="lick like an icecream",
-                      pass_context=True)
+                      brief="lick like an icecream")
     async def lick(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:
@@ -178,8 +167,7 @@ class Interact(commands.Cog):
 
     commands.command(name='duel',
                       description="duel that guy, but remenber, you migth lose",
-                      brief="duel someone",
-                      pass_context=True) 
+                      brief="duel someone")
     async def duel(self, ctx):
         size = len(ctx.message.mentions)
         if size == 0:

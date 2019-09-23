@@ -11,8 +11,7 @@ class Store(commands.Cog):
 
     @commands.command(name='richest',
             description="get richest users",
-            brief="richests users",
-            pass_context=True)
+            brief="richests users")
     async def richest(self, ctx):
         if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
             await self.bot.say(
@@ -52,8 +51,7 @@ class Store(commands.Cog):
 
     @commands.command(name='market',
             description="Buy things to put in your iventory",
-            brief="MiEI Market",
-            pass_context=True)
+            brief="MiEI Market")
     async def market(self, ctx, *arg):
         if ctx.message.channel.name not in ['nsfw']:
             await self.bot.say(

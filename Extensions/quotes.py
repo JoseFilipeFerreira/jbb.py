@@ -15,81 +15,70 @@ class Quotes(commands.Cog):
 
     @commands.command(name='quote',
                       description="random quote from JBB",
-                      brief="quote from JBB",
-                      pass_context=True)
+                      brief="quote from JBB")
     async def quote(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict,'quote'))
 
     @commands.command(name='quoteA',
                       description="random quote from Students",
-                      brief="quote from Students",
-                      pass_context=True)
+                      brief="quote from Students")
     async def quoteA(self, ctx):
         l = getRLine(self.quotes_dict, 'quoteA')
         await self.bot.say("{} - {}".format(l["content"], l["name"]))
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
-                      brief="quote from Teachers",
-                      pass_context=True)
+                      brief="quote from Teachers")
     async def quoteP(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict, 'quoteP'))
 
     @commands.command(name='fact',
                       description="random fact of JBB",
-                      brief="fact of JBB",
-                      pass_context=True)
+                      brief="fact of JBB")
     async def fact(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict, 'fact'))
 
     @commands.command(name='dadjoke',
                       description="random dad joke",
-                      brief="random dad joke",
-                      pass_context=True)
+                      brief="random dad joke")
     async def dadjoke(self, ctx):
         await self.bot.say(getRLine(self.quotes_dict, 'dadjoke'))
 
     @commands.command(name='nquoteA',
                       description="number of student quotes",
-                      brief="number of student quotes",
-                      pass_context=True)
+                      brief="number of student quotes")
     async def nquoteA(self, ctx):
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
     @commands.command(name='nquote',
                       description="number of JBB quotes",
-                      brief="number of JBB quotes",
-                      pass_context=True)
+                      brief="number of JBB quotes")
     async def nquote(self, ctx):
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
     
     @commands.command(name='nquoteP',
                       description="number of teachers quotes",
-                      brief="number of teachers quotes",
-                      pass_context=True)
+                      brief="number of teachers quotes")
     async def nquoteP(self, ctx):
         await self.bot.say('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
 
 
     @commands.command(name='nfact',
                       description="number of JBB facts",
-                      brief="number of JBB facts",
-                      pass_context=True)
+                      brief="number of JBB facts")
     async def nfact(self, ctx):
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
     @commands.command(name='ndadjoke',
                       description="number of dadjokes",
-                      brief="number of dadjokes",
-                      pass_context=True)
+                      brief="number of dadjokes")
     async def ndadjoke(self, ctx):
         await self.bot.say('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
 
 
     @commands.command(name='ntotal',
                       description="total number of quotes",
-                      brief="total number of quotes",
-                      pass_context=True)
+                      brief="total number of quotes")
     async def ntotal(self, ctx):
         n = 0
         for k in self.quotes_dict.keys():
@@ -99,8 +88,7 @@ class Quotes(commands.Cog):
 
     @commands.command(name='add',
                       description="add a quote [OWNER ONLY]",
-                      brief="add a quote",
-                      pass_context=True)
+                      brief="add a quote")
     async def add(self, ctx, cat,*, msgs):
         appInfo = await self.bot.application_info()
         if ctx.message.author != appInfo.owner:
@@ -143,8 +131,7 @@ class Quotes(commands.Cog):
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",
                       brief="remove a quote",
-                      aliases=['delete'],
-                      pass_context=True)
+                      aliases=['delete'])
     async def remove(self, ctx, cat):
         appInfo = await self.bot.application_info()
         #TODO optimize one day
@@ -160,8 +147,7 @@ class Quotes(commands.Cog):
     @commands.command(name='quoteS',
                       description="search a quote using fuzzy search",
                       brief="search a quote",
-                      aliases=['grep'],
-                      pass_context=True)
+                      aliases=['grep'])
     async def quoteS(self, ctx, *, search):
     #search a quote using fuzzysearching
         quoteA = list(map(

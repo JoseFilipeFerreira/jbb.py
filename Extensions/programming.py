@@ -13,8 +13,7 @@ class Programming(commands.Cog):
 
     @commands.command(name='helpHaskell',
                       description="give overlycomplicated function that returns the double of a given number in haskell",
-                      brief="small program in haskell",
-                      pass_context=True)
+                      brief="small program in haskell")
     async def helpHaskell(self, ctx):
         doublFct = ['double = foldr (+) 0 . take 2 . repeat', 
             'double = foldr (+) 0 . take 2 . cycle . return',
@@ -27,22 +26,19 @@ class Programming(commands.Cog):
 
     @commands.command(name='helpC',
                       description="give simple function in C",
-                      brief="small program in C",
-                      pass_context=True)
+                      brief="small program in C")
     async def helpC(self, ctx):
         await self.bot.say('```C\nint main()\n{\n    printf("wololo");\n    return 0;\n}\n```')
         
     @commands.command(name='quicksort',
                       description="help understand quicksort",
-                      brief="quicksort is hard guys",
-                      pass_context=True)
+                      brief="quicksort is hard guys")
     async def quicksort(self, ctx):
         await self.bot.say('https://www.youtube.com/watch?v=ywWBy6J5gz8')
 
     @commands.command(name='conv',
                       description="convert between numeric bases",
-                      brief="convert between bases",
-                      pass_context=True)
+                      brief="convert between bases")
     async def conv(self, ctx, number, basefrom, baseto):
         result = base(number, int(basefrom), int(baseto), string=True)
         await self.bot.say(
@@ -50,8 +46,7 @@ class Programming(commands.Cog):
 
     @commands.command(name='lmgtfy',
                       description="give link for let me google that for you",
-                      brief="let me google that for you",
-                      pass_context=True)
+                      brief="let me google that for you")
     async def lmgtfy(self, ctx, *query):
         query = '+'.join(word for word in query)
         await self.bot.say("http://lmgtfy.com/?q={}".format(query))

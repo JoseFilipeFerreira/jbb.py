@@ -14,8 +14,7 @@ class Biography(commands.Cog):
     @commands.command(
         name='bio',
         description="send a funy description of a given user",
-        brief="get one's biography",
-        pass_context=True)
+        brief="get one's biography")
     async def bio(self, ctx):
         for user in ctx.message.mentions:
             member = ctx.message.server.get_member(user.id)
@@ -55,8 +54,7 @@ class Biography(commands.Cog):
     @commands.command(
         name='bioKey',
         description="**MODIFIERS:**\n**list:**   send all available bio keys\n**add:**    add a bio key\n**swap:**   swap two bioKeys' position\n**delete:** delete a given position",
-        brief="alter bio keys",
-        pass_context=True)
+        brief="alter bio keys")
     async def bioKey(self, ctx, modifier,* text):
         if not ctx.message.author.server_permissions.administrator:
             await self.bot.say("invalid user")
@@ -108,8 +106,7 @@ class Biography(commands.Cog):
     @commands.command(
         name='editBio',
         description="add a funy description of a given user\n**ACTIONS:**\n**delete:** delete a given position\n**add:** add a description",
-        brief="add one's biography",
-        pass_context=True)
+        brief="add one's biography")
     async def editBio(self, ctx, member,  action, bioKey, *, text):
         if not ctx.message.author.server_permissions.administrator:
             await self.bot.say("invalid user")

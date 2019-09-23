@@ -38,8 +38,7 @@ class Api(commands.Cog):
 
     @commands.command(name='ask',
                       description="replies to a query with the short text answer of the wolfram alpha API",
-                      brief="wolfram alpha API",
-                      pass_context=True)
+                      brief="wolfram alpha API")
     async def ask(self, ctx, *, query):
         res = client.query(query)
         if res['@success'] == 'false':
@@ -53,8 +52,7 @@ class Api(commands.Cog):
     @commands.command(name='cantina',
                       description="menu of the uminho cantee",
                       brief="menu",
-                      aliases=['ementa'],
-                      pass_context=True)
+                      aliases=['ementa'])
     async def cantina(self, ctx ,* menu):
         #call calendar API
         calendar_ids = get_calendar_ids()
@@ -91,8 +89,7 @@ class Api(commands.Cog):
 
     @commands.command(name='translate',
                       description="translate a given query to portuguese",
-                      brief="translate to PT",
-                      pass_context=True)
+                      brief="translate to PT")
     async def translate(self, ctx, *, query):
         translator = Translator()
         translation = translator.translate(query, dest='pt')

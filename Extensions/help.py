@@ -11,8 +11,7 @@ class Help(commands.Cog):
 
     @commands.command(name="help",
                       description="Sends help for a specific command or cog",
-                      brief="shows this message",
-                      pass_context=True)
+                      brief="shows this message")
     async def help(self, ctx, * command_or_cog):
         cogs = self.bot.cogs
         commands = self.bot.commands
@@ -31,22 +30,19 @@ class Help(commands.Cog):
     
     @commands.command(name='helpPlay',
                       description="list all available musics",
-                      brief="all available musics",
-                      pass_context=True)
+                      brief="all available musics")
     async def helpPlay(self, ctx):
         await MenuGenerateEmbed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
 
     @commands.command(name='helpImage',
                       description="list all available Images",
-                      brief="all available Images",
-                      pass_context=True)
+                      brief="all available Images")
     async def helpImage(self, ctx):
         await MenuGenerateEmbed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
 
     @commands.command(name='helpGif',
                       description="list all available gifs",
-                      brief="all available gifs",
-                      pass_context=True)
+                      brief="all available gifs")
     async def helpGif(self, ctx):
         await MenuGenerateEmbed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
 

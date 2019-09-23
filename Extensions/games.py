@@ -12,8 +12,7 @@ class Games(commands.Cog):
     
     @commands.command(name='flip',
                       description="flip a coin",
-                      brief="flip a coin",
-                      pass_context=True)
+                      brief="flip a coin")
     async def flip(self, ctx):
         n = randint(0,10000)
         line = 'WTF the coin landed upright!'
@@ -24,8 +23,7 @@ class Games(commands.Cog):
     
     @commands.command(name='pick',
                       description="pick a random card from a deck",
-                      brief="pick a card",
-                      pass_context=True)
+                      brief="pick a card")
     async def pick(self, ctx):
         simbolo = ['Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei']
         naipe = ['paus', 'ouros', 'copas', 'espadas']
@@ -34,8 +32,7 @@ class Games(commands.Cog):
     
     @commands.command(name='rps',
                       description="play rock paper scissors against the bot",
-                      brief="play rock paper scissors",
-                      pass_context=True)
+                      brief="play rock paper scissors")
     async def rps(self, ctx, player):
         appInfo = await self.bot.application_info()
         if(player in ['rock','paper','scissors','r','p','s']):
@@ -57,8 +54,7 @@ class Games(commands.Cog):
     
     @commands.command(name='choose',
                       description="choose from the query",
-                      brief="choose from the query",
-                      pass_context=True)
+                      brief="choose from the query")
     async def choose(self, ctx, *choices : str):
         """Chooses between multiple choices."""
         if all(('@' not in choice) for choice in choices):
@@ -66,16 +62,14 @@ class Games(commands.Cog):
     
     @commands.command(name='magicball',
                       description="gives answer from very likely to impossible",
-                      brief="like a 8ball",
-                      pass_context=True)
+                      brief="like a 8ball")
     async def magicball(self, ctx):
         a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
         await self.bot.say(choice(a))
  
     @commands.command(name='guess',
                       description="guess the coin the bot is thinking about",
-                      brief="guess coin",
-                      pass_context=True)
+                      brief="guess coin")
     async def guess(self, ctx):
         await self.bot.say("Guess how the coin landed (head/tail)")
         
@@ -102,8 +96,7 @@ class Games(commands.Cog):
     @commands.command(name='vote',
                       description="creates a poll with given query or default text",
                       brief="create a poll",
-                      aliases=['poll'],
-                      pass_context=True)
+                      aliases=['poll'])
     async def vote(self, ctx, *quote):
     #create poll
         if not quote:
