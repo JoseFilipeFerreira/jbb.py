@@ -108,14 +108,11 @@ class Quotes(commands.Cog):
             except:
                 await ctx.send("Invalid Messages IDs")
                 return
-            name = msgArr[0].author.name
-            if msgArr[0].author.nick != None:
-                name = msgArr[0].author.nick
             content = "\n".join(list(map(lambda x: x.content,msgArr)))
             
             self.quotes_dict[cat].append({
                 "content": content,
-                "name": name,
+                "name": msgArr[0].author.display_name,
                 "id": msgArr[0].author.id})
             newQ = "{} - {}".format(content, name) 
         else:

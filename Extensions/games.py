@@ -105,8 +105,8 @@ class Games(commands.Cog):
            quote = ' '.join(word for word in quote)
         await ctx.message.delete()
         vote = await ctx.send('**{0}** (poll by {1})'.format(quote, ctx.message.author.mention))
-        await self.bot.add_reaction(vote, '\U0000274C')
-        await self.bot.add_reaction(vote, '\U00002705')
+        await vote.add_reaction('\U0000274C')
+        await vote.add_reaction('\U00002705')
 
 def getRPS():
     n = randint(0,2)

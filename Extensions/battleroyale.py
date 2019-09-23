@@ -72,11 +72,8 @@ class BattleRoyale(commands.Cog):
                     description="KDR Leaderboard",
                     color=self.bot.embed_color
                 )
-                name = member.name
-                if member.nick != None:
-                    name = member.nick
                 embed.add_field(
-                    name=name,
+                    name=member.display_name,
                     value="KDR: {0}/{1}".format(win["kills"], win["death"]),
                 inline=False
                 )
@@ -106,12 +103,9 @@ class BattleRoyale(commands.Cog):
         for i in range(3):
             win = arrayKDR[i]
             member = ctx.message.server.get_member(win["id"])
-            name = member.name
-            if member.nick != None:
-                name = member.nick
 
             embed.add_field(
-                name="{0}. {1}".format(i + 1, name),
+                name="{0}. {1}".format(i + 1, member.display_name),
                 value="KDR: {0}/{1}".format(win["kills"], win["death"]),
                 inline=False)
             
@@ -273,11 +267,8 @@ def correctListUsers(ctx, users):
 
     def changeNick(user):
         member = ctx.message.guild.get_member(user.id)
-        name = member.name
-        if member.nick != None:
-            name = member.nick
         return {
-                "name": name,
+                "name": member.display_name,
                 "id": user.id,
                 "kills": 0
             }

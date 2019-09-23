@@ -35,12 +35,9 @@ class Store(commands.Cog):
         for i in range(3):
             cash = money[i]
             member = ctx.message.server.get_member(cash["id"])
-            name = member.name
-            if member.nick != None:
-                name = member.nick
 
             embed.add_field(
-                    name="{0}. {1}".format(i + 1, name),
+                    name="{0}. {1}".format(i + 1, member.display_name),
                     value="Cash: {0}".format(cash["cash"]),
                     inline=False)
 

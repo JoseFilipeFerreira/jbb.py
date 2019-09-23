@@ -18,16 +18,13 @@ class Biography(commands.Cog):
     async def bio(self, ctx):
         for user in ctx.message.mentions:
             member = ctx.message.guild.get_member(user.id)
-            name = member.name
-            if member.nick != None:
-                name = member.nick
   
             embed_colour = self.bot.embed_color 
             if member.colour != member.colour.default():
                 embed_colour = member.colour.value
             
             embed = discord.Embed(
-                title = 'Biography of {}'.format(name),
+                title = 'Biography of {}'.format(member.display_name),
                 color=embed_colour
             )
             embed.set_thumbnail(
