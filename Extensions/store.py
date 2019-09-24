@@ -49,103 +49,118 @@ class Store(commands.Cog):
         embed = discord.Embed(
                 title = 'Market de {}'.format(ctx.message.guild.name),
                 color=self.bot.embed_color)
-
         embed.set_thumbnail(
                 url="http://pixelartmaker.com/art/9a22f122756ab01.png")
 
         if not store:
-            for store in self.bot.market.keys():
-                embed.add_field(
-                    name="{0} {1}".format(
-                        self.bot.market[store]["simbol"],
-                        store),
-                    value=self.bot.market[store]["description"])
-            
-            embed.set_footer(text="*market [store] to see one store")
-
-            await ctx.send(embed=embed)
-        
+            await market_stalls(self, ctx, embed)
         elif not tool:
-            store = store.lower()
-            if store in self.bot.market:
-                store_items(
-                    embed,
-                    self.bot.market[store]["stat"],
-                    self.bot.market[store]["contents"])
-                
-                embed.set_footer(
-                    text="*market {0} [tool] to buy from store".format(store))
-            else:
-                embed.add_field(
-                    name="Invalid Store",
-                    value="*market to get valid stores")
-            await ctx.send(embed=embed)
-
+            await stall(self, ctx, embed, store)
         elif store and tool:
-            store = store.lower()
-            prod  = tool.lower()
-            if store not in self.bot.market:
-                                embed.add_field(
-                    name="Invalid Store",
-                    value="*market to get valid stores")
-            else:
-                prod_dic =  find(self.bot.market[store]["contents"], "name", prod)
-                if prod_dic == None:
-                    embed.add_field(
-                        name="Invalid Product",
-                        value="*market {0} to get valid products in this store".format(store))
-                else:
-                    price = prod_dic["cost"]
-                    inventory = get_inventory(self.bot, ctx.message.author.id)
-                    if not enough_cash(self.bot, ctx.message.author.id, price):
-                        embed.add_field(
-                            name="Not enough money",
-                            value="Item is too expensive")
-                        await ctx.send(embed=embed)
-                    else:
-                        embed.add_field(
-                            name="{0}{1}".format(
-                                prod_dic["simbol"],
-                                prod_dic["name"]),
-                            value="cost: {0}\nstat: {1}".format(
-                                prod_dic["cost"],
-                                prod_dic["stat"]))
+            await store_interact(self, ctx, embed, store, tool)
+
+async def store_interact(self, ctx, embed, store, tool):
+    store = store.lower()
+    prod  = tool.lower()
+    if store not in self.bot.market:
+        embed.add_field(
+            name="Invalid Store",
+            value="*market to get valid stores")
+        return
+
+    prod_dic =  find(self.bot.market[store]["contents"], "name", prod)
+    if prod_dic == None:
+        embed.add_field(
+            name="Invalid Product",
+            value="*market {0} to get valid products in this store".format(store))
+        ctx.send(embed=embed)
+        return
+
+    price = prod_dic["cost"]
+    if not enough_cash(self.bot, ctx.message.author.id, price):
+        embed.add_field(
+            name="Not enough money",
+            value="Item is too expensive")
+        await ctx.send(embed=embed)
+        return
+
+    inventory = get_inventory(self.bot, ctx.message.author.id)
+
+    embed.add_field(
+        name="{0}{1}".format(
+            prod_dic["simbol"],
+            prod_dic["name"]),
+        value="cost: {0}\nstat: {1}".format(
+            prod_dic["cost"],
+            prod_dic["stat"]))
+    
+    embed.add_field(
+        name="**Replace**",
+        value="{0} {1}\nstat: {2}".format(
+            inventory["gear"][store]["simbol"],
+            inventory["gear"][store]["name"],
+            inventory["gear"][store]["stats"])) 
+
+    embed.set_footer(
+        text="select to buy")
+
+    spend_cash(self.bot, ctx.message.author.id, price)
+    
+    msg = await ctx.send(embed=embed)
+    await msg.add_reaction('\U0000274C')
+    await msg.add_reaction('\U00002705')
+    
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
+    
+    try:
+         reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+    except asyncio.TimeoutError:
+        await msg.clear_reactions()
+        give_cash(self.bot, ctx.message.author.id, price)
+        return
+
+    await msg.clear_reactions()
+
+    if reaction.emoji ==  '\U0000274C':
+        give_cash(self.bot, ctx.message.author.id, price)
+        return
+
+    inventory["gear"][store]["simbol"] = prod_dic["simbol"]
+    inventory["gear"][store]["name"]   = prod_dic["name"]
+    inventory["gear"][store]["stats"]  = prod_dic["stat"]
+    
+    await ctx.send("Transaction was successfull")
+    save_stats(self.bot)
+
+
+async def market_stalls(self, ctx, embed):
+    for store in self.bot.market.keys():
+        embed.add_field(
+            name="{0} {1}".format(
+                self.bot.market[store]["simbol"],
+                store),
+            value=self.bot.market[store]["description"])
+    
+    embed.set_footer(text="*market [store] to see one store")
+
+    await ctx.send(embed=embed)
+
+async def stall(self, ctx, embed, store):
+    store = store.lower()
+    if store in self.bot.market:
+        store_items(
+            embed,
+            self.bot.market[store]["stat"],
+            self.bot.market[store]["contents"])
         
-                        embed.add_field(
-                            name="**Replace**",
-                            value="{0} {1}\nstat: {2}".format(
-                                inventory["gear"][store]["simbol"],
-                                inventory["gear"][store]["name"],
-                                inventory["gear"][store]["stats"])) 
-
-                        embed.set_footer(
-                            text="[yes/no] to buy")
-
-                        spend_cash(self.bot, ctx.message.author.id, price)
-                        
-                        await ctx.send(embed=embed)
-
-                        def guess_check(m):
-                             return m.content.lower() == 'yes' or m.content.lower() == 'no'
-        
-                        answer = await self.bot.wait_for_message(
-                            timeout=10.0,
-                            author=ctx.message.author,
-                            check=guess_check)
-            
-                        if answer is None:
-                            give_cash(self.bot, ctx.message.author.id, price)
-                            return
-                        elif answer.content.lower() == 'no':
-                            give_cash(self.bot,ctx.message.author.id, price)
-                            return
-                        
-                        inventory["gear"][store]["simbol"] = prod_dic["simbol"]
-                        inventory["gear"][store]["name"]   = prod_dic["name"]
-                        inventory["gear"][store]["stats"]  = prod_dic["stat"]
-                        
-                        await ctx.send("Transaction was successfull")
-                        save_stats(bot)
+        embed.set_footer(
+            text="*market {0} [tool] to buy from store".format(store))
+    else:
+        embed.add_field(
+            name="Invalid Store",
+            value="*market to get valid stores")
+    await ctx.send(embed=embed)
 
 def store_items(embed, stat, items):
     def compare(item):
