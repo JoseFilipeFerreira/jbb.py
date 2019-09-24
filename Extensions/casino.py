@@ -5,6 +5,7 @@ import asyncio
 import time
 from random import randint, choice
 from aux.cash import enough_cash, spend_cash, give_cash, RepresentsInt, save_stats, hours_passed 
+from aux.inventory import get_stat
 from PIL import Image, ImageDraw
 
 class Casino(commands.Cog):
@@ -15,41 +16,25 @@ class Casino(commands.Cog):
     @commands.command(name='beg',
                       description="get one coin every 24 hours",
                       brief="beg for coins")
+    @commands.is_nsfw()
     async def beg(self, ctx):
-        if ctx.message.channel.name not in ['nsfw']:
-            await ctx.send(
-                "This command must be done in #nsfw"
-            )
-            return
         id = ctx.message.author.id
-        if id not in self.bot.stats:
-            self.bot.stats[id] = {"death": 0, "wins": 0, "kills": 0, "cash": 1, "last_beg": time.time()}
+        stat = get_stat(self.bot, id)
+        if hours_passed(stat["last_beg"], time.time()) > 24:
+            stat["last_beg"] = time.time()
+            give_cash(self.bot, id, 1)
+            await ctx.send("Have 1 coin.")
         else:
-            if "last_beg" not in self.bot.stats[id]:
-                self.bot.stats[id]["last_beg"] = time.time()
-                give_cash(self.bot, id, 1)
-                await ctx.send("Have 1 coin.")
-            
-            elif hours_passed(self.bot.stats[id]["last_beg"], time.time()) > 24:
-                self.bot.stats[id]["last_beg"] = time.time()
-                give_cash(self.bot, id, 1)
-                await ctx.send("Have 1 coin.")
-            
-            else:
-                await ctx.send("No coin for you.")
-        self.bot.stats[id]["bet"] = True
+            await ctx.send("No coin for you.")
+        stat["bet"] = True
         save_stats(self.bot)
 
 
     @commands.command(name='roulette',
                       description="Bet on a roulette spin\n\n**red/black/green** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
                       brief="Play roulette")
+    @commands.is_nsfw()
     async def roulette(self, ctx, amount, bet):
-        if ctx.message.channel.name not in ['nsfw']:
-            await ctx.send(
-                "This command must be done in #nsfw"
-            )
-            return
         rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
         if not RepresentsInt(amount):
             await ctx.send("Invalid amount")
@@ -158,12 +143,8 @@ class Casino(commands.Cog):
     @commands.command(name='roll',
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
                       brief="roll a dice")
+    @commands.is_nsfw()
     async def roll(self, ctx, * bet):
-        if ctx.message.channel.name not in ['nsfw']:
-            await ctx.send(
-                "This command must be done in #nsfw"
-            )
-            return
         if len(bet) == 0:
             await ctx.send('You rolled a ' + str(randint(1,20)))
 
@@ -216,12 +197,8 @@ class Casino(commands.Cog):
     @commands.command(name='slot',
                       description="play on a slot machine",
                       brief="slot machine")
+    @commands.is_nsfw()
     async def slot(self, ctx, amount):
-        if ctx.message.channel.name not in ['nsfw']:
-            await ctx.send(
-                "This command must be done in #nsfw"
-            )
-            return
         wheels_array = []
         for emoji in ctx.message.server.emojis:
             wheels_array.append(str(emoji))

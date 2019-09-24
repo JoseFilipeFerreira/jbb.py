@@ -97,14 +97,11 @@ class Games(commands.Cog):
                       description="creates a poll with given query or default text",
                       brief="create a poll",
                       aliases=['poll'])
-    async def vote(self, ctx, *quote):
-    #create poll
+    async def vote(self, ctx, *, quote = None):
         if not quote:
            quote = 'Vote here'
-        else:
-           quote = ' '.join(word for word in quote)
         await ctx.message.delete()
-        vote = await ctx.send('**{0}** (poll by {1})'.format(quote, ctx.message.author.mention))
+        vote = await ctx.send('**{0}**\n(poll by {1})'.format(quote, ctx.message.author.mention))
         await vote.add_reaction('\U0000274C')
         await vote.add_reaction('\U00002705')
 

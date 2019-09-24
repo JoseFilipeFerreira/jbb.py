@@ -12,16 +12,14 @@ class Store(commands.Cog):
     @commands.command(name='richest',
             description="get richest users",
             brief="richests users")
+    @commands.is_nsfw()
     async def richest(self, ctx):
-        if ctx.message.channel.name not in ['nsfw', 'bot-commands']:
-            await ctx.send(
-                "This command must be done in #nsfw or #bot-commands"
-            )
-            return
         money = []
         embed = discord.Embed(
-                title = 'Economy no DI',
-                color=self.bot.embed_color)
+            title = 'Economy no DI',
+            color=self.bot.embed_color)
+        embed.set_thumbnail(
+            url="http://pixelartmaker.com/art/89daa821cd53576.png") 
 
         for id in self.bot.stats:
             money.append({
@@ -37,32 +35,25 @@ class Store(commands.Cog):
             member = ctx.message.server.get_member(cash["id"])
 
             embed.add_field(
-                    name="{0}. {1}".format(i + 1, member.display_name),
-                    value="Cash: {0}".format(cash["cash"]),
-                    inline=False)
-
-            embed.set_thumbnail(
-                    url="http://pixelartmaker.com/art/89daa821cd53576.png") 
+                name="{0}. {1}".format(i + 1, member.display_name),
+                value="Cash: {0}".format(cash["cash"]),
+                inline=False)
 
         await ctx.send(embed=embed)
 
     @commands.command(name='market',
             description="Buy things to put in your iventory",
             brief="MiEI Market")
-    async def market(self, ctx, *arg):
-        if ctx.message.channel.name not in ['nsfw']:
-            await ctx.send(
-                "This command must be done in #nsfw"
-            )
-            return
+    #@commands.is_nsfw()
+    async def market(self, ctx, store = None, *,tool = None):
         embed = discord.Embed(
-                title = 'Market de {}'.format(ctx.message.server.name),
+                title = 'Market de {}'.format(ctx.message.guild.name),
                 color=self.bot.embed_color)
 
         embed.set_thumbnail(
                 url="http://pixelartmaker.com/art/9a22f122756ab01.png")
 
-        if len(arg) == 0:
+        if not store:
             for store in self.bot.market.keys():
                 embed.add_field(
                     name="{0} {1}".format(
@@ -74,8 +65,8 @@ class Store(commands.Cog):
 
             await ctx.send(embed=embed)
         
-        elif len(arg) == 1:
-            store = arg[0].lower()
+        elif not tool:
+            store = store.lower()
             if store in self.bot.market:
                 store_items(
                     embed,
@@ -90,9 +81,9 @@ class Store(commands.Cog):
                     value="*market to get valid stores")
             await ctx.send(embed=embed)
 
-        elif len(arg) > 1:
-            store = arg[0].lower()
-            prod  = " ".join(arg[1:]).lower()
+        elif store and tool:
+            store = store.lower()
+            prod  = tool.lower()
             if store not in self.bot.market:
                                 embed.add_field(
                     name="Invalid Store",
@@ -148,12 +139,10 @@ class Store(commands.Cog):
                         elif answer.content.lower() == 'no':
                             give_cash(self.bot,ctx.message.author.id, price)
                             return
-
                         
                         inventory["gear"][store]["simbol"] = prod_dic["simbol"]
                         inventory["gear"][store]["name"]   = prod_dic["name"]
                         inventory["gear"][store]["stats"]  = prod_dic["stat"]
-
                         
                         await ctx.send("Transaction was successfull")
                         save_stats(bot)

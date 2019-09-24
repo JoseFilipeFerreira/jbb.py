@@ -25,11 +25,9 @@ class Biography(commands.Cog):
             
             embed = discord.Embed(
                 title = 'Biography of {}'.format(member.display_name),
-                color=embed_colour
-            )
+                color=embed_colour)
             embed.set_thumbnail(
-                url="https://img9.androidappsapk.co/300/e/a/2/com.sdvios.png"
-            )
+                url="https://img9.androidappsapk.co/300/e/a/2/com.sdvios.png")
 
             if user.id in self.biographies:
                 bio = self.biographies[user.id]
@@ -37,8 +35,7 @@ class Biography(commands.Cog):
                     if key in bio:
                         embed.add_field(
                             name=key,
-                            value="\n".join(bio[key])
-                        )
+                            value="\n".join(bio[key]))
 
             embed.add_field(
                 name="🔫KDR",
@@ -46,7 +43,7 @@ class Biography(commands.Cog):
             
             embed.set_footer(text = "Biography")
             await ctx.send(embed=embed)
-            await ctx.send(embed=get_embed_inventory(self.bot, user.id, name, embed_colour))
+            await ctx.send(embed=get_embed_inventory(self.bot, user.id, member.display_name, embed_colour))
 
     @commands.command(
         name='bioKey',
@@ -98,16 +95,7 @@ class Biography(commands.Cog):
         description="add a funy description of a given user\n**ACTIONS:**\n**delete:** delete a given position\n**add:** add a description",
         brief="add one's biography")
     @commands.is_owner()
-    async def editBio(self, ctx, member,  action, bioKey, *, text):
-        #check member
-        server = ctx.message.server
-        memberId = list(filter(lambda x: x.isdigit(), member))
-        memberId = "".join(memberId)
-        if not len(memberId) in [17, 18]:
-            await self.bot.say("Invalid member")
-            return
-        member = server.get_member(memberId)
-        
+    async def editBio(self, ctx, member : discord.Member,  action, bioKey, *, text):
         #check bioKey
         if bioKey not in self.order:
             await self.bot.say("Invalid bioKey")

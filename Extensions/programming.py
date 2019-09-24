@@ -39,17 +39,17 @@ class Programming(commands.Cog):
     @commands.command(name='conv',
                       description="convert between numeric bases",
                       brief="convert between bases")
-    async def conv(self, ctx, number, basefrom, baseto):
-        result = base(number, int(basefrom), int(baseto), string=True)
-        await ctx.send(
-            number + ' na base ' + basefrom + ' para base ' + baseto + ' dá:\n' + result)
+    async def conv(self, ctx, number, basefrom : int, baseto :int ):
+        result = base(number, basefrom, baseto, string=True)
+        await ctx.send('{0} na base {1} para base {2} dá:\n{3}'
+                .format(number, basefrom, baseto, result))
 
     @commands.command(name='lmgtfy',
                       description="give link for let me google that for you",
                       brief="let me google that for you")
     async def lmgtfy(self, ctx, *query):
         query = '+'.join(word for word in query)
-        await ctx.send("http://lmgtfy.com/?q={}".format(query))
+        await ctx.send("http://lmgtfy.com/?q={0}".format(query))
     
 def setup(bot):
     bot.add_cog(Programming(bot))     

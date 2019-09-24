@@ -157,9 +157,7 @@ class BattleRoyale(commands.Cog):
                 .format(
                     deleted["action"],
                     deleted["time"],
-                    deleted["description"]
-                )
-        )  
+                    deleted["description"]))  
 
 async def sendAllDailyReports(self, ctx, users):
 #gets a list of all users and sends all days
@@ -229,8 +227,8 @@ async def sendDaylyReport(self, ctx, day, result):
     embed = discord.Embed(
         title = 'DAY {}'.format(day),
         description=result,
-        color=self.bot.embed_color
-    )
+        color=self.bot.embed_color)
+
     await ctx.send(embed=embed)
 
 async def sendInitialReport(self,ctx):
@@ -238,11 +236,11 @@ async def sendInitialReport(self,ctx):
     embed = discord.Embed(
         title = 'Battle Royale no DI',
         description='Result of the battle',
-        color=self.bot.embed_color
-    )
+        color=self.bot.embed_color)
+
     embed.set_thumbnail(
-    url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
-    )
+        url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
+
     await ctx.send(embed=embed)
 
 async def thirtysecondtyping(self, ctx):
@@ -266,10 +264,9 @@ def correctListUsers(ctx, users):
     def changeNick(user):
         member = ctx.message.guild.get_member(user.id)
         return {
-                "name": member.display_name,
-                "id": user.id,
-                "kills": 0
-            }
+            "name": member.display_name,
+            "id": user.id,
+            "kills": 0}
 
     users = list(map(changeNick , users))
     users = [i for n, i in enumerate(users) if i not in users[n+1:]]
@@ -280,15 +277,15 @@ async def sendChallenge(self, ctx):
     embed = discord.Embed(
         title = 'Battle Royale no DI',
         description='{} started a battle royale'.format(ctx.message.author.mention),
-        color=self.bot.embed_color
-    )
+        color=self.bot.embed_color)
+
     embed.set_thumbnail(
-        url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png"
-    )
+        url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
+
     embed.add_field(
         name='Pick your weapon below if you wish to participate',
-        value='(you have approximately 30 seconds)'
-    )
+        value='(you have approximately 30 seconds)')
+
     msg = await ctx.send(embed=embed)
     await msg.add_reaction('\U0001F52B')
     #update sent embed so it contains the reaction
@@ -326,8 +323,8 @@ def victoryEmbed(self, user):
     embed = discord.Embed(
         title = 'Winner',
         description=user["name"],
-        color=self.bot.embed_color
-    )
+        color=self.bot.embed_color)
+
     embed.set_footer(text = "Kills: {}".format(user["kills"]))
     return embed
 
