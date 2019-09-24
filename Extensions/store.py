@@ -44,7 +44,7 @@ class Store(commands.Cog):
     @commands.command(name='market',
             description="Buy things to put in your iventory",
             brief="MiEI Market")
-    #@commands.is_nsfw()
+    @commands.is_nsfw()
     async def market(self, ctx, store = None, *,tool = None):
         embed = discord.Embed(
                 title = 'Market de {}'.format(ctx.message.guild.name),
