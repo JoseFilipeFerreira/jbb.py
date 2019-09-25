@@ -66,8 +66,7 @@ class Api(commands.Cog):
             timeMin = now,
             maxResults = 3,
             singleEvents = True,
-            orderBy = 'startTime'
-        ).execute()
+            orderBy = 'startTime').execute()
 
         events = events_result.get('items', [])
 

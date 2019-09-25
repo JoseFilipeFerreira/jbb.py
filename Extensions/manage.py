@@ -37,10 +37,10 @@ class Manage(commands.Cog):
                 embed_colour = member.colour.value
             embed = discord.Embed(
                     title=str(user),
-                    url=user.avatar_url,
+                    url=str(user.avatar_url_as(format="png")),
                     description=user.display_name,
                     color=embed_colour)
-            embed.set_thumbnail(url=user.avatar_url)
+            embed.set_thumbnail(url=str(user.avatar_url_as(format="png")))
             embed.add_field(name='Is bot', value=user.bot, inline=True)
             embed.add_field(name='Voice channel', value=user.voice, inline=True)
             role_list = "None"

@@ -31,9 +31,7 @@ def main():
     bot.MARKET_PATH='./db/market.json'
     bot.REPLIES_PATH='./db/replies.json'
     
-    #default color for embeds (yellow)
-    bot.embed_color = 0xffff00
-
+   
     #adding to bot object available media
     bot.imagesMap = {}
     bot.gifsMap = {}
@@ -76,6 +74,9 @@ def main():
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name='*help'))
 
+    #default color for embeds
+    bot.embed_color = get_bot_color(bot)
+
     embed = discord.Embed(
         title="Starting up",
         description="bot started at " + str(datetime.now()),
@@ -113,6 +114,8 @@ async def on_ready():
         print(guild.name)
     print('-----------------------------')
     print(bot.command_prefix)
+    print(bot.embed_color)
+
 
 @bot.event
 async def on_message(message):
@@ -171,6 +174,13 @@ async def on_member_join(member):
 async def on_member_remove(member):
     bot.stats.pop(member.id, None)
     save_stats(bot)
+
+def get_bot_color(bot):
+    bGuild, color = 0, 0xffff00
+    for guild in bot.guilds:
+        if len(guild.members) > bGuild:
+            bGuild, color = len(guild.members), guild.me.color
+    return color
 
 def create_list_extensions():
 #create a list with possible extensions
