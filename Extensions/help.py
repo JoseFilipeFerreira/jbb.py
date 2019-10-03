@@ -17,10 +17,12 @@ class Help(commands.Cog):
             await help_all(self, ctx)
         elif command_or_cog in self.bot.cogs:
             await help_cog(self, ctx, command_or_cog)
-        elif command_or_cog in self.bot.walk_commands():
+        elif command_or_cog in map(lambda e: str(e), list(self.bot.walk_commands())):
             await help_command(self, ctx, command_or_cog)
         else:
             await ctx.send("Command or cog not found")
+
+        print(list(self.bot.walk_commands()))
     
     @commands.command(name='helpPlay',
                       description="list all available musics",
@@ -49,7 +51,7 @@ async def help_all(self, ctx):
 
     string_cogs = ""
     for cog in cogs.keys():
-        string_cogs = string_cogs + "**{0}**\n".format(cog)
+        string_cogs += "**{0}**\n".format(cog)
 
     embed = discord.Embed(
         title="List of all available cogs:",
@@ -87,8 +89,11 @@ async def help_cog(self, ctx, command_or_cog):
 
 async def help_command(self, ctx, command_or_cog):
 #send help for a command
-    commands = self.bot.commands
-    command = commands[command_or_cog]
+    command = None
+
+    for c in self.bot.walk_commands():
+        if command_or_cog.lower() == str(c).lower():
+            command = c
 
     embed = discord.Embed(
         title="Comando",

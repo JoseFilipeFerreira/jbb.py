@@ -31,8 +31,11 @@ class Api(commands.Cog):
             "almoço": "almoço",
             "jantar": "jantar",
             "almoço veg": "almoço vegetariano",
+            "almoço vegetariano": "almoço vegetariano",
+            "vegetariano": "almoço vegetariano",
             "veg": "almoço vegetariano",
-            "jantar veg": "jantar vegetariano"
+            "jantar veg": "jantar vegetariano",
+            "jantar vegetariano": "jantar vegetariano"
         }
 
 
@@ -50,40 +53,38 @@ class Api(commands.Cog):
         await ctx.send(answer)
 
     @commands.command(name='cantina',
-                      description="menu of the uminho cantee",
+                      description="menu of the uminho canteen",
                       brief="menu",
                       aliases=['ementa'])
-    async def cantina(self, ctx ,* menu):
-        #call calendar API
-        calendar_ids = get_calendar_ids()
-        menu = convert_menu(menu)
-        calendar_name = get_calendar_name(self, menu)
+    async def cantina(self, ctx ,*, menu=None):
+        if not menu:
+            calendar_name = 'almoço'
+        elif menu in self.menus:
+            menu = menu.lower()
+            calendar_name = self.menus[menu]
+        else:
+            await ctx.send("Menu Inválido")
+            return
         
-        calendar_id = calendar_ids[calendar_name]
         now = datetime.datetime.utcnow().isoformat() + 'Z'
         events_result = service.events().list(
-            calendarId = calendar_id,
+            calendarId = get_calendar_ids()[calendar_name],
             timeMin = now,
             maxResults = 3,
             singleEvents = True,
             orderBy = 'startTime').execute()
 
-        events = events_result.get('items', [])
-
         embed = discord.Embed(
             title="Ementa da Cantina",
             description=calendar_name,
-            color=0xfbfb00)
+            color=self.bot.embed_color)
 
-        for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))
-            
-            arrayDate = start.split('T')[0].split('-')
+        for event in events_result.get('items', []):
+            arrayDate = event['start'].get('dateTime', event['start'].get('date')).split('T')[0].split('-')
             embed.add_field(
                 name = arrayDate[2] + '-' + arrayDate[1] + '-' + arrayDate[0],
                 value = event['summary'],
                 inline=False)
-
         await ctx.send(embed=embed)
 
     @commands.command(name='translate',
@@ -98,7 +99,6 @@ class Api(commands.Cog):
         embed.add_field(name="Detected Language:", value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)), inline=False)
         embed.add_field(name="Translation:", value=translation.text, inline=True)
         await ctx.send(embed =embed)
-
 
     @commands.command(name='urban',
                       description="Get a urban defenition of a query",
@@ -149,19 +149,6 @@ class Api(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Api(bot))
-
-def get_calendar_name(self, menu):
-#return the default calendar name ("almoço")
-#if menu is not in default
-    calendar_name = 'almoço'
-    if menu in self.menus:
-        calendar_name = self.menus[menu]
-    return calendar_name
-
-def convert_menu(menu):
-#get a list of string and returna string in all lower cases
-    menu = ' '.join(menu)
-    return menu.lower()
 
 def get_calendar_ids():
 #return all added extenal calendars in a dict

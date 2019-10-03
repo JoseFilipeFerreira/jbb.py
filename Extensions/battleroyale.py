@@ -137,9 +137,7 @@ class BattleRoyale(commands.Cog):
             event = {
                 "action":self.listAction.index(action),
                 "time":time,
-                "description":description
-            }
-            print(event)
+                "description":description}
             self.listReactions.append(event)
             updateListReactions(self)
             await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  

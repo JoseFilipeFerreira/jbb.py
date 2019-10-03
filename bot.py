@@ -10,11 +10,11 @@ from datetime import datetime
 from aux.cash import save_stats, hours_passed, give_cash
 from aux.inventory import get_empty_stats, get_stat
 
-bot = commands.Bot(command_prefix = '>')
+bot = commands.Bot(command_prefix = '>', case_insensitive=True)
 
-#bot.remove_command('help')
+bot.remove_command('help')
 
-cogs_blacklist = ["help"]
+cogs_blacklist = []
 
 def main():
     #adding to bot object directories
@@ -113,8 +113,8 @@ async def on_ready():
     for guild in bot.guilds:
         print(guild.name)
     print('-----------------------------')
-    print(bot.command_prefix)
     print(bot.embed_color)
+    print(bot.command_prefix)
 
 
 @bot.event
