@@ -6,7 +6,7 @@ import subprocess
 from discord.ext import commands
 
 class Manage(commands.Cog):
-    
+    """Manage the server"""    
     def __init__(self, bot):
         self.bot = bot
     

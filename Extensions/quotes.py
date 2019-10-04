@@ -8,7 +8,7 @@ from fuzzywuzzy import fuzz, process
 from random import randint, shuffle
 
 class Quotes(commands.Cog):
-
+    """All quotes stored"""
     def __init__(self, bot):
         self.bot = bot
         self.quotes_dict = json.load(open(bot.QUOTES_PATH, 'r', encoding="utf8"))

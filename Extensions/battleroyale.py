@@ -11,6 +11,7 @@ from aux.cash import save_stats, round_down,  give_cash
 from aux.inventory import update_kills
 
 class BattleRoyale(commands.Cog):
+    """BattleRoyale in the server"""
     def __init__(self, bot):
         self.bot = bot
         self.listAction = ["kill", "die", "event", "meet"]

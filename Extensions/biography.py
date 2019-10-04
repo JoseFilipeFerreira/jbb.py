@@ -5,6 +5,7 @@ from random import randint
 from aux.inventory import get_embed_inventory, get_stat
 
 class Biography(commands.Cog):
+    """Server member's biography"""
     
     def __init__(self, bot):
         self.bot = bot

@@ -5,6 +5,7 @@ import time
 from discord.ext import commands
 
 class Music(commands.Cog):
+    """Play all great classics"""
     def __init__(self, bot):
         self.bot = bot
 

@@ -5,7 +5,7 @@ import time
 from discord.ext import commands
 
 class Help(commands.Cog):
-    
+    """Help command"""    
     def __init__(self, bot):
         self.bot = bot
 
@@ -63,17 +63,20 @@ async def help_all(self, ctx):
 
 async def help_cog(self, ctx, command_or_cog):
 #send help for a cog
-    embed = discord.Embed(
-        title=command_or_cog,
-        description="help command shitshow",
-        color=self.bot.embed_color)
 
     string_commands = ""
+    cog = None
     list_commands = []
     for command in self.bot.commands:
         if command.cog_name == command_or_cog and command not in list_commands:
+            cog = command.cog
             string_commands = string_commands + "**{0}** -> {1}\n".format(command.name, command.brief)
             list_commands.append(command)
+
+    embed = discord.Embed(
+        title=command_or_cog,
+        description=cog.description,
+        color=self.bot.embed_color)
 
     embed.add_field(
         name="Commands in Cog:",
@@ -92,6 +95,7 @@ async def help_command(self, ctx, command_or_cog):
     for c in self.bot.walk_commands():
         if command_or_cog.lower() == str(c).lower():
             command = c
+
 
     embed = discord.Embed(
         title="Comando",

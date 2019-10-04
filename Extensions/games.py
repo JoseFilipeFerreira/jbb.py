@@ -6,7 +6,7 @@ from random import choice
 import asyncio
 
 class Games(commands.Cog):
-    
+    """Play games with your friends"""    
     def __init__(self, bot):
         self.bot = bot
     

@@ -11,7 +11,6 @@ import datetime
 from googletrans import Translator
 import aiohttp
 
-
 #setup the calender API
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 store = file.Storage('credentials_calendar.json')
@@ -21,9 +20,11 @@ if not creds or creds.invalid:
     creds = tools.run_flow(flow, store)
 service = build('calendar', 'v3', http=creds.authorize(Http()))
 
+#setup wolframalpha API
 client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
 
 class Api(commands.Cog):
+    """Conjunto de APIs"""
     
     def __init__(self, bot):
         self.bot = bot

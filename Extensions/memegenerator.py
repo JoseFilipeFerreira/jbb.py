@@ -4,7 +4,7 @@ from discord.ext import commands
 from PIL import Image, ImageFont, ImageDraw
 
 class Memegenerator(commands.Cog):
-    
+    """Generate dank memes"""    
     def __init__(self, bot):
         self.bot = bot
     

@@ -5,7 +5,7 @@ from aux.cash import enough_cash, give_cash, spend_cash, save_stats
 from aux.inventory import get_inventory
 
 class Store(commands.Cog):
-
+    """Spend your manoey here"""
     def __init__(self, bot):
         self.bot = bot
 

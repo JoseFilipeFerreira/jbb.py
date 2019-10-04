@@ -5,7 +5,7 @@ from random import randint
 import requests 
 
 class Programming(commands.Cog):
-    
+    """Programming help"""    
     def __init__(self, bot):
         self.bot = bot
 

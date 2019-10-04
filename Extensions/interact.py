@@ -5,7 +5,7 @@ from random import randint
 from discord.ext import commands
 
 class Interact(commands.Cog):
-    
+    """Interact with other users while pinging them"""    
     def __init__(self, bot):
         self.bot = bot
     

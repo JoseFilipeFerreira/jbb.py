@@ -7,7 +7,7 @@ import datetime
 
 
 class Pokemon(commands.Cog):
-    
+    """Portable pokedex"""    
     def __init__(self, bot):
         self.bot = bot
 

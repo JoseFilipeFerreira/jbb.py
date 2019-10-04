@@ -5,6 +5,7 @@ from random import choice
 from discord.ext import commands
 
 class Dogs(commands.Cog):
+    """Get random cute pics"""
     
     def __init__(self, bot):
         self.bot = bot
