@@ -65,14 +65,14 @@ async def store_interact(self, ctx, embed, store, tool):
     if store not in self.bot.market:
         embed.add_field(
             name="Invalid Store",
-            value="*market to get valid stores")
+            value="{0}market to get valid stores".format(self.bot.command_prefix))
         return
 
     prod_dic =  find(self.bot.market[store]["contents"], "name", prod)
     if prod_dic == None:
         embed.add_field(
             name="Invalid Product",
-            value="*market {0} to get valid products in this store".format(store))
+            value="{0}market {1} to get valid products in this store".format(self.bot.command_prefix, store))
         ctx.send(embed=embed)
         return
 
@@ -142,7 +142,7 @@ async def market_stalls(self, ctx, embed):
                 store),
             value=self.bot.market[store]["description"])
     
-    embed.set_footer(text="*market [store] to see one store")
+    embed.set_footer(text="{0}market [store] to see one store".format(self.bot.command_prefix))
 
     await ctx.send(embed=embed)
 
@@ -155,11 +155,11 @@ async def stall(self, ctx, embed, store):
             self.bot.market[store]["contents"])
         
         embed.set_footer(
-            text="*market {0} [tool] to buy from store".format(store))
+            text="{0}market {1} [tool] to buy from store".format(self.bot.command_prefix, store))
     else:
         embed.add_field(
             name="Invalid Store",
-            value="*market to get valid stores")
+            value="{0}market to get valid stores".format(self.bot.command_prefix))
     await ctx.send(embed=embed)
 
 def store_items(embed, stat, items):

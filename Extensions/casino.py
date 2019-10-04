@@ -12,6 +12,7 @@ class Casino(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
+        self.rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
 
     @commands.command(name='beg',
                       description="get one coin every 24 hours",
@@ -29,13 +30,12 @@ class Casino(commands.Cog):
         stat["bet"] = True
         save_stats(self.bot)
 
-
     @commands.command(name='roulette',
                       description="Bet on a roulette spin\n\n**red/black/green** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
                       brief="Play roulette")
     @commands.is_nsfw()
     async def roulette(self, ctx, amount, bet):
-        rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
+        bet = bet.lower()
         if not RepresentsInt(amount):
             await ctx.send("Invalid amount")
             return
@@ -49,7 +49,6 @@ class Casino(commands.Cog):
             await ctx.send("Not enough cash to bet")
             return
         
-        bet = bet.lower()
 
         if bet not in ["red", "black","green", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
             await ctx.send("Invalid bet")
@@ -64,7 +63,7 @@ class Casino(commands.Cog):
                 await ctx.send("Invalid position")
                 return
             pNumbers = [bet]
-            win = amount * len(rOrder)
+            win = amount * len(self.rOrder)
         elif bet == "odd":
             pNumbers = list(range(1, 36, 2))
             win = amount * 2
@@ -78,39 +77,43 @@ class Casino(commands.Cog):
             pNumbers = list(range(19, 36))
             win = amount * 2
         elif bet == "red":
-            pNumbers = rOrder[1::2]
+            pNumbers = self.rOrder[1::2]
             win = amount * 2
         elif bet == "black":
-            pNumbers = rOrder[2::2]
+            pNumbers = self.rOrder[2::2]
             win = amount * 2
         elif bet == "green":
             pNumbers = [0]
-            win = amount * len(rOrder)
+            win = amount * len(self.rOrder)
         
-        await ctx.send(
-            "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.\n[yes/no]".format(amount, win))
-        
+        msg = await ctx.send(
+            "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.".format(amount, win))
+       
+        await msg.add_reaction('\U0000274C')
+        await msg.add_reaction('\U00002705')
+    
         spend_cash(self.bot, ctx.message.author.id, amount)
 
-        def guess_check(m):
-            return m.content.lower() == 'yes' or m.content.lower() == 'no'
-        
-        answer = await self.bot.wait_for_message(
-            timeout=10.0,
-            author=ctx.message.author,
-            check=guess_check)
-            
-        if answer is None:
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
+    
+        try:
+             reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+        except asyncio.TimeoutError:
+            await msg.clear_reactions()
             give_cash(self.bot, ctx.message.author.id, amount)
             return
-        elif answer.content.lower() == 'no':
+
+        await msg.clear_reactions()
+
+        if reaction.emoji ==  '\U0000274C':
             give_cash(self.bot, ctx.message.author.id, amount)
             return
         
-        pos = randint(0, len(rOrder) - 1)
+        pos = randint(0, len(self.rOrder) - 1)
 
         rImage = Image.open(self.bot.GAMES_PATH + "roulette.png")
-        rImage = rImage.rotate(pos * 360 / len(rOrder))
+        rImage = rImage.rotate(pos * 360 / len(self.rOrder))
 
         draw = ImageDraw.Draw(rImage)
         x = 405
@@ -125,7 +128,7 @@ class Casino(commands.Cog):
 
         result = " "
 
-        if(rOrder[pos] in pNumbers):
+        if(self.rOrder[pos] in pNumbers):
             result = "You Won {0}🎉".format(win)
             give_cash(self.bot, ctx.message.author.id, win)
         
@@ -144,7 +147,7 @@ class Casino(commands.Cog):
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
                       brief="roll a dice")
     @commands.is_nsfw()
-    async def roll(self, ctx, * bet):
+    async def roll(self, ctx,* bet):
         if len(bet) == 0:
             await ctx.send('You rolled a ' + str(randint(1,20)))
 
@@ -164,23 +167,31 @@ class Casino(commands.Cog):
                 await ctx.send("Not enough cash to bet")
                 return
 
-            await ctx.send(
-                "**GAMBLE**\nBet {0} points in the number {1} in a D20 roll.\nWin {2} if correct.\n[yes/no]".format(
+            msg = await ctx.send(
+                "**GAMBLE**\nBet {0} points in the number {1} in a D20 roll.\nWin {2} if correct.".format(
                     amount, number, win))
         
-            def guess_check(m):
-                return m.content.lower() == 'yes' or m.content.lower() == 'no'
+            await msg.add_reaction('\U0000274C')
+            await msg.add_reaction('\U00002705')
+    
+            spend_cash(self.bot, ctx.message.author.id, amount)
+
+            def check(reaction, user):
+                return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
+    
+            try:
+                 reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+            except asyncio.TimeoutError:
+                await msg.clear_reactions()
+                give_cash(self.bot, ctx.message.author.id, amount)
+                return
+
+            await msg.clear_reactions()
+
+            if reaction.emoji ==  '\U0000274C':
+                give_cash(self.bot, ctx.message.author.id, amount)
+                return
         
-            answer = await self.bot.wait_for_message(
-                timeout=10.0,
-                author=ctx.message.author,
-                check=guess_check)
-            
-            if answer is None:
-                return
-            elif answer.content.lower() == 'no':
-                return
-            
             if number == r_number:
                 give_cash(self.bot, ctx.message.author.id, win)
                 await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
@@ -200,7 +211,7 @@ class Casino(commands.Cog):
     @commands.is_nsfw()
     async def slot(self, ctx, amount):
         wheels_array = []
-        for emoji in ctx.message.server.emojis:
+        for emoji in ctx.message.guild.emojis:
             wheels_array.append(str(emoji))
 
         if not RepresentsInt(amount):
@@ -217,27 +228,31 @@ class Casino(commands.Cog):
                 await ctx.send("Not enough cash to bet")
                 return
         
+        msg = await ctx.send(
+                "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.".format(
+                    amount, amount * 30))
+
+        await msg.add_reaction('\U0000274C')
+        await msg.add_reaction('\U00002705')
+    
         spend_cash(self.bot, ctx.message.author.id, amount)
 
-        await ctx.send(
-                "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.\n[yes/no]".format(
-                    amount, amount * 30))
-        
-        def guess_check(m):
-            return m.content.lower() == 'yes' or m.content.lower() == 'no'
-        
-        answer = await self.bot.wait_for_message(
-            timeout=10.0,
-            author=ctx.message.author,
-            check=guess_check)
-            
-        if answer is None:
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
+    
+        try:
+             reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+        except asyncio.TimeoutError:
+            await msg.clear_reactions()
             give_cash(self.bot, ctx.message.author.id, amount)
             return
-        elif answer.content.lower() == 'no':
+
+        await msg.clear_reactions()
+
+        if reaction.emoji ==  '\U0000274C':
             give_cash(self.bot, ctx.message.author.id, amount)
             return
-        
+
         w1 = randint(0, len(wheels_array) - 1)
         w2 = randint(0, len(wheels_array) - 1)
         w3 = randint(0, len(wheels_array) - 1)

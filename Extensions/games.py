@@ -41,11 +41,11 @@ class Games(commands.Cog):
             result = "**" + appInfo.name + " won!**"
             if (player == cpu):
                 result = "**It´s a tie!**"
-            if (player == "rock" and cpu == "scissors"):
+            elif (player == "rock" and cpu == "scissors"):
                 result = "**You won!**"
-            if (player == "paper" and cpu == "rock"):
+            elif (player == "paper" and cpu == "rock"):
                 result = "**You won!**"
-            if (player == "scissors" and cpu == "paper"):
+            elif (player == "scissors" and cpu == "paper"):
                 result = "**You won!**"
             await ctx.send('You played ' + player + '\n' + appInfo.name + ' played ' + cpu + '\n' + result)
         else:
@@ -109,7 +109,7 @@ def getRPS():
     n = randint(0,2)
     if(n == 0):
         return "rock"
-    if(n == 1):
+    elif(n == 1):
         return "paper"
     return "scissors"
 

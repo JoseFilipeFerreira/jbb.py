@@ -35,9 +35,7 @@ class Api(commands.Cog):
             "vegetariano": "almoço vegetariano",
             "veg": "almoço vegetariano",
             "jantar veg": "jantar vegetariano",
-            "jantar vegetariano": "jantar vegetariano"
-        }
-
+            "jantar vegetariano": "jantar vegetariano"}
 
     @commands.command(name='ask',
                       description="replies to a query with the short text answer of the wolfram alpha API",
@@ -48,9 +46,7 @@ class Api(commands.Cog):
             strRes = "Couldn't find an answer"
         else:
             strRes = next(res.results).text
-            
-        answer = '**' + query +'**' + '\n```' + strRes + '```'
-        await ctx.send(answer)
+        await ctx.send('**' + query +'**' + '\n```' + strRes + '```')
 
     @commands.command(name='cantina',
                       description="menu of the uminho canteen",
@@ -96,8 +92,14 @@ class Api(commands.Cog):
         detector = translator.detect(query)
         embed = discord.Embed(title="Translating to PT:", description=query, color=0xfbfb00)
         embed.set_thumbnail(url = "http://logonoid.com/images/google-translate-logo.png")
-        embed.add_field(name="Detected Language:", value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)), inline=False)
-        embed.add_field(name="Translation:", value=translation.text, inline=True)
+        embed.add_field(
+            name="Detected Language:",
+            value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)),
+            inline=False)
+        embed.add_field(
+            name="Translation:",
+            value=translation.text,
+            inline=True)
         await ctx.send(embed =embed)
 
     @commands.command(name='urban',
@@ -126,12 +128,10 @@ class Api(commands.Cog):
                     name="Example",
                     value=top_def['example'],
                     inline=False)
-                
                 embed.add_field(
                     name=":thumbsup:",
                     value=top_def['thumbs_up'],
                     inline=True)
-                
                 embed.add_field(
                     name=":thumbsdown:",
                     value=top_def['thumbs_down'],
@@ -139,9 +139,7 @@ class Api(commands.Cog):
                 
                 embed.set_footer(
                     text="Submited by {}".format(top_def['author']))
-                
                 await ctx.send(embed =embed)
-                
             else:
                 await ctx.send("Your search terms gave no results.")
         except:

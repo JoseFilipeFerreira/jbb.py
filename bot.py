@@ -10,7 +10,9 @@ from datetime import datetime
 from aux.cash import save_stats, hours_passed, give_cash
 from aux.inventory import get_empty_stats, get_stat
 
-bot = commands.Bot(command_prefix = '>', case_insensitive=True)
+bot = commands.Bot(
+    command_prefix = '>',
+    case_insensitive=True)
 
 bot.remove_command('help')
 

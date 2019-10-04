@@ -21,8 +21,6 @@ class Help(commands.Cog):
             await help_command(self, ctx, command_or_cog)
         else:
             await ctx.send("Command or cog not found")
-
-        print(list(self.bot.walk_commands()))
     
     @commands.command(name='helpPlay',
                       description="list all available musics",

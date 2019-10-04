@@ -23,13 +23,6 @@ class Programming(commands.Cog):
             'double x = x + x']
         await ctx.send('```Haskell\ndouble :: Double -> Double\n' + doublFct[randint(0, len(doublFct) - 1)] + '```')
 
-
-    @commands.command(name='helpC',
-                      description="give simple function in C",
-                      brief="small program in C")
-    async def helpC(self, ctx):
-        await ctx.send('```C\nint main()\n{\n    printf("wololo");\n    return 0;\n}\n```')
-        
     @commands.command(name='quicksort',
                       description="help understand quicksort",
                       brief="quicksort is hard guys")

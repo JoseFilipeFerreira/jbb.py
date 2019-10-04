@@ -18,6 +18,17 @@ class Manage(commands.Cog):
         await self.bot.change_presence(game=discord.Game(name='rebooting'))
         subprocess.call("./update.sh")
     
+    @commands.command(name='eval',
+                      description="run random python code [OWNER ONLY]",
+                      brief="built in eval")
+    @commands.is_owner()
+    async def eval(self, ctx, *, code):
+        evaluated = ""
+        try:
+            evaluated = eval(code)
+        except Exception as e:
+            evaluated = str(e)
+        await ctx.send("**{0}**\n```\n{1}\n```".format(code, evaluated))
 
     @commands.command(name='setplay',
                       description="change the game tag off the bot [ADMIN ONLY]",
@@ -100,6 +111,7 @@ class Manage(commands.Cog):
     @commands.command(name='say',
                       description="bot sends query and deletes trigger message",
                       brief="bot sends query")
+    @commands.has_permissions(administrator=True)
     async def say(self, ctx, *,word):
         await self.bot.delete_message(ctx.message)
         if not ctx.message.mention_everyone:

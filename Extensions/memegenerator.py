@@ -57,7 +57,7 @@ def drawTextWithOutline(draw, font, text, x, y):
 
 def getFittingFont(img, fontName, text):
     #get font that fits in image
-    textSize = 30
+    textSize = 50
     font = ImageFont.truetype(fontName, textSize)
     w, h = font.getsize(text)
     if (w > img.width and textSize > 1):
