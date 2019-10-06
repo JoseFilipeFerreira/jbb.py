@@ -106,8 +106,8 @@ class Api(commands.Cog):
     @commands.command(name='urban',
                       description="Get a urban defenition of a query",
                       brief="search urban")
-    async def urban(self, ctx, * search_terms : str):
-        search_terms = "+".join(search_terms)
+    async def urban(self, ctx, * query : str):
+        search_terms = "+".join(query)
         url = "http://api.urbandictionary.com/v0/define?term=" + search_terms
         try:
             async with aiohttp.ClientSession() as session:
@@ -142,7 +142,7 @@ class Api(commands.Cog):
                     text="Submited by {}".format(top_def['author']))
                 await ctx.send(embed =embed)
             else:
-                await ctx.send("Your search terms gave no results.")
+                await ctx.send("Your query gave no results.")
         except:
             await self.bot.say("Something unexpected went wrong.")   
 

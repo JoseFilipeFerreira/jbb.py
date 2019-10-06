@@ -147,14 +147,11 @@ class Casino(commands.Cog):
                       description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
                       brief="roll a dice")
     @commands.is_nsfw()
-    async def roll(self, ctx,* bet):
-        if len(bet) == 0:
+    async def roll(self, ctx, amount : int = None, number : int = None):
+        if amount == None and number == None:
             await ctx.send('You rolled a ' + str(randint(1,20)))
 
-        elif len(bet) == 2 and RepresentsInt(bet[0]) and RepresentsInt(bet[1]):
-            amount  = int(bet[0])
-            number  = int(bet[1])
-
+        elif number != None and number != None:
             if amount <= 0 or number < 1 or number > 20:
                 await ctx.send("Invalid bet")
                 return
@@ -198,7 +195,6 @@ class Casino(commands.Cog):
             else:
                 spend_cash(self.bot, ctx.message.author.id, amount)
                 await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou lost {1} 💸".format(r_number, amount))
-
         else:
             await ctx.send("Invalid bet")
 

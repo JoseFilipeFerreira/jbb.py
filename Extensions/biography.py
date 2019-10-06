@@ -16,35 +16,34 @@ class Biography(commands.Cog):
         name='bio',
         description="send a funy description of a given user",
         brief="get one's biography")
-    async def bio(self, ctx):
-        for user in ctx.message.mentions:
-            member = ctx.message.guild.get_member(user.id)
-  
-            embed_colour = self.bot.embed_color 
-            if member.colour != member.colour.default():
-                embed_colour = member.colour.value
+    async def bio(self, ctx, member : discord.Member = None):
+        if member == None:
+            member = ctx.message.author
+        embed_colour = self.bot.embed_color 
+        if member.colour != member.colour.default():
+            embed_colour = member.colour.value
             
-            embed = discord.Embed(
-                title = 'Biography of {}'.format(member.display_name),
-                color=embed_colour)
-            embed.set_thumbnail(
-                url="https://img9.androidappsapk.co/300/e/a/2/com.sdvios.png")
+        embed = discord.Embed(
+            title = 'Biography of {}'.format(member.display_name),
+            color=embed_colour)
+        embed.set_thumbnail(
+            url="https://img9.androidappsapk.co/300/e/a/2/com.sdvios.png")
 
-            if user.id in self.biographies:
-                bio = self.biographies[user.id]
-                for key in self.order:
-                    if key in bio:
-                        embed.add_field(
-                            name=key,
-                            value="\n".join(bio[key]))
+        if member.id in self.biographies:
+            bio = self.biographies[member.id]
+            for key in self.order:
+                if key in bio:
+                    embed.add_field(
+                        name=key,
+                        value="\n".join(bio[key]))
 
-            embed.add_field(
-                name="🔫KDR",
-                value="{0}/{1}".format(get_stat(ctx.bot, user.id)["kills"], get_stat(ctx.bot, user.id)["death"]))
+        embed.add_field(
+            name="🔫KDR",
+            value="{0}/{1}".format(get_stat(self.bot, member.id)["kills"], get_stat(self.bot, member.id)["death"]))
             
-            embed.set_footer(text = "Biography")
-            await ctx.send(embed=embed)
-            await ctx.send(embed=get_embed_inventory(self.bot, user.id, member.display_name, embed_colour))
+        embed.set_footer(text = "Biography")
+        await ctx.send(embed=embed)
+        await ctx.send(embed=get_embed_inventory(self.bot, member.id, member.display_name, embed_colour))
 
     @commands.command(
         name='bioKey',

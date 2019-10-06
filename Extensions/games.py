@@ -56,7 +56,6 @@ class Games(commands.Cog):
                       description="choose from the query",
                       brief="choose from the query")
     async def choose(self, ctx, *choices : str):
-        """Chooses between multiple choices."""
         if all(('@' not in choice) for choice in choices):
             await ctx.send(choice(choices))
     

@@ -4,24 +4,9 @@ Discord bot programmed in Python
 ## Getting Started
 
 ### Setting up
-- Dowload python 3.6.6 from [here](https://www.python.org/ftp/python/3.6.6/) (If not already installed)
-
-- Unpack it with
-```
-tar -xvzf Python-3.6.6.tgz
-```
-```
-cd Python-3.6.6
-```
-```
-./configure
-```
-```
-make altinstall
-```
 - Create a virtual env
 ```
-virtualenv --python=python3.6 .env
+virtualenv .env
 ```
 
 - Activate the virtual env
@@ -53,7 +38,7 @@ pip3 freeze > requirements.txt
 
 ### Run the Bot
 ```
-python3 bot.py
+python bot.py
 ```
  - follow the instructions on screen to activate the access to youtube and google calendars
 
@@ -63,7 +48,6 @@ python3 bot.py
 * [fuzzywuzzy](https://github.com/seatgeek/fuzzywuzzy) - Search quotes
 * [pokebase](https://github.com/GregHilmes/pokebase) - Python 3 wrapper for Pokéapi v2
 * [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
-* [mcstatus](https://github.com/Dinnerbone/mcstatus) - check the status of a Minecraft server
 
 ## License
 
