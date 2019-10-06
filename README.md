@@ -48,6 +48,7 @@ python bot.py
 * [fuzzywuzzy](https://github.com/seatgeek/fuzzywuzzy) - Search quotes
 * [pokebase](https://github.com/GregHilmes/pokebase) - Python 3 wrapper for Pokéapi v2
 * [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
+* [ftfy](https://github.com/LuminosoInsight/python-ftfy) - Fixes glitches in Unicode text.
 
 ## License
 

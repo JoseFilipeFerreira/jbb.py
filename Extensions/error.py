@@ -45,7 +45,8 @@ def get_NSFW(ctx):
     for channel in ctx.guild.channels:
         if channel.type == discord.ChannelType.text:
             if channel.is_nsfw():
-                listChannels.append(channel.mention)
+                if len(channel.members) == len(ctx.guild.members) -1:
+                    listChannels.append(channel.mention)
     return ' '.join(listChannels)
 
 

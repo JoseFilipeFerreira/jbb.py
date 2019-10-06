@@ -10,6 +10,7 @@ from oauth2client import file, client, tools
 import datetime
 from googletrans import Translator
 import aiohttp
+from ftfy import fix_encoding
 
 #setup the calender API
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -80,6 +81,8 @@ class Api(commands.Cog):
             arrayDate = event['start'].get('dateTime', event['start'].get('date')).split('T')[0].split('-')
             embed.add_field(
                 name = arrayDate[2] + '-' + arrayDate[1] + '-' + arrayDate[0],
+                # podia dar fix, só que não
+                # value = fix_encoding(event['summary']),
                 value = event['summary'],
                 inline=False)
         await ctx.send(embed=embed)
