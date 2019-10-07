@@ -86,11 +86,11 @@ class Games(commands.Cog):
         if(n==1): answer = 'head'
 
         if guess is None:
-            await ctx.send('You took too long. I got {}'.format(answer))
+            await ctx.send(f'You took too long. I got {answer}')
         elif guess.content == answer:
             await ctx.send('You guessed it!')
         else:
-            await ctx.send("You're wrong. I got {}".format(answer))
+            await ctx.send(f"You're wrong. I got {answer}")
 
     @commands.command(name='vote',
                       description="creates a poll with given query or default text",

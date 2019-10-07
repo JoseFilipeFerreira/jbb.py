@@ -34,12 +34,8 @@ class Casino(commands.Cog):
                       description="Bet on a roulette spin\n\n**red/black/green** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
                       brief="Play roulette")
     @commands.is_nsfw()
-    async def roulette(self, ctx, amount, bet):
+    async def roulette(self, ctx, amount : int, bet):
         bet = bet.lower()
-        if not RepresentsInt(amount):
-            await ctx.send("Invalid amount")
-            return
-        amount = int(amount)
 
         if amount <= 0:
             await ctx.send("Invalid amount")
@@ -87,7 +83,7 @@ class Casino(commands.Cog):
             win = amount * len(self.rOrder)
         
         msg = await ctx.send(
-            "**GAMBLE**\nBet {0} points in a roulete spin.\nWin {1} if correct.".format(amount, win))
+            f"**GAMBLE**\nBet {amount} points in a roulete spin.\nWin {win} if correct.")
        
         await msg.add_reaction('\U0000274C')
         await msg.add_reaction('\U00002705')
@@ -129,11 +125,11 @@ class Casino(commands.Cog):
         result = " "
 
         if(self.rOrder[pos] in pNumbers):
-            result = "You Won {0}🎉".format(win)
+            result = f"You Won {win}🎉"
             give_cash(self.bot, ctx.message.author.id, win)
         
         else:
-            result = "You lost {0} 💸".format(amount)
+            result = f"You lost {amount} 💸"
 
         await ctx.send(
                 result,
@@ -283,9 +279,9 @@ class Casino(commands.Cog):
         )
 
         if prize == 0:
-            slot += "You lost {0} 💸".format(amount)
+            slot += f"You lost {amount} 💸"
         else:
-            slot += "You won {0} 🎉".format(prize)
+            slot += f"You won {prize} 🎉"
             give_cash(self.bot, ctx.message.author.id, prize)
         
         await ctx.send(slot)

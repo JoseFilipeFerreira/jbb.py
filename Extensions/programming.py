@@ -41,8 +41,7 @@ class Programming(commands.Cog):
                       description="give link for let me google that for you",
                       brief="let me google that for you")
     async def lmgtfy(self, ctx, *query):
-        query = '+'.join(word for word in query)
-        await ctx.send("http://lmgtfy.com/?q={0}".format(query))
+        await ctx.send(f"http://lmgtfy.com/?q={'+'.join(word for word in query)}")
     
 def setup(bot):
     bot.add_cog(Programming(bot))     

@@ -57,7 +57,7 @@ async def help_all(self, ctx):
         color=self.bot.embed_color)
     
     embed.set_footer(
-        text="{}help [cog] para saberes mais sobre alguma cog".format(self.bot.command_prefix))
+        text=f"{self.bot.command_prefix}help [cog] para saberes mais sobre alguma cog")
     
     await ctx.send(embed=embed)
 
@@ -70,7 +70,7 @@ async def help_cog(self, ctx, command_or_cog):
     for command in self.bot.commands:
         if command.cog_name == command_or_cog and command not in list_commands:
             cog = command.cog
-            string_commands = string_commands + "**{0}** -> {1}\n".format(command.name, command.brief)
+            string_commands = string_commands + f"**{command.name}** -> {command.brief}\n"
             list_commands.append(command)
 
     embed = discord.Embed(
@@ -84,7 +84,7 @@ async def help_cog(self, ctx, command_or_cog):
         inline=False)
             
     embed.set_footer(
-        text="{}help [comando] para saberes mais sobre algum comando".format(self.bot.command_prefix))
+        text=f"{self.bot.command_prefix}help [comando] para saberes mais sobre algum comando")
             
     await ctx.send(embed=embed)
 

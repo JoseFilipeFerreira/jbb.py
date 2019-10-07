@@ -114,8 +114,7 @@ class Manage(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def say(self, ctx, *,word):
         await self.bot.delete_message(ctx.message)
-        if not ctx.message.mention_everyone:
-            await self.bot.say(word)
+        await self.bot.say(word)
 
 def setup(bot):
     bot.add_cog(Manage(bot))
