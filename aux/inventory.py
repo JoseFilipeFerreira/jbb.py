@@ -66,10 +66,10 @@ def get_embed_inventory(bot, id, name, embed_colour):
 
     embed.add_field(
         name="🛡 shield",
-        value="{1} {2}\nblock: {0}".format(
-            inv["gear"]["shield"]["stats"],
-            inv["gear"]["shield"]["simbol"],
-            inv["gear"]["shield"]["name"]))
+            value="{1} {2}\nblock: {0}".format(
+                inv["gear"]["shield"]["stats"],
+                inv["gear"]["shield"]["simbol"],
+                inv["gear"]["shield"]["name"]))
 
     embed.add_field(
         name="💰Cash",

@@ -8,7 +8,7 @@ import asyncio
 import json
 import operator
 from aux.cash import save_stats, round_down,  give_cash
-from aux.inventory import update_kills
+from aux.inventory import update_kills, get_stat
 
 class BattleRoyale(commands.Cog):
     """BattleRoyale in the server"""
@@ -41,8 +41,6 @@ class BattleRoyale(commands.Cog):
                       aliases=['br'])
     @commands.is_nsfw()
     async def battleroyale(self, ctx):
-    #TODO: make it so that people don't cry by seeing this piece of code
-    #create battle royale
         await ctx.message.delete()
         msg = await sendChallenge(self, ctx)
         await thirtysecondtyping(self, ctx)
@@ -62,39 +60,36 @@ class BattleRoyale(commands.Cog):
     @commands.command(name='battleroyaleKDR',
                       description="battleroyale Kill/Death Ratio",
                       brief="battleroyale Kill/Death Ratio",
-                      aliases=['brKDR'])
-    async def battleroyaleKDR(self, ctx):
-        if len(ctx.message.mentions) > 0:
-            for user in ctx.message.mentions:
-                member = ctx.message.server.get_member(user.id)
-                win = self.bot.stats[user.id]
-                embed = discord.Embed(
-                    title = 'Battleroyale no DI',
-                    description="KDR Leaderboard",
-                    color=self.bot.embed_color
-                )
-                embed.add_field(
-                    name=member.display_name,
-                    value="KDR: {0}/{1}".format(win["kills"], win["death"]),
-                inline=False
-                )
-                await ctx.send(embed=embed)
+                      aliases=['brKDR', 'KDR'])
+    async def battleroyaleKDR(self, ctx, member : discord.Member = None):
+        if member:
+            win = get_stat(self.bot, member.id)
+            embed = discord.Embed(
+                title = 'Battleroyale no DI',
+                description="KDR Leaderboard",
+                color=self.bot.embed_color)
+
+            embed.add_field(
+                name=member.display_name,
+                value="KDR: {0}/{1}".format(win["kills"], win["death"]),
+            inline=False)
+            await ctx.send(embed=embed)
             return
 
         arrayKDR = []
-
         for id in self.bot.stats.keys():
-            kdr = {"id": id,
-            "kills": self.bot.stats[id]["kills"],
-            "death": self.bot.stats[id]["death"]}
-
+            kdr = {
+                "id": id,
+                "kills": self.bot.stats[id]["kills"],
+                "death": self.bot.stats[id]["death"]}
             arrayKDR.append(kdr)
         
         def compare(kdr):
+            if kdr["death"] == 0:
+                return 0
             return kdr["kills"] / kdr["death"]
-        
-        arrayKDR.sort(key=compare, reverse=True)
 
+        arrayKDR.sort(key=compare, reverse=True)
 
         embed = discord.Embed(
             title = 'Battleroyale no DI',
@@ -103,11 +98,10 @@ class BattleRoyale(commands.Cog):
 
         for i in range(3):
             win = arrayKDR[i]
-            member = ctx.message.server.get_member(win["id"])
-
+            member = ctx.message.guild.get_member(win["id"])
             embed.add_field(
-                name="{0}. {1}".format(i + 1, member.display_name),
-                value="KDR: {0}/{1}".format(win["kills"], win["death"]),
+                name=f"{i+1}. {member.display_name}",
+                value=f"KDR: {win['kills']}/{win['death']}",
                 inline=False)
             
         embed.set_thumbnail(
@@ -120,28 +114,30 @@ class BattleRoyale(commands.Cog):
                       brief="add a Battleroyale event",
                       aliases=['addBr'])
     @commands.is_owner()
-    async def addBattleroyale(self, ctx, action, time,*, description):
+    async def addBattleroyale(self, ctx, action, time : float,*, description = None):
         action = action.lower()
-        time = round(float(time), 1)
+        time = round(time, 1)
         time = round_down(time * 10, 5)
         time = time /10
-        if len(description) < 1:
+        if not description:
             await ctx.send('Invalid description')
+            return
         
-        elif action not in self.listAction:
+        if action not in self.listAction:
             await ctx.send('Invalid action')
+            return
 
-        elif time <= 0 or time > 12:
+        if time <= 0 or time > 12:
             await ctx.send('Invalid time')
+            return
 
-        else:
-            event = {
-                "action":self.listAction.index(action),
-                "time":time,
-                "description":description}
-            self.listReactions.append(event)
-            updateListReactions(self)
-            await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
+        event = {
+            "action":self.listAction.index(action),
+            "time":time,
+            "description":description}
+        self.listReactions.append(event)
+        updateListActions(self)
+        await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
 
     @commands.command(name='deleteBattleroyale',
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
@@ -150,7 +146,7 @@ class BattleRoyale(commands.Cog):
     @commands.is_owner()
     async def deleteBattleroyale(self, ctx):
         deleted = self.listReactions.pop()
-        updateListReactions(self)
+        updateListActions(self)
         await ctx.send(
             "__**DELETED**__\n**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`"
                 .format(
@@ -158,32 +154,39 @@ class BattleRoyale(commands.Cog):
                     deleted["time"],
                     deleted["description"]))  
 
+async def sendChallenge(self, ctx):
+    embed = discord.Embed(
+        title = 'Battle Royale no DI',
+        description='{} started a battle royale'.format(ctx.message.author.mention),
+        color=self.bot.embed_color)
+
+    embed.set_thumbnail(
+        url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
+
+    embed.add_field(
+        name='Pick your weapon below if you wish to participate',
+        value='(you have approximately 30 seconds)')
+
+    msg = await ctx.send(embed=embed)
+    await msg.add_reaction('🔫')
+
+    return await ctx.fetch_message(msg.id)
+
 async def sendAllDailyReports(self, ctx, users):
 #gets a list of all users and sends all days
     #check if enough users
     await sendInitialReport(self, ctx)
-
     day = 1
     time = getCurrentHour()
     while(len(users["alive"]) > 1):
         figthTrailer, users = generateDailyReport(self, ctx, users, time)
         await sendDaylyReport(self, ctx, day, figthTrailer)
         time = 24
-        day = day + 1
-
-def getCurrentHour():
-#gets current hour irl
-    now = datetime.datetime.now()
-    time = 24 - now.hour
-    if now.minute > 30:
-        time = time - 1
-    elif now.minute > 0:
-        time = time - 0.5
-    return time
+        day += 1
 
 def generateDailyReport(self, ctx, users, time):
 #generates a string with a daily report and returns a list containing survivors
-    figthTrailer = ""
+    figthTrailer = []
     while(len(users["alive"]) > 1 and time > 0):
         match = choice(self.listReactions)
         if time - match["time"] <= 0:
@@ -216,9 +219,9 @@ def generateDailyReport(self, ctx, users, time):
             figthResult = match["description"].format(p1["name"], p2["name"])
         
         time = time - match["time"]
-        figthTrailer = figthTrailer + "**" + convertHour(time) + "** " + figthResult + "\n"
+        figthTrailer.append("**" + convertHour(time) + "** " + figthResult)
 
-    return figthTrailer, users
+    return "\n".join(figthTrailer), users
 
 async def sendDaylyReport(self, ctx, day, result):
 #send a embed with the daily report
@@ -271,24 +274,25 @@ def correctListUsers(ctx, users):
     users = [i for n, i in enumerate(users) if i not in users[n+1:]]
     return {"alive": users, "dead": []}
 
-async def sendChallenge(self, ctx):
-#generate embed
+def victoryEmbed(self, user):
+#create final embed
     embed = discord.Embed(
-        title = 'Battle Royale no DI',
-        description='{} started a battle royale'.format(ctx.message.author.mention),
+        title = 'Winner',
+        description=user["name"],
         color=self.bot.embed_color)
 
-    embed.set_thumbnail(
-        url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
+    embed.set_footer(text = "Kills: {}".format(user["kills"]))
+    return embed
 
-    embed.add_field(
-        name='Pick your weapon below if you wish to participate',
-        value='(you have approximately 30 seconds)')
-
-    msg = await ctx.send(embed=embed)
-    await msg.add_reaction('\U0001F52B')
-    #update sent embed so it contains the reaction
-    return await ctx.fetch_message(msg.id)
+def getCurrentHour():
+#gets current hour irl
+    now = datetime.datetime.now()
+    time = 24 - now.hour
+    if now.minute > 30:
+        time = time - 1
+    elif now.minute > 0:
+        time = time - 0.5
+    return time
 
 def convertHour(time):
 #convert time in hours to midnigth to hour of day
@@ -303,7 +307,7 @@ def convertHour(time):
         minutes = "0{}".format(minutes)
     return "{0}:{1}h".format(hours, minutes)
 
-def updateListReactions(self):
+def updateListActions(self):
 #update a JSON file
     with open(self.bot.BATTLEROYALE_PATH, 'w') as file:
         json.dump(self.listReactions, file, indent=4)
@@ -316,16 +320,6 @@ def updateStats(self, users):
         update_kills(self.bot, user["id"], 0, user["kills"], 1)
 
     save_stats(self.bot)
-
-def victoryEmbed(self, user):
-#create final embed
-    embed = discord.Embed(
-        title = 'Winner',
-        description=user["name"],
-        color=self.bot.embed_color)
-
-    embed.set_footer(text = "Kills: {}".format(user["kills"]))
-    return embed
 
 def setup(bot):
     bot.add_cog(BattleRoyale(bot))

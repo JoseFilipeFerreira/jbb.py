@@ -14,13 +14,13 @@ class Store(commands.Cog):
             brief="richests users")
     @commands.is_nsfw()
     async def richest(self, ctx):
-        money = []
         embed = discord.Embed(
             title = 'Economy no DI',
             color=self.bot.embed_color)
         embed.set_thumbnail(
             url="http://pixelartmaker.com/art/89daa821cd53576.png") 
 
+        money = []
         for id in self.bot.stats:
             money.append({
                 "id": id,
@@ -42,24 +42,19 @@ class Store(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='market',
-            description="Buy things to put in your iventory",
+            description="Buy things to put in your inventory",
             brief="MiEI Market")
     @commands.is_nsfw()
     async def market(self, ctx, store = None, *,tool = None):
-        embed = discord.Embed(
-                title = 'Market de {}'.format(ctx.message.guild.name),
-                color=self.bot.embed_color)
-        embed.set_thumbnail(
-                url="http://pixelartmaker.com/art/9a22f122756ab01.png")
-
         if not store:
-            await market_stalls(self, ctx, embed)
+            await market_stalls(self, ctx)
         elif not tool:
-            await stall(self, ctx, embed, store)
+            await stall(self, ctx, store)
         elif store and tool:
-            await store_interact(self, ctx, embed, store, tool)
+            await store_interact(self, ctx, store, tool)
 
-async def store_interact(self, ctx, embed, store, tool):
+async def store_interact(self, ctx, store, tool):
+    embed = default_embed(self, ctx)
     store = store.lower()
     prod  = tool.lower()
     if store not in self.bot.market:
@@ -92,7 +87,7 @@ async def store_interact(self, ctx, embed, store, tool):
             prod_dic["name"]),
         value="cost: {0}\nstat: {1}".format(
             prod_dic["cost"],
-            prod_dic["stat"]))
+            prod_dic["stats"]))
     
     embed.add_field(
         name="**Replace**",
@@ -126,15 +121,15 @@ async def store_interact(self, ctx, embed, store, tool):
         give_cash(self.bot, ctx.message.author.id, price)
         return
 
-    inventory["gear"][store]["simbol"] = prod_dic["simbol"]
-    inventory["gear"][store]["name"]   = prod_dic["name"]
-    inventory["gear"][store]["stats"]  = prod_dic["stat"]
+    for prop in prod_dic.keys():
+        inventory["gear"][store][prop] = prod_dic[prop]
     
     await ctx.send("Transaction was successfull")
     save_stats(self.bot)
 
 
-async def market_stalls(self, ctx, embed):
+async def market_stalls(self, ctx):
+    embed = default_embed(self, ctx)
     for store in self.bot.market.keys():
         embed.add_field(
             name="{0} {1}".format(
@@ -146,12 +141,13 @@ async def market_stalls(self, ctx, embed):
 
     await ctx.send(embed=embed)
 
-async def stall(self, ctx, embed, store):
+async def stall(self, ctx, store):
+    embed = default_embed(self, ctx)
     store = store.lower()
     if store in self.bot.market:
         store_items(
             embed,
-            self.bot.market[store]["stat"],
+            self.bot.market[store]["stats"],
             self.bot.market[store]["contents"])
         
         embed.set_footer(
@@ -164,7 +160,7 @@ async def stall(self, ctx, embed, store):
 
 def store_items(embed, stat, items):
     def compare(item):
-        return item["stat"]
+        return item["stats"]
     items.sort(key=compare)
 
     for item in items:    
@@ -174,9 +170,17 @@ def store_items(embed, stat, items):
                 item["name"]),
             value="cost: {2}\n{0}: {1}\n".format(
                 stat,
-                item["stat"],
+                item["stats"],
                 item["cost"]),
             inline=False)
+
+def default_embed(self, ctx):
+    embed = discord.Embed(
+            title = 'Market de {}'.format(ctx.message.guild.name),
+            color=self.bot.embed_color)
+    embed.set_thumbnail(
+            url="http://pixelartmaker.com/art/9a22f122756ab01.png")
+    return embed
 
 def find(arr, key, value):
     for dic in arr:
