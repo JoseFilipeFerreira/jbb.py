@@ -119,7 +119,7 @@ async def help_command(self, ctx, command_or_cog):
     if len(command.aliases) > 0:
         embed.add_field(
             name="ALIASES",
-            value=command.aliases,
+            value="; ".join(command.aliases),
             inline=False)
 
     await ctx.send(embed=embed)
