@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+import aiohttp
 from random import randint, choice
 
 class Games(commands.Cog):
@@ -23,10 +24,16 @@ class Games(commands.Cog):
                       description="pick a random card from a deck",
                       brief="pick a card")
     async def pick(self, ctx):
-        simbolo = ['Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei']
-        naipe = ['paus', 'ouros', 'copas', 'espadas']
-        await ctx.send(choice(simbolo) + ' de ' + choice(naipe))
-    
+        url = "https://deckofcardsapi.com/api/deck/new/draw/?count=1"
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    result = await response.json()
+            embed = discord.Embed(color=self.bot.embed_color)
+            embed.set_image(url=result["cards"][0]["image"])
+            await ctx.send(embed =embed)
+        except:
+            await self.bot.say("Something unexpected went wrong.")   
     
     @commands.command(name='rps',
                       description="play rock paper scissors against the bot",
@@ -49,7 +56,6 @@ class Games(commands.Cog):
         else:
             await ctx.send('*Invalid*')
     
-    
     @commands.command(name='choose',
                       description="choose from the query",
                       brief="choose from the query")
@@ -63,32 +69,6 @@ class Games(commands.Cog):
     async def magicball(self, ctx):
         a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
         await ctx.send(choice(a))
- 
-    @commands.command(name='guess',
-                      description="guess the coin the bot is thinking about",
-                      brief="guess coin")
-    async def guess(self, ctx):
-        await ctx.send("Guess how the coin landed (head/tail)")
-        
-        def guess_check(m):
-            return m.content.lower() == 'tail' or m.content.lower() == 'head'
-        
-        await self.bot.send_typing(ctx.message.channel)
-        guess = await self.bot.wait_for_message(
-            timeout=10.0,
-            author=ctx.message.author,
-            check=guess_check)
-
-        n = randint(0,1)
-        answer  = 'tail'
-        if(n==1): answer = 'head'
-
-        if guess is None:
-            await ctx.send(f'You took too long. I got {answer}')
-        elif guess.content == answer:
-            await ctx.send('You guessed it!')
-        else:
-            await ctx.send(f"You're wrong. I got {answer}")
 
     @commands.command(name='vote',
                       description="creates a poll with given query or default text",
