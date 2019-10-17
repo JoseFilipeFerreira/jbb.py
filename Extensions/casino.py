@@ -1,12 +1,11 @@
 import discord
 from discord.ext import commands
-import random
 import asyncio
 import time
-from random import randint, choice
 from aux.cash import enough_cash, spend_cash, give_cash, RepresentsInt, save_stats, hours_passed 
 from aux.inventory import get_stat
 from PIL import Image, ImageDraw
+from random import choice, randint
 
 class Casino(commands.Cog):
     """Bet all your life savings here"""

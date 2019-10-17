@@ -1,8 +1,8 @@
 import discord
+from discord.ext import commands
 import json
 import subprocess
 from random import randint
-from discord.ext import commands
 
 class Interact(commands.Cog):
     """Interact with other users while pinging them"""    

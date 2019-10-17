@@ -1,8 +1,8 @@
 import discord
+from discord.ext import commands
 import asyncio
 import requests
 from random import choice
-from discord.ext import commands
 
 class Dogs(commands.Cog):
     """Get random cute pics"""
@@ -16,17 +16,16 @@ class Dogs(commands.Cog):
                       brief="send dog pic",
                       aliases=['auau'])
     async def dog(self, ctx):
-        isVideo = True
-        while isVideo:
+        while True:
             r = requests.get('https://random.dog/woof.json')
             js = r.json()
             if js['url'].endswith('.mp4'):
                 pass
             else:
-                isVideo = False
                 embed = discord.Embed(color=choice(self.colours))
                 embed.set_image(url=js['url'])
                 await ctx.send(embed=embed)
+                return
 
     @commands.command(name='cat',
                       description="send random cat picture",

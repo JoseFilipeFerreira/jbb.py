@@ -1,9 +1,7 @@
-
-import traceback
-import sys
-from discord.ext import commands
 import discord
-
+from discord.ext import commands
+import sys
+import traceback
 
 class CommandErrorHandler(commands.Cog):
     def __init__(self, bot):
@@ -23,7 +21,7 @@ class CommandErrorHandler(commands.Cog):
             return
 
         elif isinstance(error, commands.NoPrivateMessage):
-            return await ctx.author.send(f'{ctx.command} can not be used in Private Messages.')
+            return await ctx.author.send(f"{ctx.command} can't be used in Private Messages.")
         
         elif isinstance(error, discord.ext.commands.errors.NSFWChannelRequired):
                 return await ctx.send(f'Command must be done in {get_NSFW(ctx)}')

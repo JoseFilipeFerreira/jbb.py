@@ -1,16 +1,14 @@
 from __future__ import print_function
 import discord
-import wolframalpha
-from baseconvert import base
 from discord.ext import commands
-from random import randint, choice
-from apiclient.discovery import build
-from httplib2 import Http
-from oauth2client import file, client, tools
-import datetime
-from googletrans import Translator
 import aiohttp
+import datetime
+import wolframalpha
+from apiclient.discovery import build
 from ftfy import fix_encoding
+from googletrans import Translator
+from httplib2 import Http
+from oauth2client import client, file, tools
 
 #setup the calender API
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'

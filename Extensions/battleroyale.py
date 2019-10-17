@@ -1,12 +1,9 @@
 import discord
 from discord.ext import commands
-import random
-import datetime
-from random import randint
-from random import choice
 import asyncio
+import datetime
 import json
-import operator
+from random import choice, randint
 from aux.cash import save_stats, round_down,  give_cash
 from aux.inventory import update_kills, get_stat
 

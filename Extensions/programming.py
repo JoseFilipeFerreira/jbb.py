@@ -1,8 +1,7 @@
 import discord
-from baseconvert import base
 from discord.ext import commands
-from random import randint
-import requests 
+from baseconvert import base
+from random import choice
 
 class Programming(commands.Cog):
     """Programming help"""    
@@ -21,7 +20,7 @@ class Programming(commands.Cog):
             'double = succ . (!!2) . enumFromThen 1',
             'double = uncurry (+) . dup',
             'double x = x + x']
-        await ctx.send('```Haskell\ndouble :: Double -> Double\n' + doublFct[randint(0, len(doublFct) - 1)] + '```')
+        await ctx.send('```Haskell\ndouble :: Double -> Double\n' + choice(doublFct) + '```')
 
     @commands.command(name='quicksort',
                       description="help understand quicksort",

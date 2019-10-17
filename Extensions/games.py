@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
-import random
-from random import randint
-from random import choice
 import asyncio
+from random import randint, choice
 
 class Games(commands.Cog):
     """Play games with your friends"""    

@@ -1,6 +1,6 @@
 import discord
-import subprocess
 from discord.ext import commands
+import subprocess
 from PIL import Image, ImageFont, ImageDraw
 
 class Memegenerator(commands.Cog):

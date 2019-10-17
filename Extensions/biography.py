@@ -1,7 +1,6 @@
 import discord
-import json
 from discord.ext import commands
-from random import randint
+import json
 from aux.inventory import get_embed_inventory, get_stat
 
 class Biography(commands.Cog):

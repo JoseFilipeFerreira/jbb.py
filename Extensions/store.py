@@ -5,7 +5,7 @@ from aux.cash import enough_cash, give_cash, spend_cash, save_stats
 from aux.inventory import get_inventory
 
 class Store(commands.Cog):
-    """Spend your manoey here"""
+    """Spend your money here"""
     def __init__(self, bot):
         self.bot = bot
 
@@ -26,13 +26,11 @@ class Store(commands.Cog):
                 "id": id,
                 "cash": self.bot.stats[id]["cash"]})
 
-        def compare(money):
-            return money["cash"]
-        money.sort(key=compare, reverse=True)
+        money.sort(key=lambda d: d["cash"], reverse=True)
 
         for i in range(3):
             cash = money[i]
-            member = ctx.message.server.get_member(cash["id"])
+            member = ctx.message.guild.get_member(cash["id"])
 
             embed.add_field(
                 name="{0}. {1}".format(i + 1, member.display_name),

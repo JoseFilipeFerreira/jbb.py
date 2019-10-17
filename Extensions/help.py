@@ -1,8 +1,8 @@
 import discord
+from discord.ext import commands
 import json
 import subprocess
 import time
-from discord.ext import commands
 
 class Help(commands.Cog):
     """Help command"""    

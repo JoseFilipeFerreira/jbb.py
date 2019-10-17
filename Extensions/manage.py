@@ -1,9 +1,9 @@
 import discord
+from discord.ext import commands
 import json
 import os
-import time
 import subprocess
-from discord.ext import commands
+import time
 
 class Manage(commands.Cog):
     """Manage the server"""    

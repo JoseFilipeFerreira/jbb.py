@@ -1,9 +1,6 @@
 import discord
 from discord.ext import commands
-import random
-import os
 import json
-from os import path
 from fuzzywuzzy import fuzz, process
 from random import randint, shuffle
 
@@ -128,7 +125,6 @@ class Quotes(commands.Cog):
                       aliases=['delete'])
     @commands.is_owner()
     async def remove(self, ctx, cat):
-        #TODO optimize one day
         if cat not in self.quotes_dict:
             await ctx.send('Invalid category')
         else:
@@ -148,7 +144,7 @@ class Quotes(commands.Cog):
         quote = self.quotes_dict['quote']
         fact = self.quotes_dict['fact'] 
         candidates = quoteA + quote + fact
-        random.shuffle(candidates)
+        shuffle(candidates)
         
         result = process.extract(search, candidates, limit=1)
 
@@ -156,7 +152,7 @@ class Quotes(commands.Cog):
 
 def getRLine(quotes_dict, filename):
 #get a random quote
-    return random.choice(quotes_dict[filename])
+    return choice(quotes_dict[filename])
 
 
 def getNLine(quotes_dict, filename):

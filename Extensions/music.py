@@ -1,8 +1,7 @@
 import discord
+from discord.ext import commands
 import json
 import subprocess
-import time
-from discord.ext import commands
 
 class Music(commands.Cog):
     """Play all great classics"""
