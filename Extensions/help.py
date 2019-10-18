@@ -96,15 +96,14 @@ async def help_command(self, ctx, command_or_cog):
         if command_or_cog.lower() == str(c).lower():
             command = c
 
-
     embed = discord.Embed(
         title="Comando",
         description=command.qualified_name,
         color=self.bot.embed_color)
-            
+
     embed.add_field(
         name="DESCRIPTION",
-        value=command.description,
+        value=command.help if command.help != None else command.description,
         inline=False)
             
     synopse = self.bot.command_prefix + command.name

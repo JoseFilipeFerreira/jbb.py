@@ -48,6 +48,7 @@ python bot.py
 * [fuzzywuzzy](https://github.com/seatgeek/fuzzywuzzy) - Search quotes
 * [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
 * [ftfy](https://github.com/LuminosoInsight/python-ftfy) - Fixes glitches in Unicode text.
+* [deckofcards](https://deckofcardsapi.com/)
 
 ## License
 

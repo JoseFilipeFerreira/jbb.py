@@ -46,11 +46,7 @@ class Games(commands.Cog):
             result = "**" + appInfo.name + " won!**"
             if (player == cpu):
                 result = "**It´s a tie!**"
-            elif (player == "rock" and cpu == "scissors"):
-                result = "**You won!**"
-            elif (player == "paper" and cpu == "rock"):
-                result = "**You won!**"
-            elif (player == "scissors" and cpu == "paper"):
+            elif (player == "rock" and cpu == "scissors") or (player == "paper" and cpu == "rock") or (player == "scissors" and cpu == "paper"):
                 result = "**You won!**"
             await ctx.send('You played ' + player + '\n' + appInfo.name + ' played ' + cpu + '\n' + result)
         else:
@@ -74,13 +70,11 @@ class Games(commands.Cog):
                       description="creates a poll with given query or default text",
                       brief="create a poll",
                       aliases=['poll'])
-    async def vote(self, ctx, *, quote = None):
-        if not quote:
-           quote = 'Vote here'
+    async def vote(self, ctx, *, quote = 'Vote here'):
         await ctx.message.delete()
-        vote = await ctx.send('**{0}**\n(poll by {1})'.format(quote, ctx.message.author.mention))
-        await vote.add_reaction('\U0000274C')
-        await vote.add_reaction('\U00002705')
+        msg = await ctx.send('**{0}**\n(poll by {1})'.format(quote, ctx.message.author.mention))
+        await msg.add_reaction('\U0000274C')
+        await msg.add_reaction('\U00002705')
 
 def getRPS():
     n = randint(0,2)

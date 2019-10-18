@@ -2,8 +2,9 @@ import discord
 from discord.ext import commands
 import asyncio 
 import json
-import time
 import os
+import time
+import traceback
 import subprocess
 from os import path
 from datetime import datetime
@@ -32,24 +33,21 @@ def main():
     bot.EXTENSIONS_PATH ='Extensions'
     bot.MARKET_PATH='./db/market.json'
     bot.REPLIES_PATH='./db/replies.json'
-    
    
-    #adding to bot object available media
-    bot.imagesMap = {}
-    bot.gifsMap = {}
-    bot.musicMap = {}
-
     #load media
+    bot.imagesMap = {}
     for f in os.listdir(bot.IMAGES_PATH):
         if path.isfile(path.join(bot.IMAGES_PATH, f)):
             filename, _ = path.splitext(f)
             bot.imagesMap[filename.lower()] = f
 
+    bot.gifsMap = {}
     for f in os.listdir(bot.GIFS_PATH):
         if path.isfile(path.join(bot.GIFS_PATH, f)):
             filename, _ = path.splitext(f)
             bot.gifsMap[filename.lower()] = f
 
+    bot.musicMap = {}
     for f in os.listdir(bot.MUSIC_PATH):
         if path.isfile(path.join(bot.MUSIC_PATH, f)):
             filename, _ = path.splitext(f)
@@ -155,7 +153,6 @@ async def reactMessage(message):
     #coin giveaway
     if hours_passed(bot.last_giveaway, time.time()) > 24:
         bot.last_giveaway += 24*60*60 
-        appInfo = await bot.application_info()
         given = 0
         for id in bot.stats:
             stat = get_stat(bot, id)
@@ -163,6 +160,7 @@ async def reactMessage(message):
                 give_cash(bot, id, 10)
                 given += 1
         save_stats(bot)
+        appInfo = await bot.application_info()
         await appInfo.owner.send("Giveaway: {}".format(given))
 
     await bot.process_commands(message)
@@ -212,12 +210,12 @@ def extensions_loader(extensions):
             loaded = loaded + "\n" + extension
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension: {}\n{}'.format(extension, exc))
+            print(f'Failed to load extension: {extension}\n{exc}')
             failed = failed + "\n" + ('**{}**:{}'.format(extension, exc))
-            traceback.print_exc()
+            print(traceback.format_exc())
     
     bot.extensions_list_loaded = loaded
     bot.extensions_list_failed = "No cogs failed to load"
-    if not failed == "": bot.extensions_list_failed = failed
+    if failed != "": bot.extensions_list_failed = failed
 
 main()

@@ -165,6 +165,5 @@ def updateQuotes(self):
     with open(self.bot.QUOTES_PATH, 'w', encoding='utf8') as file:
         json.dump(self.quotes_dict, file, indent=4)
 
-
 def setup(bot):
     bot.add_cog(Quotes(bot))

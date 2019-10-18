@@ -157,9 +157,7 @@ async def stall(self, ctx, store):
     await ctx.send(embed=embed)
 
 def store_items(embed, stat, items):
-    def compare(item):
-        return item["stats"]
-    items.sort(key=compare)
+    items.sort(key=lambda i: i["stats"])
 
     for item in items:    
         embed.add_field(

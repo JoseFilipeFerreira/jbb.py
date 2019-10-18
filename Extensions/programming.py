@@ -8,8 +8,6 @@ class Programming(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
-
     @commands.command(name='helpHaskell',
                       description="give overlycomplicated function that returns the double of a given number in haskell",
                       brief="small program in haskell")
@@ -24,14 +22,16 @@ class Programming(commands.Cog):
 
     @commands.command(name='quicksort',
                       description="help understand quicksort",
-                      brief="quicksort is hard guys")
+                      brief="quicksort is hard guys",
+                      aliases=["qsort"])
     async def quicksort(self, ctx):
         await ctx.send('https://www.youtube.com/watch?v=ywWBy6J5gz8')
 
-    @commands.command(name='conv',
+    @commands.command(name='convert',
                       description="convert between numeric bases",
-                      brief="convert between bases")
-    async def conv(self, ctx, number, basefrom : int, baseto :int ):
+                      brief="convert between bases",
+                      aliases=["conv"])
+    async def convert(self, ctx, number, basefrom : int, baseto :int ):
         result = base(number, basefrom, baseto, string=True)
         await ctx.send('{0} na base {1} para base {2} dá:\n{3}'
                 .format(number, basefrom, baseto, result))

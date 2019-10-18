@@ -107,11 +107,18 @@ class BattleRoyale(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name='addBattleroyale',
-                      description="add a Battleroyale event to the json [OWNER ONLY]",
                       brief="add a Battleroyale event",
                       aliases=['addBr'])
     @commands.is_owner()
     async def addBattleroyale(self, ctx, action, time : float,*, description = None):
+        """add a Battleroyale event to the json [OWNER ONLY]
+        __**action**__:
+        * **kill** A was killed by B
+        * **die** A died
+        * **event** something happened to A
+        * **meet"** A met B
+        __**time**__:
+        * t <= 12"""
         action = action.lower()
         time = round(time, 1)
         time = round_down(time * 10, 5)

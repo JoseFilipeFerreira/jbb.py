@@ -52,10 +52,8 @@ class Api(commands.Cog):
                       description="menu of the uminho canteen",
                       brief="menu",
                       aliases=['ementa'])
-    async def cantina(self, ctx ,*, menu=None):
-        if not menu:
-            calendar_name = 'almoço'
-        elif menu in self.menus:
+    async def cantina(self, ctx ,*, menu='almoço'):
+        if menu in self.menus:
             menu = menu.lower()
             calendar_name = self.menus[menu]
         else:
@@ -108,8 +106,7 @@ class Api(commands.Cog):
                       description="Get a urban defenition of a query",
                       brief="search urban")
     async def urban(self, ctx, * query : str):
-        search_terms = "+".join(query)
-        url = "http://api.urbandictionary.com/v0/define?term=" + search_terms
+        url = "http://api.urbandictionary.com/v0/define?term=" + "+".join(query)
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as response:

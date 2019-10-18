@@ -30,10 +30,15 @@ class Casino(commands.Cog):
         save_stats(self.bot)
 
     @commands.command(name='roulette',
-                      description="Bet on a roulette spin\n\n**red/black/green** 2x money\n**odd/even** 2x money\n**high/low** 2x money\n**number** 37x money",
                       brief="Play roulette")
     @commands.is_nsfw()
     async def roulette(self, ctx, amount : int, bet):
+        """Bet on a roulette spin
+
+        **red/black/green** 2x money
+        **odd/even** 2x money
+        **high/low** 2x money
+        **number** 37x money"""
         bet = bet.lower()
 
         if amount <= 0:
@@ -43,7 +48,6 @@ class Casino(commands.Cog):
         if not enough_cash(self.bot, ctx.message.author.id, amount):
             await ctx.send("Not enough cash to bet")
             return
-        
 
         if bet not in ["red", "black","green", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
             await ctx.send("Invalid bet")
