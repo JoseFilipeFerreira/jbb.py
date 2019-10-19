@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-from aux.inventory import get_embed_inventory, get_stat
+from aux.stats import Stats
 
 class Biography(commands.Cog):
     """Server member's biography"""
@@ -36,20 +36,26 @@ class Biography(commands.Cog):
                         name=key,
                         value="\n".join(bio[key]))
 
+        k, d = self.bot.stats.get_kdr(member.id)
         embed.add_field(
             name="🔫KDR",
-            value="{0}/{1}".format(get_stat(self.bot, member.id)["kills"], get_stat(self.bot, member.id)["death"]))
+            value="{0}/{1}".format(k, d))
             
         embed.set_footer(text = "Biography")
         await ctx.send(embed=embed)
-        await ctx.send(embed=get_embed_inventory(self.bot, member.id, member.display_name, embed_colour))
+        await ctx.send(embed=self.bot.stats.get_embed_inventory(member.id, member.display_name, embed_colour))
 
     @commands.command(
         name='bioKey',
-        description="**MODIFIERS:**\n**list:**   send all available bio keys\n**add:**    add a bio key\n**swap:**   swap two bioKeys' position\n**delete:** delete a given position",
         brief="alter bio keys")
     @commands.is_owner()
     async def bioKey(self, ctx, modifier,* text):
+        """**MODIFIERS:**
+        **list:**   send all available bio keys
+        **add:**    add a bio key
+        **swap:**   swap two bioKeys' position
+        **delete:** delete a given position"""
+
         #list all bioKeys
         if modifier == "list":
             await self.bot.say(textKeyOrder(self.order))
@@ -91,10 +97,13 @@ class Biography(commands.Cog):
 
     @commands.command(
         name='editBio',
-        description="add a funy description of a given user\n**ACTIONS:**\n**delete:** delete a given position\n**add:** add a description",
         brief="add one's biography")
     @commands.is_owner()
     async def editBio(self, ctx, member : discord.Member,  action, bioKey, *, text):
+        """add a funy description of a given user
+        **ACTIONS:**
+        **delete:** delete a given position
+        **add:** add a description"""
         #check bioKey
         if bioKey not in self.order:
             await self.bot.say("Invalid bioKey")

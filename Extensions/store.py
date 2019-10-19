@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from aux.cash import enough_cash, give_cash, spend_cash, save_stats 
-from aux.inventory import get_inventory
+from aux.stats import Stats
 
 class Store(commands.Cog):
     """Spend your money here"""
@@ -21,10 +20,10 @@ class Store(commands.Cog):
             url="http://pixelartmaker.com/art/89daa821cd53576.png") 
 
         money = []
-        for id in self.bot.stats:
+        for id in self.bot.stats.get_all_users:
             money.append({
                 "id": id,
-                "cash": self.bot.stats[id]["cash"]})
+                "cash": self.bot.stats.get_cash(id)})
 
         money.sort(key=lambda d: d["cash"], reverse=True)
 
@@ -70,14 +69,14 @@ async def store_interact(self, ctx, store, tool):
         return
 
     price = prod_dic["cost"]
-    if not enough_cash(self.bot, ctx.message.author.id, price):
+    if not self.bot.stats.enough_cash(ctx.message.author.id, price):
         embed.add_field(
             name="Not enough money",
             value="Item is too expensive")
         await ctx.send(embed=embed)
         return
 
-    inventory = get_inventory(self.bot, ctx.message.author.id)
+    gear = self.bot.stats.get_gear(ctx.message.author.id)
 
     embed.add_field(
         name="{0}{1}".format(
@@ -90,14 +89,14 @@ async def store_interact(self, ctx, store, tool):
     embed.add_field(
         name="**Replace**",
         value="{0} {1}\nstat: {2}".format(
-            inventory["gear"][store]["simbol"],
-            inventory["gear"][store]["name"],
-            inventory["gear"][store]["stats"])) 
+            gear[store]["simbol"],
+            gear[store]["name"],
+            gear[store]["stats"])) 
 
     embed.set_footer(
         text="select to buy")
 
-    spend_cash(self.bot, ctx.message.author.id, price)
+    self.bot.stats.spend_cash(ctx.message.author.id, price)
     
     msg = await ctx.send(embed=embed)
     await msg.add_reaction('\U0000274C')
@@ -110,20 +109,19 @@ async def store_interact(self, ctx, store, tool):
          reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
     except asyncio.TimeoutError:
         await msg.clear_reactions()
-        give_cash(self.bot, ctx.message.author.id, price)
+        self.bot.stats.give_cash(ctx.message.author.id, price)
         return
 
     await msg.clear_reactions()
 
     if reaction.emoji ==  '\U0000274C':
-        give_cash(self.bot, ctx.message.author.id, price)
+        self.bot.stats.give_cash(ctx.message.author.id, price)
         return
 
-    for prop in prod_dic.keys():
-        inventory["gear"][store][prop] = prod_dic[prop]
-    
+    self.bot.stats.set_gear(ctx.message.author.id, store, prod_dic)
+
     await ctx.send("Transaction was successfull")
-    save_stats(self.bot)
+    self.bot.stats.save_stats()
 
 
 async def market_stalls(self, ctx):

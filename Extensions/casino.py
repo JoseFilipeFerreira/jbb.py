@@ -2,8 +2,8 @@ import discord
 from discord.ext import commands
 import asyncio
 import time
-from aux.cash import enough_cash, spend_cash, give_cash, RepresentsInt, save_stats, hours_passed 
-from aux.inventory import get_stat
+from aux.misc import RepresentsInt, hours_passed 
+from aux.stats import Stats
 from PIL import Image, ImageDraw
 from random import choice, randint
 
@@ -19,15 +19,14 @@ class Casino(commands.Cog):
     @commands.is_nsfw()
     async def beg(self, ctx):
         id = ctx.message.author.id
-        stat = get_stat(self.bot, id)
-        if hours_passed(stat["last_beg"], time.time()) > 24:
-            stat["last_beg"] = time.time()
-            give_cash(self.bot, id, 1)
+        if hours_passed(self.stats.get_last_beg(), time.time()) > 24:
+            self.bot.stats.set_last_beg(id, time.time())
+            self.bot.stats.give_cash(id, 1)
             await ctx.send("Have 1 coin.")
         else:
             await ctx.send("No coin for you.")
-        stat["bet"] = True
-        save_stats(self.bot)
+        self.bot.stats.set_bet(id, True)
+        self.bot.stats.save_stats()
 
     @commands.command(name='roulette',
                       brief="Play roulette")
@@ -45,7 +44,7 @@ class Casino(commands.Cog):
             await ctx.send("Invalid amount")
             return
         
-        if not enough_cash(self.bot, ctx.message.author.id, amount):
+        if not self.bot.stats.enough_cash(ctx.message.author.id, amount):
             await ctx.send("Not enough cash to bet")
             return
 
@@ -91,7 +90,7 @@ class Casino(commands.Cog):
         await msg.add_reaction('\U0000274C')
         await msg.add_reaction('\U00002705')
     
-        spend_cash(self.bot, ctx.message.author.id, amount)
+        self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
         def check(reaction, user):
             return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
@@ -100,13 +99,13 @@ class Casino(commands.Cog):
              reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
         except asyncio.TimeoutError:
             await msg.clear_reactions()
-            give_cash(self.bot, ctx.message.author.id, amount)
+            self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
 
         await msg.clear_reactions()
 
         if reaction.emoji ==  '\U0000274C':
-            give_cash(self.bot, ctx.message.author.id, amount)
+            self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
         
         pos = randint(0, len(self.rOrder) - 1)
@@ -129,7 +128,7 @@ class Casino(commands.Cog):
 
         if(self.rOrder[pos] in pNumbers):
             result = f"You Won {win}🎉"
-            give_cash(self.bot, ctx.message.author.id, win)
+            self.bot.stats.give_cash(ctx.message.author.id, win)
         
         else:
             result = f"You lost {amount} 💸"
@@ -139,14 +138,15 @@ class Casino(commands.Cog):
                 file=discord.File(
                     self.bot.TMP_PATH + "roulette.png"))
 
-        self.bot.stats[ctx.message.author.id]["bet"] = True
+        self.bot.stats.set_bet(ctx.message.author.id, True)
         save_stats(self.bot)
 
     @commands.command(name='roll',
-                      description="roll a 20 faced dice\n\nIf an amount is specified gamble\nroll [amount] [number]",
                       brief="roll a dice")
     @commands.is_nsfw()
     async def roll(self, ctx, amount : int = None, number : int = None):
+        """roll a 20 faced dice
+        If an amount is specified gamble"""
         if amount == None and number == None:
             await ctx.send('You rolled a ' + str(randint(1,20)))
 
@@ -159,7 +159,7 @@ class Casino(commands.Cog):
             r_number = randint(1,20)
 
             #check if enough cash
-            if not enough_cash(self.bot, ctx.message.author.id, amount):
+            if not self.bot.stats.enough_cash(ctx.message.author.id, amount):
                 await ctx.send("Not enough cash to bet")
                 return
 
@@ -170,7 +170,7 @@ class Casino(commands.Cog):
             await msg.add_reaction('\U0000274C')
             await msg.add_reaction('\U00002705')
     
-            spend_cash(self.bot, ctx.message.author.id, amount)
+            self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
             def check(reaction, user):
                 return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
@@ -179,47 +179,40 @@ class Casino(commands.Cog):
                  reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
             except asyncio.TimeoutError:
                 await msg.clear_reactions()
-                give_cash(self.bot, ctx.message.author.id, amount)
+                self.bot.stats.give_cash(ctx.message.author.id, amount)
                 return
 
             await msg.clear_reactions()
 
             if reaction.emoji ==  '\U0000274C':
-                give_cash(self.bot, ctx.message.author.id, amount)
+                self.bot.stats.give_cash(ctx.message.author.id, amount)
                 return
         
             if number == r_number:
-                give_cash(self.bot, ctx.message.author.id, win)
+                self.bot.stats.give_cash(ctx.message.author.id, win)
                 await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
             else:
-                spend_cash(self.bot, ctx.message.author.id, amount)
                 await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou lost {1} 💸".format(r_number, amount))
         else:
             await ctx.send("Invalid bet")
 
-        self.bot.stats[ctx.message.author.id]["bet"] = True
-        save_stats(self.bot)
+        self.bot.stats.set_bet(ctx.message.author.id, True)
+        self.bot.stats.save_stats()
     
     @commands.command(name='slot',
                       description="play on a slot machine",
                       brief="slot machine")
     @commands.is_nsfw()
-    async def slot(self, ctx, amount):
+    async def slot(self, ctx, amount:int):
         wheels_array = []
         for emoji in ctx.message.guild.emojis:
             wheels_array.append(str(emoji))
-
-        if not RepresentsInt(amount):
-            await ctx.send("Invalid bet")
-            return
-
-        amount = int(amount)
 
         if amount <= 0:
             await ctx.send("Invalid bet")
             return
         
-        if not enough_cash(self.bot, ctx.message.author.id, amount):
+        if not self.bot.stats.enough_cash(ctx.message.author.id, amount):
                 await ctx.send("Not enough cash to bet")
                 return
         
@@ -230,7 +223,7 @@ class Casino(commands.Cog):
         await msg.add_reaction('\U0000274C')
         await msg.add_reaction('\U00002705')
     
-        spend_cash(self.bot, ctx.message.author.id, amount)
+        self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
         def check(reaction, user):
             return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
@@ -239,13 +232,13 @@ class Casino(commands.Cog):
              reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
         except asyncio.TimeoutError:
             await msg.clear_reactions()
-            give_cash(self.bot, ctx.message.author.id, amount)
+            self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
 
         await msg.clear_reactions()
 
         if reaction.emoji ==  '\U0000274C':
-            give_cash(self.bot, ctx.message.author.id, amount)
+            self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
 
         w1 = randint(0, len(wheels_array) - 1)
@@ -285,11 +278,11 @@ class Casino(commands.Cog):
             slot += f"You lost {amount} 💸"
         else:
             slot += f"You won {prize} 🎉"
-            give_cash(self.bot, ctx.message.author.id, prize)
+            self.bot.stats.give_cash(ctx.message.author.id, prize)
         
         await ctx.send(slot)
-        self.bot.stats[id]["bet"] = True
-        save_stats(self.bot)
+        self.bot.stats.set_bet(ctx.message.author.id, True)
+        self.bot.stats.save_stats()
 
 def get_prev_slot(arr, pos):
     npos = pos - 1

@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 from fuzzywuzzy import fuzz, process
-from random import randint, shuffle
+from random import choice, shuffle
 
 class Quotes(commands.Cog):
     """All quotes stored"""
@@ -100,16 +100,17 @@ class Quotes(commands.Cog):
                 msgArr = list(map(lambda x: int(x) ,msgArr))
                 tmp = []
                 for msgID in msgArr:
-                    tmp.append(await self.bot.get_message(ctx.message.channel, msgID))
+                    tmp.append(await ctx.fetch_message(msgID))
                 msgArr = tmp
             except:
                 await ctx.send("Invalid Messages IDs")
                 return
             content = "\n".join(list(map(lambda x: x.content,msgArr)))
             
+            name = msgArr[0].author.display_name
             self.quotes_dict[cat].append({
                 "content": content,
-                "name": msgArr[0].author.display_name,
+                "name": name,
                 "id": msgArr[0].author.id})
             newQ = "{} - {}".format(content, name) 
         else:

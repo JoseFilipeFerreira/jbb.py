@@ -8,8 +8,7 @@ import traceback
 import subprocess
 from os import path
 from datetime import datetime
-from aux.cash import save_stats, hours_passed, give_cash
-from aux.inventory import get_empty_stats, get_stat
+from aux.stats import Stats
 
 bot = commands.Bot(
     command_prefix = '>',
@@ -54,9 +53,8 @@ def main():
             bot.musicMap[filename.lower()] = f
     
     #load stats
-    #Keys convert to string when writing to json
-    bot.stats         = {int(key): value for key, value in json.load(open(bot.STATS_PATH , 'r'))["stats"].items()}
-    bot.last_giveaway = json.load(open(bot.STATS_PATH , 'r'))["last_giveaway"]
+    bot.stats = Stats(bot.STATS_PATH)
+
     #load market
     bot.market        = json.load(open(bot.MARKET_PATH, 'r'))
     bot.replies       = json.load(open(bot.REPLIES_PATH, 'r'))
@@ -151,15 +149,8 @@ async def reactMessage(message):
         bot.player_client = None
     
     #coin giveaway
-    if hours_passed(bot.last_giveaway, time.time()) > 24:
-        bot.last_giveaway += 24*60*60 
-        given = 0
-        for id in bot.stats:
-            stat = get_stat(bot, id)
-            if stat["bet"]:
-                give_cash(bot, id, 10)
-                given += 1
-        save_stats(bot)
+    given = bot.stats.daily_giveaway(10)
+    if given:
         appInfo = await bot.application_info()
         await appInfo.owner.send("Giveaway: {}".format(given))
 
@@ -167,13 +158,13 @@ async def reactMessage(message):
 
 @bot.event
 async def on_member_join(member):
-    bot.stats[member.id] = get_empty_stats()
-    save_stats(bot)
+    bot.stats.add_user(member.id)
+    bot.stats.save_stats()
 
 @bot.event
 async def on_member_remove(member):
-    bot.stats.pop(member.id, None)
-    save_stats(bot)
+    bot.stats.remove_user(member.id)
+    bot.stats.save_stats(bot)
 
 def get_bot_color(bot):
     bGuild, color = 0, 0xffff00

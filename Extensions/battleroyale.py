@@ -3,9 +3,9 @@ from discord.ext import commands
 import asyncio
 import datetime
 import json
-from random import choice, randint
-from aux.cash import save_stats, round_down,  give_cash
-from aux.inventory import update_kills, get_stat
+from random import choice
+from aux.misc import round_down
+from aux.stats import Stats
 
 class BattleRoyale(commands.Cog):
     """BattleRoyale in the server"""
@@ -28,7 +28,7 @@ class BattleRoyale(commands.Cog):
         embed = victoryEmbed(self, users["alive"][0])
         await ctx.send(embed=embed)
 
-        give_cash(self.bot, users["alive"][0]["id"], 100)
+        self.bot.stats.give_cash(users["alive"][0]["id"], 100)
         
         updateStats(self, users)
     
@@ -40,8 +40,16 @@ class BattleRoyale(commands.Cog):
     async def battleroyale(self, ctx):
         await ctx.message.delete()
         msg = await sendChallenge(self, ctx)
-        await thirtysecondtyping(self, ctx)
-        users = await getListUsers(self, ctx, msg.reactions[0])
+        async with ctx.message.channel.typing():
+            await asyncio.sleep(20)
+
+        msg = await msg.channel.fetch_message(msg.id)
+
+        members = []
+        for reaction in msg.reactions:
+            members += await reaction.users().flatten()
+
+        users = correctListUsers(ctx, members)
         
         if len(users["alive"]) < 2:
             await ctx.send("Not enough players for a Battle Royale")
@@ -74,11 +82,12 @@ class BattleRoyale(commands.Cog):
             return
 
         arrayKDR = []
-        for id in self.bot.stats.keys():
+        for id in self.bot.stats.get_all_users():
+            k, d = self.bot.get_kdr(id)
             kdr = {
                 "id": id,
-                "kills": self.bot.stats[id]["kills"],
-                "death": self.bot.stats[id]["death"]}
+                "kills": k,
+                "death": d}
             arrayKDR.append(kdr)
         
         def compare(kdr):
@@ -249,20 +258,6 @@ async def sendInitialReport(self,ctx):
 
     await ctx.send(embed=embed)
 
-async def thirtysecondtyping(self, ctx):
-#wait 30 seconds for people to join while typing
-    await self.bot.send_typing(ctx.message.channel)
-    await asyncio.sleep(9)
-    await self.bot.send_typing(ctx.message.channel)
-    await asyncio.sleep(9)
-    await self.bot.send_typing(ctx.message.channel)
-    await asyncio.sleep(9)
-
-async def getListUsers(self, ctx, reaction):
-#create a list with the users that reacted
-    users = await self.bot.get_reaction_users(reaction)
-    return correctListUsers(ctx, users)
-
 def correctListUsers(ctx, users):
 #takes a list of users and gives a list of user name/nick an id
     users = list(filter(lambda x: not x.bot, users))
@@ -319,11 +314,11 @@ def updateListActions(self):
 def updateStats(self, users):
 #update Stats JSON file
     for user in users["dead"]:
-        update_kills(self.bot, user["id"], 1, user["kills"], 0)
+        self.bot.stats.update_kills(user["id"], 1, user["kills"], 0)
     for user in users["alive"]:
-        update_kills(self.bot, user["id"], 0, user["kills"], 1)
+        self.bot.stats.update_kills(user["id"], 0, user["kills"], 1)
 
-    save_stats(self.bot)
+    self.bot.stats.save_stats()
 
 def setup(bot):
     bot.add_cog(BattleRoyale(bot))
