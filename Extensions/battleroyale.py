@@ -126,9 +126,22 @@ class Battle():
     
                 figthResult = match["description"].format(p1.get_name(), p2.get_name())
             self.time -= match["time"]
-            figthTrailer.append("**" + convertHour(self.time) + "** " + figthResult)
+            figthTrailer.append("**" + self.displayTime() + "** " + figthResult)
     
         return figthTrailer
+
+    def displayTime(self):
+    #convert time in hours to midnigth to hour of day
+        time = 24 - self.time
+        minutes = time * 60
+        hours, minutes = divmod(minutes, 60)
+        hours = int(hours)
+        minutes = int(minutes)
+        if hours < 10:
+            hours = "0{}".format(hours)
+        if minutes < 10:
+            minutes = "0{}".format(minutes)
+        return "{0}:{1}h".format(hours, minutes)
 
     def updateStats(self, stats):
         for warrior in self.dead:
@@ -313,18 +326,6 @@ async def sendChallenge(self, ctx):
 
     return await ctx.fetch_message(msg.id)
 
-def convertHour(time):
-#convert time in hours to midnigth to hour of day
-    time = 24 - time
-    minutes = time * 60
-    hours, minutes = divmod(minutes, 60)
-    hours = int(hours)
-    minutes = int(minutes)
-    if hours < 10:
-        hours = "0{}".format(hours)
-    if minutes < 10:
-        minutes = "0{}".format(minutes)
-    return "{0}:{1}h".format(hours, minutes)
 
 def updateListActions(self):
 #update a JSON file
