@@ -1,11 +1,142 @@
 import discord
 from discord.ext import commands
 import asyncio
-import datetime
 import json
+from datetime import datetime
 from random import choice
 from aux.misc import round_down
 from aux.stats import Stats
+
+class InvalidNumberPlayers(Exception):
+    pass
+
+class Warrior():
+    def __init__(self, member):
+        self.name = member.display_name
+        self.id = member.id
+        self.kills = 0
+
+    def add_Kill(self):
+        self.kills += 1
+
+    def get_name(self):
+        return self.name
+
+    def get_id(self):
+        return self.id
+
+    def get_kills(self):
+        return self.kills
+
+class Battle():
+    def __init__(self, listReactions, embed_color, members):
+        self.listReactions = listReactions
+        self.embed_color = embed_color
+        self.alive = set()
+        self.dead = set()
+        for member in members:
+            if not member.bot:
+                self.alive.add(Warrior(member))
+        if len(self.alive) < 2:
+            raise InvalidNumberPlayers()
+
+        self.day = 1
+
+        now = datetime.now()
+        self.time = 24 - now.hour
+        if now.minute > 30:
+            self.time -= 1
+        elif now.minute > 0:
+            self.time -= 0.5
+    
+    def initialReport(self):
+        embed = discord.Embed(
+            title = 'Battle Royale no DI',
+            description=f'Result of the battle\nParticipants: {len(self.alive)}',
+            color=self.embed_color)
+        embed.set_thumbnail(
+            url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
+        return embed
+
+    def get_winner(self):
+        winner = self.alive.pop()
+        self.alive.add(winner)
+        return winner
+
+    def victoryEmbed(self):
+        winner = self.get_winner()
+        embed = discord.Embed(
+            title = 'Winner',
+            description=winner.get_name(),
+            color=self.embed_color)
+        embed.set_footer(text = f"Kills: {winner.get_kills()}")
+        return embed
+
+    def allReports(self):
+        embedList = [self.initialReport()]
+        while(len(self.alive) > 1):
+            embedList.append(self.dailyReportEmbed())
+            self.time = 24
+            self.day += 1
+
+        embedList.append(self.victoryEmbed())
+        return embedList
+
+    def dailyReportEmbed(self):
+        result = self.dailyReport()
+        if not result:
+            result = "Today nothing happened"
+        embed = discord.Embed(
+            title = f'DAY {self.day}',
+            description='\n'.join(result),
+            color=self.embed_color)
+        return embed
+
+    def dailyReport(self):
+        figthTrailer = []
+        while(len(self.alive) > 1 and self.time > 0):
+            match = choice(self.listReactions)
+
+            if self.time - match["time"] <= 0:
+                break
+            elif match["action"] == 0: #kill
+                p1 = choice(tuple(self.alive))
+                self.alive.remove(p1)
+                self.dead.add(p1)
+    
+                p2 = choice(tuple(self.alive))
+                p2.add_Kill()
+    
+                figthResult = match["description"].format(p1.get_name(), p2.get_name())
+    
+            elif match["action"] == 1: #die
+                p1 = choice(tuple(self.alive))
+                self.alive.remove(p1)
+                self.dead.add(p1)
+    
+                figthResult = match["description"].format(p1.get_name())
+
+            elif match["action"] == 2: #event
+                p1 = choice(tuple(self.alive))
+                figthResult = match["description"].format(p1.get_name())
+    
+            elif match["action"] == 3: #meet
+                p1 = choice(tuple(self.alive))
+                p2 = choice(tuple(self.alive))
+    
+                figthResult = match["description"].format(p1.get_name(), p2.get_name())
+            self.time -= match["time"]
+            figthTrailer.append("**" + convertHour(self.time) + "** " + figthResult)
+    
+        return figthTrailer
+
+    def updateStats(self, stats):
+        for warrior in self.dead:
+            stats.update_kills(warrior.get_id(), 1, warrior.get_kills(), 0)
+        for warrior in self.alive:
+            stats.update_kills(warrior.get_id(), 0, warrior.get_kills(), 1)
+        stats.save_stats()
+
 
 class BattleRoyale(commands.Cog):
     """BattleRoyale in the server"""
@@ -22,15 +153,13 @@ class BattleRoyale(commands.Cog):
     async def battleroyaleFull(self, ctx):
         await ctx.message.delete()
         await sendChallenge(self, ctx)
-        users = correctListUsers(ctx, ctx.message.guild.members)
-        await sendAllDailyReports(self, ctx, users)
 
-        embed = victoryEmbed(self, users["alive"][0])
-        await ctx.send(embed=embed)
+        br = Battle(self.listReactions, self.bot.embed_color, ctx.message.guild.members)
+        for embed in br.allReports():
+            await ctx.send(embed=embed)
 
-        self.bot.stats.give_cash(users["alive"][0]["id"], 100)
-        
-        updateStats(self, users)
+        self.bot.stats.give_cash(br.get_winner().get_id(), 100)
+        br.updateStats(self.bot.stats)
     
     @commands.command(name='battleroyale',
                       description="create server battle royale",
@@ -45,22 +174,20 @@ class BattleRoyale(commands.Cog):
 
         msg = await msg.channel.fetch_message(msg.id)
 
-        members = []
+        members = set()
         for reaction in msg.reactions:
-            members += await reaction.users().flatten()
+            members.update(await reaction.users().flatten())
 
-        users = correctListUsers(ctx, members)
-        
-        if len(users["alive"]) < 2:
+        try:
+            br = Battle(self.listReactions, self.bot.embed_color, members)
+        except InvalidNumberPlayers:
             await ctx.send("Not enough players for a Battle Royale")
             return
 
-        await sendAllDailyReports(self, ctx, users)
+        for embed in br.allReports():
+            await ctx.send(embed=embed)
 
-        embed = victoryEmbed(self, users["alive"][0])
-        await ctx.send(embed=embed)
-
-        updateStats(self, users)
+        br.updateStats(self.bot.stats)
     
     @commands.command(name='battleroyaleKDR',
                       description="battleroyale Kill/Death Ratio",
@@ -167,6 +294,7 @@ class BattleRoyale(commands.Cog):
                     deleted["time"],
                     deleted["description"]))  
 
+
 async def sendChallenge(self, ctx):
     embed = discord.Embed(
         title = 'Battle Royale no DI',
@@ -185,114 +313,6 @@ async def sendChallenge(self, ctx):
 
     return await ctx.fetch_message(msg.id)
 
-async def sendAllDailyReports(self, ctx, users):
-#gets a list of all users and sends all days
-    #check if enough users
-    await sendInitialReport(self, ctx)
-    day = 1
-    time = getCurrentHour()
-    while(len(users["alive"]) > 1):
-        figthTrailer, users = generateDailyReport(self, ctx, users, time)
-        await sendDaylyReport(self, ctx, day, figthTrailer)
-        time = 24
-        day += 1
-
-def generateDailyReport(self, ctx, users, time):
-#generates a string with a daily report and returns a list containing survivors
-    figthTrailer = []
-    while(len(users["alive"]) > 1 and time > 0):
-        match = choice(self.listReactions)
-        if time - match["time"] <= 0:
-            break
-        elif match["action"] == 0: #kill
-            p1 = choice(users["alive"])
-            users["alive"].remove(p1)
-            users["dead"].append(p1)
-
-            p2 = choice(users["alive"])
-            p2["kills"] += 1
-
-            figthResult = match["description"].format(p1["name"], p2["name"])
-
-        elif match["action"] == 1: #die
-            p1 = choice(users["alive"])
-            users["alive"].remove(p1)
-            users["dead"].append(p1)
-
-            figthResult = match["description"].format(p1["name"])
-        elif match["action"] == 2: #event
-            p1 = choice(users["alive"])
-
-            figthResult = match["description"].format(p1["name"])
-
-        elif match["action"] == 3: #meet
-            p1 = choice(users["alive"])
-            p2 = choice(users["alive"])
-
-            figthResult = match["description"].format(p1["name"], p2["name"])
-        
-        time = time - match["time"]
-        figthTrailer.append("**" + convertHour(time) + "** " + figthResult)
-
-    return "\n".join(figthTrailer), users
-
-async def sendDaylyReport(self, ctx, day, result):
-#send a embed with the daily report
-    if result == "": result = "Today nothing happened"
-    embed = discord.Embed(
-        title = 'DAY {}'.format(day),
-        description=result,
-        color=self.bot.embed_color)
-
-    await ctx.send(embed=embed)
-
-async def sendInitialReport(self,ctx):
-#send first embed of report
-    embed = discord.Embed(
-        title = 'Battle Royale no DI',
-        description='Result of the battle',
-        color=self.bot.embed_color)
-
-    embed.set_thumbnail(
-        url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
-
-    await ctx.send(embed=embed)
-
-def correctListUsers(ctx, users):
-#takes a list of users and gives a list of user name/nick an id
-    users = list(filter(lambda x: not x.bot, users))
-
-    def changeNick(user):
-        member = ctx.message.guild.get_member(user.id)
-        return {
-            "name": member.display_name,
-            "id": user.id,
-            "kills": 0}
-
-    users = list(map(changeNick , users))
-    users = [i for n, i in enumerate(users) if i not in users[n+1:]]
-    return {"alive": users, "dead": []}
-
-def victoryEmbed(self, user):
-#create final embed
-    embed = discord.Embed(
-        title = 'Winner',
-        description=user["name"],
-        color=self.bot.embed_color)
-
-    embed.set_footer(text = "Kills: {}".format(user["kills"]))
-    return embed
-
-def getCurrentHour():
-#gets current hour irl
-    now = datetime.datetime.now()
-    time = 24 - now.hour
-    if now.minute > 30:
-        time = time - 1
-    elif now.minute > 0:
-        time = time - 0.5
-    return time
-
 def convertHour(time):
 #convert time in hours to midnigth to hour of day
     time = 24 - time
@@ -310,15 +330,6 @@ def updateListActions(self):
 #update a JSON file
     with open(self.bot.BATTLEROYALE_PATH, 'w') as file:
         json.dump(self.listReactions, file, indent=4)
-
-def updateStats(self, users):
-#update Stats JSON file
-    for user in users["dead"]:
-        self.bot.stats.update_kills(user["id"], 1, user["kills"], 0)
-    for user in users["alive"]:
-        self.bot.stats.update_kills(user["id"], 0, user["kills"], 1)
-
-    self.bot.stats.save_stats()
 
 def setup(bot):
     bot.add_cog(BattleRoyale(bot))
