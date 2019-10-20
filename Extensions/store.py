@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from aux.stats import Stats
+from aux.stats import Stats, Gear
 
 class Store(commands.Cog):
     """Spend your money here"""
@@ -118,9 +118,21 @@ async def store_interact(self, ctx, store, tool):
         self.bot.stats.give_cash(ctx.message.author.id, price)
         return
 
-    self.bot.stats.set_gear(ctx.message.author.id, store, prod_dic)
+    try:
+        self.bot.stats.set_gear(
+            ctx.message.author.id,
+            Gear(
+                store,
+                prod_dic["stats"],
+                prod_dic["name"],
+                prod_dic["simbol"]))
 
-    await ctx.send("Transaction was successfull")
+        await ctx.send("Transaction was successfull")
+    except Exception as e:
+        print(e)
+        await ctx.send("Something unexpected went wrong")
+        self.bot.stats.give_cash(ctx.message.author.id, price)
+
     self.bot.stats.save_stats()
 
 

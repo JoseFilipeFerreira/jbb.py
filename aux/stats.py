@@ -3,8 +3,23 @@ import json
 import time
 from aux.misc import hours_passed
 
-class Stats:
+class Gear:
+    def __init__(self, type, stats, name, simbol):
+        self.type = type
+        self.stats = stats
+        self.name = name
+        self.simbol = simbol
 
+    def get_type(self):
+        return self.type
+
+    def to_dict(self):
+        return {
+            "stats": self.stats,
+            "name": self.name,
+            "simbol": self.simbol}
+
+class Stats:
     def __init__(self, directory):
         self.PATH = directory
         with open(self.PATH, 'r') as f:
@@ -39,12 +54,10 @@ class Stats:
     def get_gear(self, id):
         return self.get_inventory(id)["gear"]
 
-    def set_gear(self, id, piece, new):
+    def set_gear(self, id, gear):
         inv = self.get_inventory(id)
-        if piece in inv["gear"]:
-            for prop in inv["gear"][piece]:
-                inv["gear"][piece][prop] = new[prop]
-
+        if gear.get_type() in inv["gear"]:
+            inv["gear"][gear.get_type()] = gear.to_dict()
 
     def get_cash(self, id):
         return self.get_stat(id)["cash"] 
