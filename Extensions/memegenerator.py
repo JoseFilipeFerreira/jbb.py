@@ -29,8 +29,8 @@ class Memegenerator(commands.Cog):
             img = Image.open(self.bot.IMAGES_PATH + self.bot.imagesMap[image])
             draw = ImageDraw.Draw(img)
         
-            fontTop, w1, h1 = getFittingFont(img, "impact.ttf", top)
-            fontBottom, w2, h2 = getFittingFont(img, "impact.ttf", bottom)
+            fontTop, w1, h1 = getFittingFont(img, self.bot.IMPACT_PATH, top)
+            fontBottom, w2, h2 = getFittingFont(img, self.bot.IMPACT_PATH, bottom)
 
             drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 0)
             drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-h2-7)
