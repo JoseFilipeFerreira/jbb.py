@@ -44,12 +44,6 @@ class Programming(commands.Cog):
         await ctx.send('{0} na base {1} para base {2} dá:\n{3}'
                 .format(number, basefrom, baseto, result))
 
-    @commands.command(name='lmgtfy',
-                      description="give link for let me google that for you",
-                      brief="let me google that for you")
-    async def lmgtfy(self, ctx, *query):
-        await ctx.send(f"http://lmgtfy.com/?q={'+'.join(word for word in query)}")
-
     @commands.command(name='gauss',
                       brief="método de eliminação de gauss",
                       aliases=['egpp'])

@@ -12,18 +12,17 @@ class InvalidNumberPlayers(Exception):
 
 class Warrior():
     def __init__(self, member):
-        self.name = member.display_name
-        self.id = member.id
+        self.member = member
         self.kills = 0
 
     def add_Kill(self):
         self.kills += 1
 
     def get_name(self):
-        return self.name
+        return self.member.display_name
 
     def get_id(self):
-        return self.id
+        return self.member.id
 
     def get_kills(self):
         return self.kills

@@ -27,7 +27,7 @@ source .env/bin/activate
 
 * Install all dependencies
 ```bash
-$ pip install -r requirements.txt --upgrade
+pip install -r requirements.txt --upgrade
 ```
 
 <details><summary>Update dependencies</summary>
