@@ -50,6 +50,11 @@ python bot.py
 * [ftfy](https://github.com/LuminosoInsight/python-ftfy) - Fixes glitches in Unicode text.
 * [deckofcards](https://deckofcardsapi.com/)
 
+## Contribuitors
+* [João Teixeira](https://github.com/jtexeira) - [say](Extensions/manage.py)
+* [Pedro Mendes](https://github.com/mendess2526) - [media](bot.py)
+* [Rodrigo Pimentel](https://github.com/RodrigoProjects/) - [EGPP](Extensions/programming.py)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
