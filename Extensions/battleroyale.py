@@ -73,14 +73,12 @@ class Battle():
         return embed
 
     def allReports(self):
-        embedList = [self.initialReport()]
+        yield self.initialReport()
         while(len(self.alive) > 1):
-            embedList.append(self.dailyReportEmbed())
+            yield self.dailyReportEmbed()
             self.time = 24
             self.day += 1
-
-        embedList.append(self.victoryEmbed())
-        return embedList
+        yield self.victoryEmbed()
 
     def dailyReportEmbed(self):
         result = self.dailyReport()

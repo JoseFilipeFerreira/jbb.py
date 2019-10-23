@@ -4,6 +4,7 @@ import asyncio
 import time
 from aux.misc import RepresentsInt, hours_passed 
 from aux.stats import Stats
+from aux.message import userInputTrueFalse
 from PIL import Image, ImageDraw
 from random import choice, randint
 
@@ -85,26 +86,13 @@ class Casino(commands.Cog):
             win = amount * len(self.rOrder)
         
         msg = await ctx.send(
-            f"**GAMBLE**\nBet {amount} points in a roulete spin.\nWin {win} if correct.")
-       
-        await msg.add_reaction('\U0000274C')
-        await msg.add_reaction('\U00002705')
+            f"""**GAMBLE**
+            Bet {amount} points in a roulete spin.
+            Win {win} if correct.""")
     
         self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
-        def check(reaction, user):
-            return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
-    
-        try:
-             reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
-        except asyncio.TimeoutError:
-            await msg.clear_reactions()
-            self.bot.stats.give_cash(ctx.message.author.id, amount)
-            return
-
-        await msg.clear_reactions()
-
-        if reaction.emoji ==  '\U0000274C':
+        if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
             self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
         
@@ -129,7 +117,6 @@ class Casino(commands.Cog):
         if(self.rOrder[pos] in pNumbers):
             result = f"You Won {win}🎉"
             self.bot.stats.give_cash(ctx.message.author.id, win)
-        
         else:
             result = f"You lost {amount} 💸"
 
@@ -166,28 +153,13 @@ class Casino(commands.Cog):
             msg = await ctx.send(
                 "**GAMBLE**\nBet {0} points in the number {1} in a D20 roll.\nWin {2} if correct.".format(
                     amount, number, win))
-        
-            await msg.add_reaction('\U0000274C')
-            await msg.add_reaction('\U00002705')
-    
+
             self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
-            def check(reaction, user):
-                return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
-    
-            try:
-                 reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
-            except asyncio.TimeoutError:
-                await msg.clear_reactions()
+            if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
                 self.bot.stats.give_cash(ctx.message.author.id, amount)
                 return
 
-            await msg.clear_reactions()
-
-            if reaction.emoji ==  '\U0000274C':
-                self.bot.stats.give_cash(ctx.message.author.id, amount)
-                return
-        
             if number == r_number:
                 self.bot.stats.give_cash(ctx.message.author.id, win)
                 await ctx.send("**GAMBLE**\nYou rolled a {0}\nYou won {1} 🎉".format(r_number, win))
@@ -220,24 +192,9 @@ class Casino(commands.Cog):
                 "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.".format(
                     amount, amount * 30))
 
-        await msg.add_reaction('\U0000274C')
-        await msg.add_reaction('\U00002705')
-    
         self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
-        def check(reaction, user):
-            return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
-    
-        try:
-             reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
-        except asyncio.TimeoutError:
-            await msg.clear_reactions()
-            self.bot.stats.give_cash(ctx.message.author.id, amount)
-            return
-
-        await msg.clear_reactions()
-
-        if reaction.emoji ==  '\U0000274C':
+        if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
             self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
 

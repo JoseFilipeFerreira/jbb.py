@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+from aux.message import userInputTrueFalse
 from aux.stats import Stats, Gear
 
 class Store(commands.Cog):
@@ -99,22 +100,7 @@ async def store_interact(self, ctx, store, tool):
     self.bot.stats.spend_cash(ctx.message.author.id, price)
     
     msg = await ctx.send(embed=embed)
-    await msg.add_reaction('\U0000274C')
-    await msg.add_reaction('\U00002705')
-    
-    def check(reaction, user):
-        return user == ctx.message.author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
-    
-    try:
-         reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
-    except asyncio.TimeoutError:
-        await msg.clear_reactions()
-        self.bot.stats.give_cash(ctx.message.author.id, price)
-        return
-
-    await msg.clear_reactions()
-
-    if reaction.emoji ==  '\U0000274C':
+    if not await userInputTrueFalse(self.bot, ct.message.author, msg):
         self.bot.stats.give_cash(ctx.message.author.id, price)
         return
 
