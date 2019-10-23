@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import numpy as np
 from baseconvert import base
 from random import choice
 
@@ -8,9 +7,9 @@ class ReadMatrix(commands.Converter):
     async def convert(self, ctx, matrix):
         matrix = ''.join(c for c in matrix if c.isdigit() or c.isspace() or c in [';', ','])
         matrix = matrix.replace(',',' ').split(';')
-        matrix = list(map(lambda x : x.split(), matrix))
-        matrix = list(map(lambda x : list(map(lambda v: float(v), x)), matrix))
-        return matrix
+        matrix = map(lambda x : x.split(), matrix)
+        matrix = map(lambda x : list(map(float, x)), matrix)
+        return list(matrix)
 
 class Programming(commands.Cog):
     """Programming help"""    
@@ -71,6 +70,10 @@ class Programming(commands.Cog):
         if len(matrix) > 10 or len(matrix[0]) > 10:
             await ctx.send("Invalid Matrix Size")
             return
+        if len({len(i) for i in matrix}) != 1:
+            await ctx.send("Invalid Matrix Content")
+            return
+
         await ctx.send("**Original:**\n```"
                 + print_matrix(matrix)
                 + "```\n**EGPP:**\n```"
@@ -78,7 +81,7 @@ class Programming(commands.Cog):
                 + "```")
 
 def print_matrix(matrix):
-    matrix = list(map(lambda x : list(map(lambda v: str(v), x)), matrix))
+    matrix = list(map(lambda x : list(map(str, x)), matrix))
 
     widths = [0] * len(matrix[0])
     for col in range(len(matrix[0])):
@@ -87,21 +90,18 @@ def print_matrix(matrix):
                 widths[col] = len(matrix[row][col]) 
 
     mat = ""
-    for line in matrix:
-        mat += '  '.join(cell.ljust(width) for cell, width in zip(line, widths))
-        mat += '\n'
+    for row in matrix:
+        mat += '  '.join(cell.ljust(width) for cell, width in zip(row, widths)) + '\n'
     return mat
 
 def gauss_solver(matrix):
-    i = 0
-    while(i<len(matrix)):
+    for i in range(len(matrix)):
         matrix = swap_pivot(matrix,i)
-        for line in range(i+1, len(matrix)):
+        for row in range(i+1, len(matrix)):
             if(matrix[i][i] != 0):
-                multiplicador = - (matrix[line][i]/matrix[i][i])
-                linha_pivot_multiplicada = list(map(lambda x: x * multiplicador, matrix[i]))
-                matrix[line] = [round(linha_pivot_multiplicada[j] + matrix[line][j],5) for j in range(len(linha_pivot_multiplicada))]
-        i+=1
+                mult = - (matrix[row][i]/matrix[i][i])
+                lpivot_mult = list(map(lambda x: x * mult, matrix[i]))
+                matrix[row] = [round(lpivot_mult[col] + matrix[row][col],5) for col in range(len(lpivot_mult))]
     return matrix
 
 def swap_pivot (matrix, pos):

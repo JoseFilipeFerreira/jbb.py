@@ -2,12 +2,9 @@ import discord
 from discord.ext import commands
 import asyncio 
 import json
-import os
-import time
 import traceback
-import subprocess
-from os import path
 from datetime import datetime
+from os import path, listdir
 from aux.stats import Stats
 
 bot = commands.Bot(
@@ -36,19 +33,19 @@ def main():
    
     #load media
     bot.imagesMap = {}
-    for f in os.listdir(bot.IMAGES_PATH):
+    for f in listdir(bot.IMAGES_PATH):
         if path.isfile(path.join(bot.IMAGES_PATH, f)):
             filename, _ = path.splitext(f)
             bot.imagesMap[filename.lower()] = f
 
     bot.gifsMap = {}
-    for f in os.listdir(bot.GIFS_PATH):
+    for f in listdir(bot.GIFS_PATH):
         if path.isfile(path.join(bot.GIFS_PATH, f)):
             filename, _ = path.splitext(f)
             bot.gifsMap[filename.lower()] = f
 
     bot.musicMap = {}
-    for f in os.listdir(bot.MUSIC_PATH):
+    for f in listdir(bot.MUSIC_PATH):
         if path.isfile(path.join(bot.MUSIC_PATH, f)):
             filename, _ = path.splitext(f)
             bot.musicMap[filename.lower()] = f
@@ -57,7 +54,6 @@ def main():
     bot.stats = Stats(bot.STATS_PATH)
 
     #load market
-    bot.market        = json.load(open(bot.MARKET_PATH, 'r'))
     bot.replies       = json.load(open(bot.REPLIES_PATH, 'r'))
 
     #load extensions
@@ -176,15 +172,13 @@ def get_bot_color(bot):
 
 def create_list_extensions():
 #create a list with possible extensions
-    extensions_list = os.listdir(bot.EXTENSIONS_PATH + '/')
+    extensions_list = listdir(bot.EXTENSIONS_PATH + '/')
     
     def extension_splitter(x):
         extension, _ = path.splitext(x)
         return extension
     
-    extensions_list = list(map(
-            lambda x : extension_splitter(x),
-            extensions_list))
+    extensions_list = list(map(extension_splitter, extensions_list))
     
     extensions_list = list(filter(
             lambda x: "__" not in x and x not in cogs_blacklist,

@@ -16,7 +16,7 @@ class Manage(commands.Cog):
     @commands.is_owner()
     async def update(self, ctx):
         await self.bot.change_presence(activity=discord.Game(name='rebooting'))
-        subprocess.call("./update.sh")
+        await self.bot.logout()
     
     @commands.command(name='eval',
                       description="run random python code [OWNER ONLY]",

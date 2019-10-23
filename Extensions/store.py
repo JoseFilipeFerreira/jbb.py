@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+import json
 from aux.message import userInputTrueFalse
 from aux.stats import Stats, Gear
 
@@ -8,6 +9,7 @@ class Store(commands.Cog):
     """Spend your money here"""
     def __init__(self, bot):
         self.bot = bot
+        self.market = json.load(open(bot.MARKET_PATH, 'r'))
 
     @commands.command(name='richest',
             description="get richest users",
@@ -55,13 +57,13 @@ async def store_interact(self, ctx, store, tool):
     embed = default_embed(self, ctx)
     store = store.lower()
     prod  = tool.lower()
-    if store not in self.bot.market:
+    if store not in self.market:
         embed.add_field(
             name="Invalid Store",
             value="{0}market to get valid stores".format(self.bot.command_prefix))
         return
 
-    prod_dic =  find(self.bot.market[store]["contents"], "name", prod)
+    prod_dic =  find(self.market[store]["contents"], "name", prod)
     if prod_dic == None:
         embed.add_field(
             name="Invalid Product",
@@ -124,12 +126,12 @@ async def store_interact(self, ctx, store, tool):
 
 async def market_stalls(self, ctx):
     embed = default_embed(self, ctx)
-    for store in self.bot.market.keys():
+    for store in self.market.keys():
         embed.add_field(
             name="{0} {1}".format(
-                self.bot.market[store]["simbol"],
+                self.market[store]["simbol"],
                 store),
-            value=self.bot.market[store]["description"])
+            value=self.market[store]["description"])
     
     embed.set_footer(text="{0}market [store] to see one store".format(self.bot.command_prefix))
 
@@ -138,11 +140,11 @@ async def market_stalls(self, ctx):
 async def stall(self, ctx, store):
     embed = default_embed(self, ctx)
     store = store.lower()
-    if store in self.bot.market:
+    if store in self.market:
         store_items(
             embed,
-            self.bot.market[store]["stats"],
-            self.bot.market[store]["contents"])
+            self.market[store]["stats"],
+            self.market[store]["contents"])
         
         embed.set_footer(
             text="{0}market {1} [tool] to buy from store".format(self.bot.command_prefix, store))
