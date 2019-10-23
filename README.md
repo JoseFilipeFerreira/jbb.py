@@ -2,45 +2,47 @@
 Discord bot programmed in Python
 
 ## Getting Started
-
 ### Setting up
-- Create a virtual env
+### Credentials
+* Get a discord bot Token and place it into a text file named `auth`
+* Get a access key to wolfram alpha and place the key in a file named `WA_KEY`
+* Get acess to google via `client_secret.json`
+
+#### Automatic
+```bash
+sh run.sh
 ```
+* follow the instructions on screen to activate the access to youtube and google calendars
+
+#### Manual
+* Create a virtual env
+```bash
 virtualenv .env
 ```
 
-- Activate the virtual env
-```
+* Activate the virtual env
+```bash
 source .env/bin/activate
 ```
 
-- Install all dependencies
-```
+* Install all dependencies
+```bash
 $ pip install -r requirements.txt --upgrade
 ```
 
 <details><summary>Update dependencies</summary>
 <p>
 
-```
+```bash
 pip3 freeze > requirements.txt
 ```
 </p>
 </details>
 
-### Credentials
-
-- Get a discord bot Token and place it into a text file named `auth`
-
-- Get a access key to wolfram alpha and place the key in a file named `WA_KEY`
-
-- Get acess to google via `client_secret.json`
-
-### Run the Bot
+* Run the Bot
 ```
 python bot.py
 ```
- - follow the instructions on screen to activate the access to youtube and google calendars
 
 ## Built With
 * [discord.py](https://github.com/Rapptz/discord.py) - API for discord
