@@ -12,7 +12,7 @@ Discord bot programmed in Python
 ```bash
 sh run.sh
 ```
-* follow the instructions on screen to activate the access to youtube and google calendars
+* follow the instructions on screen to activate the access to google calendar
 
 #### Manual
 * Create a virtual env
@@ -43,6 +43,7 @@ pip3 freeze > requirements.txt
 ```
 python bot.py
 ```
+* follow the instructions on screen to activate the access to google calendar
 
 ## Built With
 * [discord.py](https://github.com/Rapptz/discord.py) - API for discord
