@@ -5,7 +5,7 @@ from random import choice
 
 class ReadMatrix(commands.Converter):
     async def convert(self, ctx, matrix):
-        matrix = ''.join(c for c in matrix if c.isdigit() or c.isspace() or c in [';', ','])
+        matrix = ''.join(c for c in matrix if c in '0123456789;,.-' or c.isspace())
         matrix = matrix.replace(',',' ').split(';')
         matrix = map(lambda x : x.split(), matrix)
         matrix = map(lambda x : list(map(float, x)), matrix)
@@ -53,13 +53,14 @@ class Programming(commands.Cog):
         Formato de uma matriz (limitado a 10x10):
         * linhas separadas por `;`
         * valores separados por `,` ou whitespace
+        * casas decimais separadas por `.`
         Por exemplo, a matriz:
         ```
-        1 2
-        3 4
+        1.3 -2
+        3    4
         ```
         é representada por:
-        `[1 2; 3 4]` ou `[1, 2; 3, 4]`
+        `[1.3 -2; 3 4]` ou `[1.3, -2; 3, 4]`
         """
         if len(matrix) > 10 or len(matrix[0]) > 10:
             await ctx.send("Invalid Matrix Size")

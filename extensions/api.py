@@ -4,7 +4,9 @@ import aiohttp
 import asyncio
 import requests
 import wolframalpha
+from html2text import html2text
 from random import choice
+from re import sub
 
 #setup wolframalpha API
 client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
@@ -31,17 +33,43 @@ class Api(commands.Cog):
             color=self.bot.embed_color)
         await ctx.send(embed=embed)
 
+    @commands.command(name='dog',
+                      description="send random dog picture",
+                      brief="send dog pic",
+                      aliases=['auau'])
+    async def dog(self, ctx):
+        while True:
+            r = requests.get('https://random.dog/woof.json')
+            js = r.json()
+            if js['url'].endswith('.mp4'):
+                pass
+            else:
+                embed = discord.Embed(color=choice(self.colours))
+                embed.set_image(url=js['url'])
+                await ctx.send(embed=embed)
+                return
+
+    @commands.command(name='cat',
+                      description="send random cat picture",
+                      brief="send cat pic",
+                      aliases=['antiauau', 'miau'])
+    async def cat(self, ctx):
+        r =requests.get('http://aws.random.cat/meow')
+        embed = discord.Embed(color=choice(self.colours))
+        embed.set_image(url=r.json()['file'])
+        await ctx.send(embed=embed) 
+
     @commands.command(name='lmgtfy',
                       description="give link for let me google that for you",
                       brief="let me google that for you")
     async def lmgtfy(self, ctx, *query):
-        await ctx.send(f"http://lmgtfy.com/?q={'+'.join(word for word in query)}")
+        await ctx.send(f"http://lmgtfy.com/?q={'+'.join(query)}")
 
     @commands.command(name='urban',
                       description="Get a urban defenition of a query",
                       brief="search urban")
     async def urban(self, ctx, * query : str):
-        url = "http://api.urbandictionary.com/v0/define?term=" + "+".join(query)
+        url = f"http://api.urbandictionary.com/v0/define?term={'+'.join(query)}"
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as response:
@@ -79,31 +107,38 @@ class Api(commands.Cog):
         except:
             await self.bot.say("Something unexpected went wrong.")
 
-    @commands.command(name='dog',
-                      description="send random dog picture",
-                      brief="send dog pic",
-                      aliases=['auau'])
-    async def dog(self, ctx):
-        while True:
-            r = requests.get('https://random.dog/woof.json')
-            js = r.json()
-            if js['url'].endswith('.mp4'):
-                pass
-            else:
-                embed = discord.Embed(color=choice(self.colours))
-                embed.set_image(url=js['url'])
+    @commands.command(name='hoogle',
+                      brief="search hoogle")
+    async def hoogle(self, ctx, * query : str):
+        """Searches Hoggle and returns first two options
+        Click title to see full search"""
+        url = f"https://hoogle.haskell.org?mode=json&hoogle={'+'.join(query)}&start=1&count=2"
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    result = await response.json()
+                embed = discord.Embed(
+                    title=f"Definition of {' '.join(query)}",
+                    url=f"https://hoogle.haskell.org/?hoogle={'+'.join(query)}",
+                    color=self.bot.embed_color)
+                embed.set_thumbnail(
+                    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Lambda-letter-lowercase-symbol-Garamond.svg/1200px-Lambda-letter-lowercase-symbol-Garamond.svg.png")
+                if not result:
+                    embed.add_field(
+                            name = "No results found",
+                            value="*undefined*",
+                            inline=False)
+                else:
+                    for l in result:
+                        val = "*Module:* " + l["module"]["name"] + "\n"
+                        val+= sub(r'\n{2,}', '\n\n', sub(r"\n {2,}", "\n" , html2text(l["docs"])))
+                        embed.add_field(
+                            name= html2text(l["item"]),
+                            value= val,
+                            inline=False)
                 await ctx.send(embed=embed)
-                return
-
-    @commands.command(name='cat',
-                      description="send random cat picture",
-                      brief="send cat pic",
-                      aliases=['antiauau', 'miau'])
-    async def cat(self, ctx):
-        r =requests.get('http://aws.random.cat/meow')
-        embed = discord.Embed(color=choice(self.colours))
-        embed.set_image(url=r.json()['file'])
-        await ctx.send(embed=embed) 
+        except:
+            await self.bot.say("Something unexpected went wrong.")
 
 def setup(bot):
     bot.add_cog(Api(bot))
