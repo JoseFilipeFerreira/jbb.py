@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
-import aiohttp
 import asyncio
-import requests
 import wolframalpha
+from aiohttp import ClientSession
 from html2text import html2text
 from random import choice
 from re import sub
@@ -39,13 +38,15 @@ class Api(commands.Cog):
                       aliases=['auau'])
     async def dog(self, ctx):
         while True:
-            r = requests.get('https://random.dog/woof.json')
-            js = r.json()
-            if js['url'].endswith('.mp4'):
+            result, error = await get_json('https://random.dog/woof.json')
+            if error:
+                await ctx.sens(error)
+                return
+            if result['url'].endswith('.mp4'):
                 pass
             else:
                 embed = discord.Embed(color=choice(self.colours))
-                embed.set_image(url=js['url'])
+                embed.set_image(url=result['url'])
                 await ctx.send(embed=embed)
                 return
 
@@ -54,9 +55,12 @@ class Api(commands.Cog):
                       brief="send cat pic",
                       aliases=['antiauau', 'miau'])
     async def cat(self, ctx):
-        r =requests.get('http://aws.random.cat/meow')
+        result, error = await get_json('http://aws.random.cat/meow')
+        if error:
+            await ctx.sens(error)
+            return
         embed = discord.Embed(color=choice(self.colours))
-        embed.set_image(url=r.json()['file'])
+        embed.set_image(url=result['file'])
         await ctx.send(embed=embed) 
 
     @commands.command(name='lmgtfy',
@@ -70,75 +74,81 @@ class Api(commands.Cog):
                       brief="search urban")
     async def urban(self, ctx, * query : str):
         url = f"http://api.urbandictionary.com/v0/define?term={'+'.join(query)}"
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    result = await response.json()
-            if result["list"]:
-                top_def = result['list'][0]
+        result, error = await get_json(url)
+        if error:
+            await ctx.sens(error)
+            return
+        if result["list"]:
+            top_def = result['list'][0]
 
-                embed = discord.Embed(
-                    title=f"Definition of {top_def['word']}",
-                    url=top_def['permalink'],
-                    description=top_def['definition'],
-                    color=self.bot.embed_color)
-                
-                embed.set_thumbnail(
-                    url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
+            embed = discord.Embed(
+                title=f"Definition of {top_def['word']}",
+                url=top_def['permalink'],
+                description=top_def['definition'],
+                color=self.bot.embed_color)
+            
+            embed.set_thumbnail(
+                url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
 
-                embed.add_field(
-                    name="Example",
-                    value=top_def['example'],
-                    inline=False)
-                embed.add_field(
-                    name=":thumbsup:",
-                    value=top_def['thumbs_up'],
-                    inline=True)
-                embed.add_field(
-                    name=":thumbsdown:",
-                    value=top_def['thumbs_down'],
-                    inline=True)
-                
-                embed.set_footer(text=f"Submited by {top_def['author']}")
+            embed.add_field(
+                name="Example",
+                value=top_def['example'],
+                inline=False)
+            embed.add_field(
+                name=":thumbsup:",
+                value=top_def['thumbs_up'],
+                inline=True)
+            embed.add_field(
+                name=":thumbsdown:",
+                value=top_def['thumbs_down'],
+                inline=True)
+            
+            embed.set_footer(text=f"Submited by {top_def['author']}")
 
-                await ctx.send(embed =embed)
-            else:
-                await ctx.send("Your query gave no results.")
-        except:
-            await self.bot.say("Something unexpected went wrong.")
+            await ctx.send(embed =embed)
+        else:
+            await ctx.send("Your query gave no results.")
 
     @commands.command(name='hoogle',
                       brief="search hoogle")
     async def hoogle(self, ctx, * query : str):
         """Searches Hoggle and returns first two options
         Click title to see full search"""
-        url = f"https://hoogle.haskell.org?mode=json&hoogle={'+'.join(query)}&start=1&count=2"
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    result = await response.json()
-                embed = discord.Embed(
-                    title=f"Definition of {' '.join(query)}",
-                    url=f"https://hoogle.haskell.org/?hoogle={'+'.join(query)}",
-                    color=self.bot.embed_color)
-                embed.set_thumbnail(
-                    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Lambda-letter-lowercase-symbol-Garamond.svg/1200px-Lambda-letter-lowercase-symbol-Garamond.svg.png")
-                if not result:
-                    embed.add_field(
-                            name = "No results found",
-                            value="*undefined*",
-                            inline=False)
-                else:
-                    for l in result:
-                        val = "*Module:* " + l["module"]["name"] + "\n"
-                        val+= sub(r'\n{2,}', '\n\n', sub(r"\n {2,}", "\n" , html2text(l["docs"])))
-                        embed.add_field(
-                            name= html2text(l["item"]),
-                            value= val,
-                            inline=False)
-                await ctx.send(embed=embed)
-        except:
-            await self.bot.say("Something unexpected went wrong.")
+        url = f"https://hoogle.haskell.org?mode=json&hoogle={'+'.join(query)}&start=1&count=1"
+        result, error = await get_json(url)
+        if error:
+            await ctx.sens(error)
+            return
+        embed = discord.Embed(
+            title=f"Definition of {' '.join(query)}",
+            url=f"https://hoogle.haskell.org/?hoogle={'+'.join(query)}",
+            color=self.bot.embed_color)
+        embed.set_thumbnail(
+            url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Lambda-letter-lowercase-symbol-Garamond.svg/1200px-Lambda-letter-lowercase-symbol-Garamond.svg.png")
+        if not result:
+            embed.add_field(
+                    name = "No results found",
+                    value="*undefined*",
+                    inline=False)
+        else:
+            for l in result:
+                val = "*Module:* " + l["module"]["name"] + "\n"
+                val+= sub(r'\n{2,}', '\n\n', sub(r"\n +", "\n" , html2text(l["docs"])))
+                embed.add_field(
+                    name= html2text(l["item"]),
+                    value= val,
+                    inline=False)
+        await ctx.send(embed=embed)
+
+async def get_json(url):
+    try:
+        async with ClientSession() as session:
+            async with session.get(url) as response:
+                result = await response.json()
+        return result, None
+    except:
+        return None, "Something unexpected went wrong."
+
 
 def setup(bot):
     bot.add_cog(Api(bot))
