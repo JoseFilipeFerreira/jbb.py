@@ -161,7 +161,7 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     bot.stats.remove_user(member.id)
-    bot.stats.save_stats(bot)
+    bot.stats.save_stats()
 
 def get_bot_color(bot):
     bGuild, color = 0, 0xffff00

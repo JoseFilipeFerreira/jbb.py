@@ -6,7 +6,7 @@ from aux.misc import RepresentsInt, hours_passed
 from aux.stats import Stats
 from aux.message import userInputTrueFalse
 from PIL import Image, ImageDraw
-from random import choice, randint
+from random import randint
 
 class Casino(commands.Cog):
     """Bet all your life savings here"""
@@ -20,7 +20,7 @@ class Casino(commands.Cog):
     @commands.is_nsfw()
     async def beg(self, ctx):
         id = ctx.message.author.id
-        if hours_passed(self.stats.get_last_beg(), time.time()) > 24:
+        if hours_passed(self.bot.stats.get_last_beg(), time.time()) > 24:
             self.bot.stats.set_last_beg(id, time.time())
             self.bot.stats.give_cash(id, 1)
             await ctx.send("Have 1 coin.")
@@ -126,7 +126,7 @@ class Casino(commands.Cog):
                     self.bot.TMP_PATH + "roulette.png"))
 
         self.bot.stats.set_bet(ctx.message.author.id, True)
-        save_stats(self.bot)
+        self.bot.save_stats()
 
     @commands.command(name='roll',
                       brief="roll a dice")

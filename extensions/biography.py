@@ -114,21 +114,21 @@ class Biography(commands.Cog):
             if len(ptext) != 1:
                 await self.bot.say("Invalid parameters")
                 return
-            self.biographies[memberId][bioKey].pop(int(ptext[0]))
+            self.biographies[member.id][bioKey].pop(int(ptext[0]))
             #delete bioKey if empty
-            if len(self.biographies[memberId][bioKey]) == 0:
-               self.biographies[memberId].pop(bioKey, None)
+            if len(self.biographies[member.id][bioKey]) == 0:
+               self.biographies[member.id].pop(bioKey, None)
             #delete bio if empty
-            if len(self.biographies[memberId].keys()) == 0:
-                self.biographies.pop(memberId, None)
+            if len(self.biographies[member.id].keys()) == 0:
+                self.biographies.pop(member.id, None)
             await self.bot.say("bioKey removed")
                
         elif action == "add":
-            if memberId not in self.biographies:
-                self.biographies[memberId] = {}
-            if bioKey not in self.biographies[memberId]:
-                self.biographies[memberId][bioKey] = []
-            self.biographies[memberId][bioKey].append(text)
+            if member.id not in self.biographies:
+                self.biographies[member.id] = {}
+            if bioKey not in self.biographies[member.id]:
+                self.biographies[member.id][bioKey] = []
+            self.biographies[member.id][bioKey].append(text)
             await self.bot.say("bioKey added")
 
         updateBio(self)
