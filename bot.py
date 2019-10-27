@@ -8,7 +8,7 @@ from os import path, listdir
 from aux.stats import Stats
 
 bot = commands.Bot(
-    command_prefix = '>',
+    command_prefix = '*',
     case_insensitive=True)
 
 bot.remove_command('help')
