@@ -2,15 +2,14 @@ import discord
 from discord.ext import commands
 import asyncio 
 import json
-import time
-import os
-import subprocess
-from os import path
+import traceback
 from datetime import datetime
-from aux.cash import save_stats, hours_passed
-from aux.inventory import get_empty_stats, normalize_stat
+from os import path, listdir
+from aux.stats import Stats
 
-bot = commands.Bot(command_prefix = '*')
+bot = commands.Bot(
+    command_prefix = '>',
+    case_insensitive=True)
 
 bot.remove_command('help')
 
@@ -27,39 +26,34 @@ def main():
     bot.BATTLEROYALE_PATH = './db/battleroyale.json'
     bot.STATS_PATH = './db/stats.json'
     bot.BIOGRAPHY_PATH = './db/biography.json'
-    bot.EXTENSIONS_PATH ='Extensions'
+    bot.EXTENSIONS_PATH ='extensions'
     bot.MARKET_PATH='./db/market.json'
+    bot.IMPACT_PATH='.db/impact.ttf'
     bot.REPLIES_PATH='./db/replies.json'
-    
-    #default color for embeds (yellow)
-    bot.embed_color = 0xffff00
-
-    #adding to bot object available media
-    bot.imagesMap = {}
-    bot.gifsMap = {}
-    bot.musicMap = {}
-
+   
     #load media
-    for f in os.listdir(bot.IMAGES_PATH):
+    bot.imagesMap = {}
+    for f in listdir(bot.IMAGES_PATH):
         if path.isfile(path.join(bot.IMAGES_PATH, f)):
             filename, _ = path.splitext(f)
             bot.imagesMap[filename.lower()] = f
 
-    for f in os.listdir(bot.GIFS_PATH):
+    bot.gifsMap = {}
+    for f in listdir(bot.GIFS_PATH):
         if path.isfile(path.join(bot.GIFS_PATH, f)):
             filename, _ = path.splitext(f)
             bot.gifsMap[filename.lower()] = f
 
-    for f in os.listdir(bot.MUSIC_PATH):
+    bot.musicMap = {}
+    for f in listdir(bot.MUSIC_PATH):
         if path.isfile(path.join(bot.MUSIC_PATH, f)):
             filename, _ = path.splitext(f)
             bot.musicMap[filename.lower()] = f
     
     #load stats
-    bot.stats         = json.load(open(bot.STATS_PATH , 'r'))["stats"]
-    bot.last_giveaway = json.load(open(bot.STATS_PATH , 'r'))["last_giveaway"]
+    bot.stats = Stats(bot.STATS_PATH)
+
     #load market
-    bot.market        = json.load(open(bot.MARKET_PATH, 'r'))
     bot.replies       = json.load(open(bot.REPLIES_PATH, 'r'))
 
     #load extensions
@@ -73,7 +67,10 @@ def main():
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name='*help'))
+    await bot.change_presence(activity=discord.Game(name='*help'))
+
+    #default color for embeds
+    bot.embed_color = get_bot_color(bot)
 
     embed = discord.Embed(
         title="Starting up",
@@ -101,17 +98,19 @@ async def on_ready():
 
     appInfo = await bot.application_info()
 
-    await bot.send_message(appInfo.owner, embed=embed)
+    await appInfo.owner.send(embed=embed)
 
     print('Logged in as:')
     print(bot.user.name)
     print(bot.user.id)
     print('-----------------------------')
     print('Servers:')
-    for server in bot.servers:
-        print(server.name)
+    for guild in bot.guilds:
+        print(guild.name)
     print('-----------------------------')
+    print(bot.embed_color)
     print(bot.command_prefix)
+
 
 @bot.event
 async def on_message(message):
@@ -123,20 +122,21 @@ async def on_message_edit(before, after):
 
 async def reactMessage(message):
     if message.content.lower() in bot.replies:
-        await bot.send_message(
-            message.channel,
+        await message.channel.send(
             bot.replies[message.content.lower()])
 
     #send media
     if message.content.startswith(bot.command_prefix):
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
-            await bot.send_file(
-                message.channel, bot.IMAGES_PATH+bot.imagesMap[content])
+            await message.channel.send(
+                file = discord.File(
+                    bot.IMAGES_PATH+bot.imagesMap[content]))
             return
         elif content in bot.gifsMap:
-            await bot.send_file(
-                message.channel, bot.GIFS_PATH+bot.gifsMap[content])
+            await message.channel.send_file(
+                file = discord.File(
+                    bot.GIFS_PATH+bot.gifsMap[content]))
             return
 
     #exit voice channel
@@ -146,47 +146,45 @@ async def reactMessage(message):
         bot.player_client = None
     
     #coin giveaway
-    if hours_passed(bot.last_giveaway, time.time()) > 24:
-        bot.last_giveaway += 24*60*60 
+    given = bot.stats.daily_giveaway(10)
+    if given:
         appInfo = await bot.application_info()
-        given = 0
-        for id in bot.stats:
-            normalize_stat(bot, id)
-            if bot.stats[id]["bet"]:
-                bot.stats[id]["cash"] += 10
-                given += 1
-        save_stats(bot)
-        await bot.send_message(appInfo.owner, "Giveaway: {}".format(given))
+        await appInfo.owner.send("Giveaway: {}".format(given))
 
     await bot.process_commands(message)
 
 @bot.event
 async def on_member_join(member):
-    bot.stats[member.id] = get_empty_stats()
-    save_stats(bot)
+    bot.stats.add_user(member.id)
+    bot.stats.save_stats()
 
 @bot.event
 async def on_member_remove(member):
-    bot.stats.pop(member.id, None)
-    save_stats(bot)
+    bot.stats.remove_user(member.id)
+    bot.stats.save_stats()
+
+def get_bot_color(bot):
+    bGuild, color = 0, 0xffff00
+    for guild in bot.guilds:
+        if len(guild.members) > bGuild:
+            bGuild, color = len(guild.members), guild.me.color
+    return color
 
 def create_list_extensions():
 #create a list with possible extensions
-    extensions_list = os.listdir(bot.EXTENSIONS_PATH + '/')
+    extensions_list = listdir(bot.EXTENSIONS_PATH + '/')
     
     def extension_splitter(x):
         extension, _ = path.splitext(x)
         return extension
     
-    extensions_list = list(map(
-            lambda x : extension_splitter(x),
-            extensions_list))
+    extensions_list = list(map(extension_splitter, extensions_list))
     
     extensions_list = list(filter(
             lambda x: "__" not in x and x not in cogs_blacklist,
             extensions_list))
     
-    return(extensions_list)
+    return sorted(extensions_list)
 
 def extensions_loader(extensions):
 #try to load extensions
@@ -198,11 +196,12 @@ def extensions_loader(extensions):
             loaded = loaded + "\n" + extension
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension: {}\n{}'.format(extension, exc))
+            print(f'Failed to load extension: {extension}\n{exc}')
             failed = failed + "\n" + ('**{}**:{}'.format(extension, exc))
+            print(traceback.format_exc())
     
     bot.extensions_list_loaded = loaded
     bot.extensions_list_failed = "No cogs failed to load"
-    if not failed == "": bot.extensions_list_failed = failed
+    if failed != "": bot.extensions_list_failed = failed
 
 main()

@@ -1,17 +1,16 @@
 import discord
-import subprocess
 from discord.ext import commands
+import subprocess
 from PIL import Image, ImageFont, ImageDraw
 
-class Memegenerator():
-    
+class Memegenerator(commands.Cog):
+    """Generate dank memes"""    
     def __init__(self, bot):
         self.bot = bot
     
     @commands.command(name='meme',
                       description="creates a meme with given arguments",
-                      brief="create a meme",
-                      pass_context=True)
+                      brief="create a meme")
     async def meme(self, ctx, image, *text):
     #generate meme
         image = image.lower()
@@ -30,21 +29,21 @@ class Memegenerator():
             img = Image.open(self.bot.IMAGES_PATH + self.bot.imagesMap[image])
             draw = ImageDraw.Draw(img)
         
-            fontTop, w1, h1 = getFittingFont(img, "impact.ttf", top)
-            fontBottom, w2, h2 = getFittingFont(img, "impact.ttf", bottom)
+            fontTop, w1, _ = getFittingFont(img, self.bot.IMPACT_PATH, top)
+            fontBottom, w2, h2 = getFittingFont(img, self.bot.IMPACT_PATH, bottom)
 
             drawTextWithOutline(draw, fontTop, top, img.width/2 - w1/2, 0)
             drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-h2-7)
 
             img.save(self.bot.TMP_PATH + "memegenerator.png")
     
-            await self.bot.delete_message(ctx.message)
-            await self.bot.send_file(
-                ctx.message.channel,
-                self.bot.TMP_PATH + "memegenerator.png",
-                content='by {}'.format(ctx.message.author.mention))
+            await ctx.message.delete()
+            await ctx.send(
+                'by {}'.format(ctx.message.author.mention),
+                file=discord.File(
+                    self.bot.TMP_PATH + "memegenerator.png"))
         else:
-            await self.bot.say("Invalid image name!")
+            await ctx.send("Invalid image name!")
 
 
 def drawTextWithOutline(draw, font, text, x, y):
@@ -58,7 +57,7 @@ def drawTextWithOutline(draw, font, text, x, y):
 
 def getFittingFont(img, fontName, text):
     #get font that fits in image
-    textSize = 30
+    textSize = 50
     font = ImageFont.truetype(fontName, textSize)
     w, h = font.getsize(text)
     if (w > img.width and textSize > 1):

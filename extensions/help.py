@@ -1,65 +1,55 @@
 import discord
+from discord.ext import commands
 import json
 import subprocess
 import time
-from discord.ext import commands
 
-class Help():
-    
+class Help(commands.Cog):
+    """Help command"""    
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(name="help",
                       description="Sends help for a specific command or cog",
-                      brief="shows this message",
-                      pass_context=True)
-    async def help(self, ctx, * command_or_cog):
-        cogs = self.bot.cogs
-        commands = self.bot.commands
-
-        if len(command_or_cog) == 0:
-            await help_all(self)
-        
+                      brief="shows this message")
+    async def help(self, ctx, *, command_or_cog=None):
+        if not command_or_cog:
+            await help_all(self, ctx)
+        elif command_or_cog in self.bot.cogs:
+            await help_cog(self, ctx, command_or_cog)
+        elif command_or_cog in map(lambda e: str(e), list(self.bot.walk_commands())):
+            await help_command(self, ctx, command_or_cog)
         else:
-            command_or_cog = command_or_cog[0]
-            if command_or_cog in cogs.keys():
-                await help_cog(self, command_or_cog)
-            elif command_or_cog in commands.keys():
-                await help_command(self, command_or_cog)
-            else:
-                await self.bot.say("Command or cog not found")
+            await ctx.send("Command or cog not found")
     
     @commands.command(name='helpPlay',
                       description="list all available musics",
-                      brief="all available musics",
-                      pass_context=True)
+                      brief="all available musics")
     async def helpPlay(self, ctx):
         await MenuGenerateEmbed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
 
     @commands.command(name='helpImage',
                       description="list all available Images",
-                      brief="all available Images",
-                      pass_context=True)
+                      brief="all available Images")
     async def helpImage(self, ctx):
         await MenuGenerateEmbed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
 
     @commands.command(name='helpGif',
                       description="list all available gifs",
-                      brief="all available gifs",
-                      pass_context=True)
+                      brief="all available gifs")
     async def helpGif(self, ctx):
         await MenuGenerateEmbed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
 
 def setup(bot):
     bot.add_cog(Help(bot))
 
-async def help_all(self):
+async def help_all(self, ctx):
 #send help
     cogs = self.bot.cogs
 
     string_cogs = ""
     for cog in cogs.keys():
-        string_cogs = string_cogs + "**{0}**\n".format(cog)
+        string_cogs += "**{0}**\n".format(cog)
 
     embed = discord.Embed(
         title="List of all available cogs:",
@@ -67,26 +57,26 @@ async def help_all(self):
         color=self.bot.embed_color)
     
     embed.set_footer(
-        text="{}help [cog] para saberes mais sobre alguma cog".format(self.bot.command_prefix))
+        text=f"{self.bot.command_prefix}help [cog] para saberes mais sobre alguma cog")
     
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
-async def help_cog(self, command_or_cog):
+async def help_cog(self, ctx, command_or_cog):
 #send help for a cog
-    commands = self.bot.commands
-            
-    embed = discord.Embed(
-        title=command_or_cog,
-        description="help command shitshow",
-        color=self.bot.embed_color)
 
     string_commands = ""
+    cog = None
     list_commands = []
-    for command in commands.keys():
-        command = commands[command]
+    for command in self.bot.commands:
         if command.cog_name == command_or_cog and command not in list_commands:
-            string_commands = string_commands + "**{0}** -> {1}\n".format(command.name, command.brief)
+            cog = command.cog
+            string_commands = string_commands + f"**{command.name}** -> {command.brief}\n"
             list_commands.append(command)
+
+    embed = discord.Embed(
+        title=command_or_cog,
+        description=cog.description,
+        color=self.bot.embed_color)
 
     embed.add_field(
         name="Commands in Cog:",
@@ -94,23 +84,26 @@ async def help_cog(self, command_or_cog):
         inline=False)
             
     embed.set_footer(
-        text="{}help [comando] para saberes mais sobre algum comando".format(self.bot.command_prefix))
+        text=f"{self.bot.command_prefix}help [comando] para saberes mais sobre algum comando")
             
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
-async def help_command(self, command_or_cog):
+async def help_command(self, ctx, command_or_cog):
 #send help for a command
-    commands = self.bot.commands
-    command = commands[command_or_cog]
+    command = None
+
+    for c in self.bot.walk_commands():
+        if command_or_cog.lower() == str(c).lower():
+            command = c
 
     embed = discord.Embed(
         title="Comando",
         description=command.qualified_name,
         color=self.bot.embed_color)
-            
+
     embed.add_field(
         name="DESCRIPTION",
-        value=command.description,
+        value=command.help if command.help != None else command.description,
         inline=False)
             
     synopse = self.bot.command_prefix + command.name
@@ -125,10 +118,10 @@ async def help_command(self, command_or_cog):
     if len(command.aliases) > 0:
         embed.add_field(
             name="ALIASES",
-            value=command.aliases,
+            value="; ".join(command.aliases),
             inline=False)
 
-    await self.bot.say(embed=embed)
+    await ctx.send(embed=embed)
 
 async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
 #generate a embed for a menu
@@ -143,4 +136,4 @@ async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
     musicArray.sort()
     embed.add_field(name=section, value='\n'.join(musicArray), inline=True)
     await self.bot.send_message(ctx.message.author, embed=embed)
-    await self.bot.delete_message(ctx.message)
+    await ctx.message.delete()
