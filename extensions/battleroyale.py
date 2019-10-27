@@ -205,7 +205,7 @@ class BattleRoyale(commands.Cog):
                       aliases=['brKDR', 'KDR'])
     async def battleroyaleKDR(self, ctx, member : discord.Member = None):
         if member:
-            win = get_stat(self.bot, member.id)
+            k, d = self.bot.stats.get_kdr(member.id)
             embed = discord.Embed(
                 title = 'Battleroyale no DI',
                 description="KDR Leaderboard",
@@ -213,7 +213,7 @@ class BattleRoyale(commands.Cog):
 
             embed.add_field(
                 name=member.display_name,
-                value="KDR: {0}/{1}".format(win["kills"], win["death"]),
+                value="KDR: {0}/{1}".format(k, d),
             inline=False)
             await ctx.send(embed=embed)
             return
