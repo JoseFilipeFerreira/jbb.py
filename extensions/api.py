@@ -138,6 +138,7 @@ class Api(commands.Cog):
                     name= html2text(l["item"]),
                     value= val,
                     inline=False)
+            embed.set_footer(text="first option in Hoogle (Click title for more)")
         await ctx.send(embed=embed)
 
 async def get_json(url):
