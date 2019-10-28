@@ -23,7 +23,7 @@ class Store(commands.Cog):
             url="http://pixelartmaker.com/art/89daa821cd53576.png") 
 
         money = []
-        for id in self.bot.stats.get_all_users:
+        for id in self.bot.stats.get_all_users():
             money.append({
                 "id": id,
                 "cash": self.bot.stats.get_cash(id)})
