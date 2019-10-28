@@ -86,9 +86,7 @@ class Casino(commands.Cog):
             win = amount * len(self.rOrder)
         
         msg = await ctx.send(
-            f"""**GAMBLE**
-            Bet {amount} points in a roulete spin.
-            Win {win} if correct.""")
+            f"**GAMBLE**\nBet {amount} points in a roulete spin.\nWin {win} if correct.")
     
         self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
