@@ -28,7 +28,7 @@ def main():
     bot.BIOGRAPHY_PATH = './db/biography.json'
     bot.EXTENSIONS_PATH ='extensions'
     bot.MARKET_PATH='./db/market.json'
-    bot.IMPACT_PATH='.db/impact.ttf'
+    bot.IMPACT_PATH='./db/impact.ttf'
     bot.REPLIES_PATH='./db/replies.json'
    
     #load media
