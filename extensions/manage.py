@@ -162,8 +162,8 @@ class Manage(commands.Cog):
                       brief="bot sends query")
     @commands.has_permissions(administrator=True)
     async def say(self, ctx, *,word):
-        await self.bot.delete_message(ctx.message)
-        await self.bot.say(word)
+        await ctx.message.delete()
+        await ctx.send(word)
 
 def setup(bot):
     bot.add_cog(Manage(bot))
