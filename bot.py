@@ -134,7 +134,7 @@ async def reactMessage(message):
                     bot.IMAGES_PATH+bot.imagesMap[content]))
             return
         elif content in bot.gifsMap:
-            await message.channel.send_file(
+            await message.channel.send(
                 file = discord.File(
                     bot.GIFS_PATH+bot.gifsMap[content]))
             return
