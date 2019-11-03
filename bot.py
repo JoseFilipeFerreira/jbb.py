@@ -161,6 +161,8 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     bot.stats.remove_user(member.id)
+    appInfo = await bot.application_info()
+    await appInfo.owner.send("User left the server: {}".format(member.display_name))
     bot.stats.save_stats()
 
 def get_bot_color(bot):
