@@ -170,6 +170,25 @@ class BattleRoyale(commands.Cog):
 
         self.bot.stats.give_cash(br.get_winner().get_id(), 100)
         br.updateStats(self.bot.stats)
+
+    @commands.command(name='battleroyaleOnline',
+                      description="create battle royale with online users[ADMIN ONLY]\n\nWinner gets 100 coins.",
+                      brief="online battle royale",
+                      aliases=['brO'])
+    @commands.has_permissions(administrator=True)
+    async def battleroyaleOnline(self, ctx):
+        await ctx.message.delete()
+        await sendChallenge(self, ctx)
+        wid = await ctx.message.guild.widget()
+        br = Battle(
+            self.listReactions,
+            self.bot.embed_color,
+            wid.members)
+        for embed in br.allReports():
+            await ctx.send(embed=embed)
+
+        self.bot.stats.give_cash(br.get_winner().get_id(), 10)
+        br.updateStats(self.bot.stats)
     
     @commands.command(name='battleroyale',
                       description="create server battle royale",
