@@ -4,7 +4,7 @@ import asyncio
 import wolframalpha
 from aiohttp import ClientSession
 from html2text import html2text
-from random import choice
+from random import choice, randint
 from re import sub
 
 #setup wolframalpha API
@@ -40,7 +40,7 @@ class Api(commands.Cog):
         while True:
             result, error = await get_json('https://random.dog/woof.json')
             if error:
-                await ctx.sens(error)
+                await ctx.send(error)
                 return
             if result['url'].endswith('.mp4'):
                 pass
@@ -57,10 +57,38 @@ class Api(commands.Cog):
     async def cat(self, ctx):
         result, error = await get_json('http://aws.random.cat/meow')
         if error:
-            await ctx.sens(error)
+            await ctx.send(error)
             return
         embed = discord.Embed(color=choice(self.colours))
         embed.set_image(url=result['file'])
+        await ctx.send(embed=embed) 
+
+    @commands.command(name='xkcd',
+                      brief="send xkcd comic")
+    async def xkcd(self, ctx, args = None):
+        """
+        send xkcd comic
+        *xkcd -> sends newest comic
+        *xkcd random -> sends random comic
+        *xkcd [number] -> sends a specific comic
+        """
+        url = 'http://xkcd.com/info.0.json'
+        if args.isdigit():
+            url = f'http://xkcd.com/{int(args)}/info.0.json'
+        elif args.lower() == 'random':
+            result, error = await get_json('http://xkcd.com/info.0.json')
+            if error:
+                await ctx.send(error)
+                return
+            number = randint(0, result['num'])
+            url = f'http://xkcd.com/{number}/info.0.json'
+
+        result, error = await get_json(url)
+        if error:
+            await ctx.send(error)
+            return
+        embed = discord.Embed(color=choice(self.colours))
+        embed.set_image(url=result['img'])
         await ctx.send(embed=embed) 
 
     @commands.command(name='lmgtfy',
@@ -76,7 +104,7 @@ class Api(commands.Cog):
         url = f"http://api.urbandictionary.com/v0/define?term={'+'.join(query)}"
         result, error = await get_json(url)
         if error:
-            await ctx.sens(error)
+            await ctx.send(error)
             return
         if result["list"]:
             top_def = result['list'][0]
@@ -117,7 +145,7 @@ class Api(commands.Cog):
         url = f"https://hoogle.haskell.org?mode=json&hoogle={'+'.join(query)}&start=1&count=1"
         result, error = await get_json(url)
         if error:
-            await ctx.sens(error)
+            await ctx.send(error)
             return
         embed = discord.Embed(
             title=f"Definition of {' '.join(query)}",
