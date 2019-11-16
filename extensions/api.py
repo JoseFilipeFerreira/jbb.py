@@ -72,8 +72,10 @@ class Api(commands.Cog):
         *xkcd random -> sends random comic
         *xkcd [number] -> sends a specific comic
         """
-        url = 'http://xkcd.com/info.0.json'
-        if args.isdigit():
+        url = None
+        if not args:
+            url = 'http://xkcd.com/info.0.json'
+        elif args.isdigit():
             url = f'http://xkcd.com/{int(args)}/info.0.json'
         elif args.lower() == 'random':
             result, error = await get_json('http://xkcd.com/info.0.json')
