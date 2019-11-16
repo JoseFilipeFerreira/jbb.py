@@ -7,6 +7,7 @@ from aux.stats import Stats
 from aux.message import userInputTrueFalse
 from PIL import Image, ImageDraw
 from random import randint
+from numpy.random import choice
 
 class Casino(commands.Cog):
     """Bet all your life savings here"""
@@ -15,15 +16,28 @@ class Casino(commands.Cog):
         self.rOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26]
 
     @commands.command(name='beg',
-                      description="get one coin every 24 hours",
+                      description="get one coin every 24 hours... or more?",
                       brief="beg for coins")
     @commands.is_nsfw()
     async def beg(self, ctx):
         id = ctx.message.author.id
         if hours_passed(self.bot.stats.get_last_beg(id), time.time()) > 24:
             self.bot.stats.set_last_beg(id, time.time())
-            self.bot.stats.give_cash(id, 1)
-            await ctx.send("Have 1 coin.")
+            
+            #sets quantities and respective odds
+            giveable_amounts = [1, 100]
+            giveable_probabilities = [0.99, 0.01]
+            
+            #picks a number with the probabilities as a numpy.int32
+            #converts it to int using .item(), else it would be single elem list
+            chosen_number = choice(giveable_amounts, 1, p=giveable_probabilities).item()
+
+            if chosen_number == 1:
+                await ctx.send("Have 1 coin.")
+            else:
+                await ctx.send("Feeling a bit generous today. Have 100 coins.")
+                
+            self.bot.stats.give_cash(id, chosen_number)
         else:
             await ctx.send("No coin for you.")
         self.bot.stats.set_bet(id, True)
