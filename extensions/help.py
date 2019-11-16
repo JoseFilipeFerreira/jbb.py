@@ -49,7 +49,7 @@ async def help_all(self, ctx):
 
     string_cogs = ""
     for cog in cogs.keys():
-        string_cogs += "**{0}**\n".format(cog)
+       string_cogs += "**{0}**\n".format(cog)
 
     embed = discord.Embed(
         title="List of all available cogs:",
@@ -135,5 +135,5 @@ async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
         musicArray.append(music)
     musicArray.sort()
     embed.add_field(name=section, value='\n'.join(musicArray), inline=True)
-    await self.bot.send_message(ctx.message.author, embed=embed)
+    await ctx.message.author.send(embed=embed)
     await ctx.message.delete()
