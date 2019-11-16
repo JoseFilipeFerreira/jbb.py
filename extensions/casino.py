@@ -7,7 +7,6 @@ from aux.stats import Stats
 from aux.message import userInputTrueFalse
 from PIL import Image, ImageDraw
 from random import randint
-from numpy.random import choice
 
 class Casino(commands.Cog):
     """Bet all your life savings here"""
@@ -24,22 +23,16 @@ class Casino(commands.Cog):
         if hours_passed(self.bot.stats.get_last_beg(id), time.time()) > 24:
             self.bot.stats.set_last_beg(id, time.time())
             
-            #sets quantities and respective odds
-            giveable_amounts = [1, 100]
-            giveable_probabilities = [0.99, 0.01]
-            
-            #picks a number with the probabilities as a numpy.int32
-            #converts it to int using .item(), else it would be single elem list
-            chosen_number = choice(giveable_amounts, 1, p=giveable_probabilities).item()
-
-            if chosen_number == 1:
-                await ctx.send("Have 1 coin.")
-            else:
+            if randint(0, 100) == 1:
                 await ctx.send("Feeling a bit generous today. Have 100 coins.")
+                self.bot.stats.give_cash(id, 100)
+            else:
+                await ctx.send("Have 1 coin.")
+                self.bot.stats.give_cash(id, 1)
                 
-            self.bot.stats.give_cash(id, chosen_number)
         else:
             await ctx.send("No coin for you.")
+
         self.bot.stats.set_bet(id, True)
         self.bot.stats.save_stats()
 
