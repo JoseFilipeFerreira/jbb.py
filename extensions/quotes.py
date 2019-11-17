@@ -17,11 +17,22 @@ class Quotes(commands.Cog):
         await ctx.send(getRLine(self.quotes_dict,'quote'))
 
     @commands.command(name='quoteA',
-                      description="random quote from Students",
                       brief="quote from Students")
-    async def quoteA(self, ctx):
+    async def quoteA(self, ctx, args = None):
+        """random quote from Students"""
         l = getRLine(self.quotes_dict, 'quoteA')
+        if args and args.lower() == "me":
+            u = []
+            for q in self.quotes_dict['quoteA']:
+                if q['id'] == ctx.message.author.id:
+                    u.append(q)
+            if len(u) == 0:
+                await ctx.send("You don't have a quote")
+                return
+            l = choice(u)
         await ctx.send("{} - {}".format(l["content"], l["name"]))
+
+
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
