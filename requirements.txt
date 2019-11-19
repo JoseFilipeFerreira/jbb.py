@@ -7,7 +7,7 @@ cachetools==3.1.1
 certifi==2019.9.11
 chardet==3.0.4
 discord==1.0.1
-discord.py==1.2.3
+discord.py==1.2.5
 ftfy==5.6
 fuzzywuzzy==0.17.0
 google-api-python-client==1.7.11

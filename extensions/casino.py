@@ -131,7 +131,7 @@ class Casino(commands.Cog):
                     self.bot.TMP_PATH + "roulette.png"))
 
         self.bot.stats.set_bet(ctx.message.author.id, True)
-        self.bot.save_stats()
+        self.bot.stats.save_stats()
 
     @commands.command(name='roll',
                       brief="roll a dice")
