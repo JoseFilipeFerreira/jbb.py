@@ -30,9 +30,8 @@ class Quotes(commands.Cog):
                 await ctx.send("You don't have a quote")
                 return
             l = choice(u)
-        await ctx.send("{} - {}".format(l["content"], l["name"]))
-
-
+        s = "{} - {}".format(l["content"], l["name"])
+        await ctx.send(discord.utils.escape_mentions(s))
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
@@ -55,8 +54,18 @@ class Quotes(commands.Cog):
     @commands.command(name='nquoteA',
                       description="number of student quotes",
                       brief="number of student quotes")
-    async def nquoteA(self, ctx):
-        await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
+    async def nquoteA(self, ctx, args=None):
+        if args and args.lower() =="me":
+            u = 0
+            for q in self.quotes_dict['quoteA']:
+                if q['id'] == ctx.message.author.id:
+                    u += 1
+            if u == 0:
+                await ctx.send("You don't have a quote")
+            else:
+                await ctx.send(f"You have {u} quotes")
+        else:
+            await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
     @commands.command(name='nquote',
                       description="number of JBB quotes",
