@@ -156,6 +156,9 @@ async def reactMessage(message):
 @bot.event
 async def on_member_join(member):
     bot.stats.add_user(member.id)
+    nUser = len(list(filter(lambda x: not x.bot , member.guild.members)))
+    if nUser % 100 == 0:
+        await member.guild.system_channel.send(f"🎉 **CONGRATULATIONS** 🎉\nYou are the user number {nUser}\nClick here to redeem your prize -> <https://bit.ly/MIEIreward>")
     bot.stats.save_stats()
 
 @bot.event
