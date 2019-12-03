@@ -126,35 +126,31 @@ class Manage(commands.Cog):
         embed.add_field(
                 name='Text Channels',
                 value=text_channel,
-                inline=False)
+                inline=True)
         embed.add_field(
                 name='Voice Channels',
                 value=voice_channel,
+                inline=True)
+        embed.add_field(
+                name='Roles',
+                value=len(guild.roles),
                 inline=False)
         embed.add_field(
                 name='Members',
                 value=total,
-                inline=False)
+                inline=True)
         embed.add_field(
                 name='Humans',
                 value=total-bot,
-                inline=False)
-        embed.add_field(
-                name='Bots',
-                value=bot,
-                inline=False)
-        embed.add_field(
-                name='Gaming',
-                value=gaming,
-                inline=False)
+                inline=True)
         embed.add_field(
                 name='Online',
                 value=online,
                 inline=False)
         embed.add_field(
-                name='Roles',
-                value=len(guild.roles),
-                inline=False)
+                name='Gaming',
+                value=gaming,
+                inline=True)
         await ctx.send(embed=embed)
         
     @commands.command(name='say',
