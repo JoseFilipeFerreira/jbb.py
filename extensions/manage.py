@@ -109,10 +109,6 @@ class Manage(commands.Cog):
             color=self.bot.embed_color)
         embed.set_thumbnail(url=guild.icon_url)
         embed.add_field(
-                name='Owner',
-                value=guild.owner,
-                inline=False)
-        embed.add_field(
                 name='Region',
                 value=guild.region,
                 inline=False)
