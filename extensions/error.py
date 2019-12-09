@@ -24,13 +24,16 @@ class CommandErrorHandler(commands.Cog):
             return await ctx.author.send(f"{ctx.command} can't be used in Private Messages.")
         
         elif isinstance(error, discord.ext.commands.errors.NSFWChannelRequired):
-                return await ctx.send(f'Command must be done in {get_NSFW(ctx)}')
+            return await ctx.send(f'{ctx.command} must be done in {get_NSFW(ctx)}')
             
         elif isinstance(error, discord.ext.commands.errors.NotOwner):
-                return await ctx.send('Owner only command')
+            return await ctx.send('Owner only command')
 
         elif isinstance(error, discord.ext.commands.errors.MissingPermissions):
-                return await ctx.send("You don't have permissions for this command")
+            return await ctx.send("You don't have permissions for this command")
+
+        elif isinstance(error, discord.ext.commands.errors.CheckFailure):
+                return await ctx.send(f"{ctx.command} can't be used here.")
 
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)

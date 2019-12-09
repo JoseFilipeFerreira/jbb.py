@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import datetime
 from apiclient.discovery import build
+from aux.check import is_spam
 from ftfy import fix_encoding
 from googletrans import Translator
 from httplib2 import Http
@@ -38,6 +39,7 @@ class Google(commands.Cog):
                       description="menu of the uminho canteen",
                       brief="menu",
                       aliases=['ementa'])
+    @commands.check(is_spam)
     async def cantina(self, ctx ,*, menu='almoço'):
         if menu in self.menus:
             menu = menu.lower()
