@@ -30,7 +30,7 @@ class CommandErrorHandler(commands.Cog):
             return await ctx.send('Owner only command')
 
         elif isinstance(error, discord.ext.commands.errors.MissingPermissions):
-            return await ctx.send("You don't have permissions for this command")
+            return await ctx.send("Username is not in the sudoers file. This incident will be reported.")
 
         elif isinstance(error, discord.ext.commands.errors.CheckFailure):
                 return await ctx.send(f"{ctx.command} can't be used here.")
