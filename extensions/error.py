@@ -26,10 +26,7 @@ class CommandErrorHandler(commands.Cog):
         elif isinstance(error, discord.ext.commands.errors.NSFWChannelRequired):
             return await ctx.send(f'{ctx.command} must be done in {get_NSFW(ctx)}')
             
-        elif isinstance(error, discord.ext.commands.errors.NotOwner):
-            return await ctx.send('Owner only command')
-
-        elif isinstance(error, discord.ext.commands.errors.MissingPermissions):
+        elif isinstance(error, discord.ext.commands.errors.NotOwner) or isinstance(error, discord.ext.commands.errors.MissingPermissions):
             return await ctx.send("Username is not in the sudoers file. This incident will be reported.")
 
         elif isinstance(error, discord.ext.commands.errors.CheckFailure):
