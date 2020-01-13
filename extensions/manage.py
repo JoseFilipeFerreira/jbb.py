@@ -50,7 +50,7 @@ class Manage(commands.Cog):
         if channel == None:
             ctx.send("Not in a voice channel")
             return
-        await ctx.send("https://www.discordapp.com/channels/{0}/{1}".format(ctx.guild.id, channel.id))
+        await ctx.send("WebCam Show Live!😉 \n<https://www.discordapp.com/channels/{0}/{1}>".format(ctx.guild.id, channel.id))
 
     @commands.command(name='info',
                       description="get info on a specific user",
