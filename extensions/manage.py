@@ -37,6 +37,21 @@ class Manage(commands.Cog):
     async def setplay(self, ctx,*, play):
         await self.bot.change_presence(game=discord.Game(name=play))
 
+    @commands.command(name='live',
+                      description="get link for multi-webcam chat on server",
+                      brief="go live")
+    @commands.has_permissions(administrator=True)
+    async def live(self, ctx):
+        vcState = ctx.message.author.voice
+        if vcState == None:
+            ctx.send("No voice state")
+            return
+        channel = vcState.channel
+        if channel == None:
+            ctx.send("Not in a voice channel")
+            return
+        await ctx.send("https://www.discordapp.com/channels/{0}/{1}".format(ctx.guild.id, channel.id))
+
     @commands.command(name='info',
                       description="get info on a specific user",
                       brief="info of a user")
