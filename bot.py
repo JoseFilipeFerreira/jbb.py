@@ -30,6 +30,7 @@ def main():
     bot.MARKET_PATH='./db/market.json'
     bot.IMPACT_PATH='./db/impact.ttf'
     bot.REPLIES_PATH='./db/replies.json'
+    bot.IP_PATH='./ip.txt'
    
     #load media
     bot.imagesMap = {}
