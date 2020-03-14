@@ -74,13 +74,18 @@ class Programming(commands.Cog):
             await ctx.message.author.send("**HOW TO USE**\n" + r)
             return
 
-        with open(self.bot.TMP_PATH + file_name,'w') as f:
-            f.write(r)
+        if(len(r) > 2000):
+            with open(self.bot.TMP_PATH + file_name,'w') as f:
+                f.write(r)
 
-        await ctx.message.author.send(
-            file = discord.File(
-                self.bot.TMP_PATH + file_name),
-            content="**{0}**".format(query))
+            await ctx.message.author.send(
+                file = discord.File(
+                    self.bot.TMP_PATH + file_name),
+                content="**{0}**".format(query))
+        else:
+            await ctx.message.author.send(
+                "**{0}**\n```\n{1}\n```".format(query, r))
+
 
     @commands.command(name='gauss',
                       brief="método de eliminação de gauss",
