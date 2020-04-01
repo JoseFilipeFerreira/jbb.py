@@ -74,7 +74,7 @@ class Manage(commands.Cog):
                 inline=True)
         embed.add_field(
                 name='Voice channel',
-                value=member.voice.channel.name if member.voice else "None",
+                value="[REDACTED]" if member.voice else "None",
                 inline=True)
         role_list = "None"
         if len(member.roles) > 1:
