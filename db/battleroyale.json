@@ -493,5 +493,10 @@
         "description": "{0} dropped some wet and died \ud83d\udca6",
         "time": 2.5,
         "action": 1
+    },
+    {
+        "action": 2,
+        "time": 2.5,
+        "description": "FMM said it was UNACCEPTABLE and INADMISSIBLE. {0} was never the same afterwards."
     }
 ]

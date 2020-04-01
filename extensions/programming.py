@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from baseconvert import base
 from random import choice
+from aiohttp import ClientSession
 
 class ReadMatrix(commands.Converter):
     async def convert(self, ctx, matrix):
@@ -43,6 +44,48 @@ class Programming(commands.Cog):
         result = base(number, basefrom, baseto, string=True)
         await ctx.send('{0} na base {1} para base {2} dá:\n{3}'
                 .format(number, basefrom, baseto, result))
+
+    @commands.command(name='lixo3',
+                      description="answer querys LI3",
+                      brief="answer querys LI3",
+                      pass_context=True)
+    async def lixo3(self, ctx, *query):
+        await ctx.message.delete()
+
+        file_name = "query_" + '_'.join(word for word in query) + ".txt"
+        query = '/'.join(word for word in query)
+
+        with open(self.bot.TMP_PATH+"log_querys.txt", 'a') as file:
+            file.write(ctx.message.author.name + "\t" + query + "\n")
+
+        with open(self.bot.IP_PATH, 'r') as file:
+            ip = file.read().strip()
+        
+        try:
+            async with ClientSession() as session:
+                async with session.get("http://{}/{}".format(ip, query)) as response:
+                    r = await response.text()
+        except:
+            await ctx.send("Something unexpected went wrong.")
+            return
+
+
+        if len(query) == 0:
+            await ctx.message.author.send("**HOW TO USE**\n" + r)
+            return
+
+        if(len(r) > 2000):
+            with open(self.bot.TMP_PATH + file_name,'w') as f:
+                f.write(r)
+
+            await ctx.message.author.send(
+                file = discord.File(
+                    self.bot.TMP_PATH + file_name),
+                content="**{0}**".format(query))
+        else:
+            await ctx.message.author.send(
+                "**{0}**\n```\n{1}\n```".format(query, r))
+
 
     @commands.command(name='gauss',
                       brief="método de eliminação de gauss",
