@@ -31,6 +31,7 @@ def main():
     bot.IMPACT_PATH='./db/impact.ttf'
     bot.REPLIES_PATH='./db/replies.json'
     bot.IP_PATH='./ip.txt'
+    bot.DOTFILES_PATH='./db/dotfiles.json'
    
     #load media
     bot.imagesMap = {}
