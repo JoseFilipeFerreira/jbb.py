@@ -45,7 +45,7 @@ class Dotfiles(commands.Cog):
                 file_content = contents.pop(0)
                 if file_content.type == "dir":
                     contents.extend(repo.get_contents(file_content.path))
-                elif file_content.name.lower() == args[0].lower():
+                elif args[0].lower() in file_content.name.lower():
                     searched_repo = file_content
                     break
 
