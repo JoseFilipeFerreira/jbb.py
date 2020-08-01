@@ -498,5 +498,15 @@
         "action": 2,
         "time": 2.5,
         "description": "FMM said it was UNACCEPTABLE and INADMISSIBLE. {0} was never the same afterwards."
+    },
+    {
+        "action": 0,
+        "time": 1.5,
+        "description": "{1} just UwUed {0} to death"
+    },
+    {
+        "action": 2,
+        "time": 2.5,
+        "description": "{0} is now CeSIUM's slave"
     }
 ]
