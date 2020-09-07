@@ -21,15 +21,34 @@ class Quotes(commands.Cog):
     async def quoteA(self, ctx, args = None):
         """random quote from Students"""
         l = getRLine(self.quotes_dict, 'quoteA')
-        if args and args.lower() == "me":
-            u = []
-            for q in self.quotes_dict['quoteA']:
-                if q['id'] == ctx.message.author.id:
-                    u.append(q)
-            if len(u) == 0:
-                await ctx.send("You don't have a quote")
-                return
-            l = choice(u)
+        if args:
+           u = []
+           if args.lower() == "me":
+               for q in self.quotes_dict['quoteA']:
+                   if q['id'] == ctx.message.author.id:
+                       u.append(q)
+               if len(u) == 0:
+                   await ctx.send("You don't have a quote")
+                   return
+               l = choice(u)
+
+           elif args.lower() == "nos":
+               last_users = set(())
+               async for msg in ctx.channel.history(limit=100):
+                   last_users.add(msg.author.id)
+                   if len(last_users) == 10:
+                       break
+               while len(u) == 0 or len(last_users) != 0:
+                   chosen_user = choice(tuple(last_users))
+                   last_users.discard(chosen_user)
+                   for q in self.quotes_dict['quoteA']:
+                       if q['id'] == chosen_user:
+                           u.append(q)
+               if len(u) == 0:
+                   await ctx.send("No quote can be found")
+                   return
+               l = choice(u)
+
         s = "{} - {}".format(l["content"], l["name"])
         await ctx.send(discord.utils.escape_mentions(s))
     
