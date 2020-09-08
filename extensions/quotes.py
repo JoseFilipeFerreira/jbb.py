@@ -3,7 +3,6 @@ from discord.ext import commands
 import json
 from fuzzywuzzy import fuzz, process
 from random import choice, shuffle
-from functools import reduce
 
 class Quotes(commands.Cog):
     """All quotes stored"""
