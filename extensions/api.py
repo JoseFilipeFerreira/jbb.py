@@ -102,7 +102,7 @@ class Api(commands.Cog):
     @commands.command(name='lmddgtfy',
                       description="give link for let me duck duck go that for you",
                       brief="let me duck duck go that for you")
-    async def lmgtfy(self, ctx, *query):
+    async def lmddgtfy(self, ctx, *query):
         await ctx.send(f"http://lmddgtfy.net/?q={'%20'.join(query)}")
 
 
