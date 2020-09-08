@@ -86,6 +86,33 @@ class Quotes(commands.Cog):
         else:
             await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
+    @commands.command(name='quoteRank',
+                      description="Ranking of student quotes",
+                      brief="Ranking of student quotes")
+    async def quoteRank(self, ctx, args=None):
+        embed = discord.Embed(
+            title = 'Quote Whores do DI',
+            color=self.bot.embed_color)
+        quote_ids = list(map(lambda q: q['id'], self.quotes_dict['quoteA']))
+        nquotes = []
+        for id in set(quote_ids):
+            nquotes.append({
+                "id": id,
+                "nquotes": quote_ids.count(id)})
+
+        nquotes.sort(key=lambda n: n["nquotes"], reverse=True)
+
+        for i in range(3):
+            quotes = nquotes[i]
+            member = ctx.message.guild.get_member(quotes["id"])
+
+            embed.add_field(
+                name="{0}. {1}".format(i + 1, member.display_name),
+                value="Quotes: {0}".format(quotes["nquotes"]),
+                inline=False)
+
+        await ctx.send(embed=embed)
+
     @commands.command(name='nquote',
                       description="number of JBB quotes",
                       brief="number of JBB quotes")
