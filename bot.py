@@ -1,4 +1,5 @@
 import discord
+import time
 from discord.ext import commands
 import asyncio 
 import json
@@ -6,6 +7,7 @@ import traceback
 from datetime import datetime
 from os import path, listdir
 from aux.stats import Stats
+from aux.misc import minutes_passed 
 
 bot = commands.Bot(
     command_prefix = '*',
@@ -30,6 +32,7 @@ def main():
     bot.MARKET_PATH='./db/market.json'
     bot.IMPACT_PATH='./db/impact.ttf'
     bot.REPLIES_PATH='./db/replies.json'
+    bot.SLOWMODE_PATH='./db/slow.json'
     bot.IP_PATH='./ip.txt'
     bot.DOTFILES_PATH='./db/dotfiles.json'
    
@@ -57,6 +60,9 @@ def main():
 
     #load market
     bot.replies       = json.load(open(bot.REPLIES_PATH, 'r'))
+
+    #load slowmode
+    bot.slow_users = json.load(open(bot.SLOWMODE_PATH, 'r'))
 
     #load extensions
     extensions_loader(create_list_extensions())
@@ -129,6 +135,14 @@ async def reactMessage(message):
 
     #send media
     if message.content.startswith(bot.command_prefix):
+        slowed_user = bot.slow_users['users'].get(str(message.author.id), None)
+        if slowed_user is not None:
+            bot.slow_users['users'][str(message.author.id)] = time.time()
+            with open(bot.SLOWMODE_PATH, 'w', encoding='utf8') as file:
+                json.dump(bot.slow_users, file, indent=4)
+            if minutes_passed(slowed_user, time.time()) <= bot.slow_users['time']:
+                await message.author.send("You are in the JBB naughty list, this meaning that you can only call a command one every {} minutes. Be carefull, every time you try to call a command before the cooldown ends, it will start again".format(bot.slow_users['time']))
+                return
         content = message.content.lower()[1:]
         if content in bot.imagesMap:
             await message.channel.send(

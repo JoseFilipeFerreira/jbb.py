@@ -172,5 +172,30 @@ class Manage(commands.Cog):
         await ctx.message.delete()
         await ctx.send(word)
 
+    @commands.command(name='slowmode',
+                      description="",
+                      brief="")
+    @commands.has_permissions(administrator=True)
+    async def slowmode(self, ctx, args, user_id = None):
+        if args:
+            if user_id is not None:
+                user = ctx.guild.get_member(int(user_id))
+                if user is not None:
+                    if args.lower() == "add":
+                        self.bot.slow_users['users'][user_id] = time.time()
+                        await ctx.send("{} was added to the slowmode list".format(user.display_name))
+                    elif args.lower() == "rm":
+                        self.bot.slow_users['users'].pop(user_id, None)
+                        await ctx.send("{} was removed to the slowmode list".format(user.display_name))
+                elif args.lower() == "set":
+                    self.bot.slow_users['time'] = int(user_id)
+                    await ctx.send("Cooldown is now set to {} minutes".format(user_id))
+            elif args.lower() == "info":
+                cooldown_users = ",".join(list(map(lambda x: ctx.guild.get_member(int(x)).display_name, self.bot.slow_users['users'].keys())))
+                await ctx.send("Cooldown time: {} minutes\nCooldown users: {}".format(self.bot.slow_users['time'], cooldown_users))
+                
+            with open(self.bot.SLOWMODE_PATH, 'w', encoding='utf8') as file:
+                json.dump(self.bot.slow_users, file, indent=4)
+
 def setup(bot):
     bot.add_cog(Manage(bot))
