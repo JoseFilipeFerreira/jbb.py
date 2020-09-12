@@ -13,7 +13,7 @@ class Biography(commands.Cog):
 
     @commands.command(
         name='bio',
-        description="send a funy description of a given user",
+        description="send a funny description of a given user",
         brief="get one's biography")
     async def bio(self, ctx, member : discord.Member = None):
         if member == None:
@@ -132,6 +132,25 @@ class Biography(commands.Cog):
             await self.bot.say("bioKey added")
 
         updateBio(self)
+        
+    @commands.command(
+        name='avatar',
+        brief='Get own or mentioned users avatar')
+    async def avatar(self, ctx, args: discord.User=None):
+        num_mentioned_users = len(ctx.message.mentions)
+        # Mentioning multiple users in this command will
+        # not send the avatar of any user
+        if num_mentioned_users > 1:
+            await ctx.send("Mentioned more than 1 user")
+        else:
+            embed = discord.Embed(color=self.bot.embed_color)
+            # 'args' will be only the first mention of the message
+            # if no mention is provided then send the author's avatar
+            if args == None :
+                embed.set_image(url=ctx.message.author.avatar_url)
+            else:
+                embed.set_image(url=args.avatar_url)
+            await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Biography(bot))
