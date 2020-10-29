@@ -50,7 +50,11 @@ class Quotes(commands.Cog):
                l = choice(u)
 
         s = "{} - {}".format(l["content"], l["name"])
-        await ctx.send(discord.utils.escape_mentions(s))
+        if len(ctx.message.mentions) > 0:
+            message_sent = await ctx.send("")
+            await message_sent.edit(s)
+        else:
+            await ctx.send(s)
     
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
@@ -215,7 +219,11 @@ class Quotes(commands.Cog):
         
         result = process.extract(search, candidates, limit=1)
 
-        await ctx.send(result[0][0])
+        if len(ctx.message.mentions) > 0:
+            message_sent = await ctx.send("")
+            await message_sent.edit(result[0][0])
+        else:
+            await ctx.send(result[0][0])
 
 def getRLine(quotes_dict, filename):
 #get a random quote
