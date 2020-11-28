@@ -19,12 +19,10 @@ cogs_blacklist = []
 
 def main():
     #adding to bot object directories
-    bot.IMAGES_PATH = './Media/Images/'
-    bot.GIFS_PATH = './Media/Gif/'
-    bot.MUSIC_PATH = './Media/Music/'
-    bot.TMP_PATH = './Media/Tmp/'
+    bot.MEDIA_PATH = './media/'
+    bot.TMP_PATH = '/tmp/'
+    bot.GAMES_PATH ='./assets/'
     bot.QUOTES_PATH = './db/quotes.json'
-    bot.GAMES_PATH ='./Media/Games/'
     bot.BATTLEROYALE_PATH = './db/battleroyale.json'
     bot.STATS_PATH = './db/stats.json'
     bot.BIOGRAPHY_PATH = './db/biography.json'
@@ -37,29 +35,16 @@ def main():
     bot.DOTFILES_PATH='./db/dotfiles.json'
    
     #load media
-    bot.imagesMap = {}
-    for f in listdir(bot.IMAGES_PATH):
-        if path.isfile(path.join(bot.IMAGES_PATH, f)):
+    bot.mediaMap = {}
+    for f in listdir(bot.MEDIA_PATH):
+        if path.isfile(path.join(bot.MEDIA_PATH, f)):
             filename, _ = path.splitext(f)
-            bot.imagesMap[filename.lower()] = f
-
-    bot.gifsMap = {}
-    for f in listdir(bot.GIFS_PATH):
-        if path.isfile(path.join(bot.GIFS_PATH, f)):
-            filename, _ = path.splitext(f)
-            bot.gifsMap[filename.lower()] = f
-
-    bot.musicMap = {}
-    for f in listdir(bot.MUSIC_PATH):
-        if path.isfile(path.join(bot.MUSIC_PATH, f)):
-            filename, _ = path.splitext(f)
-            bot.musicMap[filename.lower()] = f
+            bot.mediaMap[filename.lower()] = f
     
     #load stats
     bot.stats = Stats(bot.STATS_PATH)
 
-    #load market
-    bot.replies       = json.load(open(bot.REPLIES_PATH, 'r'))
+    bot.replies = json.load(open(bot.REPLIES_PATH, 'r'))
 
     #load slowmode
     bot.slow_users = json.load(open(bot.SLOWMODE_PATH, 'r'))
@@ -67,10 +52,6 @@ def main():
     #load extensions
     extensions_loader(create_list_extensions())
     
-    #voice
-    bot.voice_client = None
-    bot.player_client = None
-
     bot.run(open('auth').readline().rstrip())
 
 @bot.event
@@ -144,23 +125,12 @@ async def reactMessage(message):
                 await message.author.send("You are in the JBB naughty list, this meaning that you can only call a command one every {} minutes. Be carefull, every time you try to call a command before the cooldown ends, it will start again".format(bot.slow_users['time']))
                 return
         content = message.content.lower()[1:]
-        if content in bot.imagesMap:
+        if content in bot.mediaMap:
             await message.channel.send(
                 file = discord.File(
-                    bot.IMAGES_PATH+bot.imagesMap[content]))
-            return
-        elif content in bot.gifsMap:
-            await message.channel.send(
-                file = discord.File(
-                    bot.GIFS_PATH+bot.gifsMap[content]))
+                    bot.MEDIA_PATH+bot.mediaMap[content]))
             return
 
-    #exit voice channel
-    if bot.player_client != None and bot.player_client.is_playing() == False:
-        await bot.voice_client.disconnect()
-        bot.voice_client = None
-        bot.player_client = None
-    
     #coin giveaway
     given = bot.stats.daily_giveaway(10)
     if given:
