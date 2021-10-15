@@ -1,17 +1,20 @@
 import discord
 import time
 from discord.ext import commands
-import asyncio 
+import asyncio
 import json
 import traceback
 from datetime import datetime
 from os import path, listdir
 from aux.stats import Stats
-from aux.misc import minutes_passed 
+from aux.misc import minutes_passed
+
+intents = discord.Intents.all()
 
 bot = commands.Bot(
     command_prefix = '*',
-    case_insensitive=True)
+    case_insensitive=True,
+    intents=intents)
 
 bot.remove_command('help')
 
@@ -33,14 +36,14 @@ def main():
     bot.SLOWMODE_PATH='./db/slow.json'
     bot.IP_PATH='./ip.txt'
     bot.DOTFILES_PATH='./db/dotfiles.json'
-   
+
     #load media
     bot.mediaMap = {}
     for f in listdir(bot.MEDIA_PATH):
         if path.isfile(path.join(bot.MEDIA_PATH, f)):
             filename, _ = path.splitext(f)
             bot.mediaMap[filename.lower()] = f
-    
+
     #load stats
     bot.stats = Stats(bot.STATS_PATH)
 
@@ -51,7 +54,7 @@ def main():
 
     #load extensions
     extensions_loader(create_list_extensions())
-    
+
     bot.run(open('auth').readline().rstrip())
 
 @bot.event
@@ -70,12 +73,12 @@ async def on_ready():
         name="Extensions loaded",
         value=bot.extensions_list_loaded,
         inline=True)
-    
+
     embed.add_field(
         name="Extensions failed",
         value=bot.extensions_list_failed,
         inline=True)
-    
+
     blacklist = "No Cogs in Blaklist"
     if len(cogs_blacklist) > 0:
         blacklist = '\n'.join(cogs_blacklist)
@@ -103,13 +106,6 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-	await reactMessage(message)
-
-@bot.event
-async def on_message_edit(before, after):
-	await reactMessage(after)
-
-async def reactMessage(message):
     if message.content.lower() in bot.replies:
         await message.channel.send(
             bot.replies[message.content.lower()])
@@ -132,10 +128,7 @@ async def reactMessage(message):
             return
 
     #coin giveaway
-    given = bot.stats.daily_giveaway(10)
-    if given:
-        appInfo = await bot.application_info()
-        await appInfo.owner.send("Giveaway: {}".format(given))
+    bot.stats.daily_giveaway(10)
 
     await bot.process_commands(message)
 
@@ -150,8 +143,6 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     bot.stats.remove_user(member.id)
-    appInfo = await bot.application_info()
-    await appInfo.owner.send("User left the server: {}".format(member.display_name))
     bot.stats.save_stats()
 
 def get_bot_color(bot):
@@ -164,17 +155,17 @@ def get_bot_color(bot):
 def create_list_extensions():
 #create a list with possible extensions
     extensions_list = listdir(bot.EXTENSIONS_PATH + '/')
-    
+
     def extension_splitter(x):
         extension, _ = path.splitext(x)
         return extension
-    
+
     extensions_list = list(map(extension_splitter, extensions_list))
-    
+
     extensions_list = list(filter(
             lambda x: "__" not in x and x not in cogs_blacklist,
             extensions_list))
-    
+
     return sorted(extensions_list)
 
 def extensions_loader(extensions):
@@ -190,7 +181,7 @@ def extensions_loader(extensions):
             print(f'Failed to load extension: {extension}\n{exc}')
             failed = failed + "\n" + ('**{}**:{}'.format(extension, exc))
             print(traceback.format_exc())
-    
+
     bot.extensions_list_loaded = loaded
     bot.extensions_list_failed = "No cogs failed to load"
     if failed != "": bot.extensions_list_failed = failed
