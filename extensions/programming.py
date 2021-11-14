@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from baseconvert import base
+# from baseconvert import base
 from random import choice
 from aiohttp import ClientSession
 
@@ -13,7 +13,7 @@ class ReadMatrix(commands.Converter):
         return list(matrix)
 
 class Programming(commands.Cog):
-    """Programming help"""    
+    """Programming help"""
     def __init__(self, bot):
         self.bot = bot
 
@@ -21,7 +21,7 @@ class Programming(commands.Cog):
                       description="give overlycomplicated function that returns the double of a given number in haskell",
                       brief="small program in haskell")
     async def helpHaskell(self, ctx):
-        doublFct = ['double = foldr (+) 0 . take 2 . repeat', 
+        doublFct = ['double = foldr (+) 0 . take 2 . repeat',
             'double = foldr (+) 0 . take 2 . cycle . return',
             'double = head . fmap ap . zip [(2*)] . return',
             'double = succ . (!!2) . enumFromThen 1',
@@ -36,55 +36,55 @@ class Programming(commands.Cog):
     async def quicksort(self, ctx):
         await ctx.send('https://www.youtube.com/watch?v=ywWBy6J5gz8')
 
-    @commands.command(name='convert',
-                      description="convert between numeric bases",
-                      brief="convert between bases",
-                      aliases=["conv"])
-    async def convert(self, ctx, number, basefrom : int, baseto :int ):
-        result = base(number, basefrom, baseto, string=True)
-        await ctx.send('{0} na base {1} para base {2} dá:\n{3}'
-                .format(number, basefrom, baseto, result))
+    # @commands.command(name='convert',
+    #                   description="convert between numeric bases",
+    #                   brief="convert between bases",
+    #                   aliases=["conv"])
+    # async def convert(self, ctx, number, basefrom : int, baseto :int ):
+    #     result = base(number, basefrom, baseto, string=True)
+    #     await ctx.send('{0} na base {1} para base {2} dá:\n{3}'
+    #             .format(number, basefrom, baseto, result))
 
-    @commands.command(name='lixo3',
-                      description="answer querys LI3",
-                      brief="answer querys LI3",
-                      pass_context=True)
-    async def lixo3(self, ctx, *query):
-        await ctx.message.delete()
+    # @commands.command(name='lixo3',
+    #                   description="answer querys LI3",
+    #                   brief="answer querys LI3",
+    #                   pass_context=True)
+    # async def lixo3(self, ctx, *query):
+    #     await ctx.message.delete()
 
-        file_name = "query_" + '_'.join(word for word in query) + ".txt"
-        query = '/'.join(word for word in query)
+    #     file_name = "query_" + '_'.join(word for word in query) + ".txt"
+    #     query = '/'.join(word for word in query)
 
-        with open(self.bot.TMP_PATH+"log_querys.txt", 'a') as file:
-            file.write(ctx.message.author.name + "\t" + query + "\n")
+    #     with open(self.bot.TMP_PATH+"log_querys.txt", 'a') as file:
+    #         file.write(ctx.message.author.name + "\t" + query + "\n")
 
-        with open(self.bot.IP_PATH, 'r') as file:
-            ip = file.read().strip()
-        
-        try:
-            async with ClientSession() as session:
-                async with session.get("http://{}/{}".format(ip, query)) as response:
-                    r = await response.text()
-        except:
-            await ctx.send("Something unexpected went wrong.")
-            return
+    #     with open(self.bot.IP_PATH, 'r') as file:
+    #         ip = file.read().strip()
+
+    #     try:
+    #         async with ClientSession() as session:
+    #             async with session.get("http://{}/{}".format(ip, query)) as response:
+    #                 r = await response.text()
+    #     except:
+    #         await ctx.send("Something unexpected went wrong.")
+    #         return
 
 
-        if len(query) == 0:
-            await ctx.message.author.send("**HOW TO USE**\n" + r)
-            return
+    #     if len(query) == 0:
+    #         await ctx.message.author.send("**HOW TO USE**\n" + r)
+    #         return
 
-        if(len(r) > 2000):
-            with open(self.bot.TMP_PATH + file_name,'w') as f:
-                f.write(r)
+    #     if(len(r) > 2000):
+    #         with open(self.bot.TMP_PATH + file_name,'w') as f:
+    #             f.write(r)
 
-            await ctx.message.author.send(
-                file = discord.File(
-                    self.bot.TMP_PATH + file_name),
-                content="**{0}**".format(query))
-        else:
-            await ctx.message.author.send(
-                "**{0}**\n```\n{1}\n```".format(query, r))
+    #         await ctx.message.author.send(
+    #             file = discord.File(
+    #                 self.bot.TMP_PATH + file_name),
+    #             content="**{0}**".format(query))
+    #     else:
+    #         await ctx.message.author.send(
+    #             "**{0}**\n```\n{1}\n```".format(query, r))
 
 
     @commands.command(name='gauss',
@@ -125,7 +125,7 @@ def print_matrix(matrix):
     for col in range(len(matrix[0])):
         for row in range(len(matrix)):
             if widths[col] < len(matrix[row][col]):
-                widths[col] = len(matrix[row][col]) 
+                widths[col] = len(matrix[row][col])
 
     mat = ""
     for row in matrix:
@@ -149,14 +149,14 @@ def swap_pivot (matrix, pos):
         if(abs(matrix[i][pos]) > value):
             value = abs(matrix[i][pos])
             max_index = i
-    
+
     if(max_index != pos):
         temp = matrix[max_index]
         matrix[max_index] = matrix[pos]
         matrix[pos] = temp
-    
+
     return matrix
 
 def setup(bot):
-    bot.add_cog(Programming(bot))     
+    bot.add_cog(Programming(bot))
 
