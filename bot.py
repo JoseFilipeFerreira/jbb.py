@@ -8,6 +8,7 @@ from datetime import datetime
 from os import path, listdir
 from aux.stats import Stats
 from aux.misc import minutes_passed
+import yaml
 
 intents = discord.Intents.all()
 
@@ -37,6 +38,9 @@ def main():
     bot.IP_PATH='./ip.txt'
     bot.DOTFILES_PATH='./db/dotfiles.json'
 
+    with open("config.yaml", "r") as f:
+        bot.config = yaml.safe_load(f)
+
     #load media
     bot.mediaMap = {}
     for f in listdir(bot.MEDIA_PATH):
@@ -55,7 +59,7 @@ def main():
     #load extensions
     extensions_loader(create_list_extensions())
 
-    bot.run(open('auth').readline().rstrip())
+    bot.run(bot.config['credentials']['discord'])
 
 @bot.event
 async def on_ready():

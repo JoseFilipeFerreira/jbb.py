@@ -7,21 +7,20 @@ from html2text import html2text
 from random import choice, randint
 from re import sub
 
-#setup wolframalpha API
-client = wolframalpha.Client(open('WA_KEY').readline().rstrip())
 
 class Api(commands.Cog):
     """Get random cute pics"""
-    
+
     def __init__(self, bot):
         self.bot = bot
+        self.client = wolframalpha.Client(bot.config['credentials']['wolframalpha'])
         self.colours = [0x1abc9c, 0x11806a, 0x2ecc71, 0x1f8b4c, 0x3498db, 0x206694, 0x9b59b6, 0x71368a, 0xe91e63, 0xad1457, 0xf1c40f, 0xc27c0e, 0xa84300, 0xe74c3c, 0x992d22, 0x95a5a6, 0x607d8b, 0x979c9f, 0x546e7a]
 
     @commands.command(name='ask',
                       description="replies to a query with the short text answer of the wolfram alpha API",
                       brief="wolfram alpha API")
     async def ask(self, ctx, *, query):
-        res = client.query(query)
+        res = self.client.query(query)
         if res['@success'] == 'false':
             strRes = "Couldn't find an answer"
         else:
@@ -61,7 +60,7 @@ class Api(commands.Cog):
             return
         embed = discord.Embed(color=choice(self.colours))
         embed.set_image(url=result['file'])
-        await ctx.send(embed=embed) 
+        await ctx.send(embed=embed)
 
     @commands.command(name='xkcd',
                       brief="send xkcd comic")
@@ -91,7 +90,7 @@ class Api(commands.Cog):
             return
         embed = discord.Embed(color=choice(self.colours))
         embed.set_image(url=result['img'])
-        await ctx.send(embed=embed) 
+        await ctx.send(embed=embed)
 
     @commands.command(name='lmgtfy',
                       description="give link for let me google that for you",
@@ -123,7 +122,7 @@ class Api(commands.Cog):
                 url=top_def['permalink'],
                 description=top_def['definition'],
                 color=self.bot.embed_color)
-            
+
             embed.set_thumbnail(
                 url = "http://campbelllawobserver.com/wp-content/uploads/2014/03/Urban-Dictionary-e1372286057646.png")
 
@@ -139,7 +138,7 @@ class Api(commands.Cog):
                 name=":thumbsdown:",
                 value=top_def['thumbs_down'],
                 inline=True)
-            
+
             embed.set_footer(text=f"Submited by {top_def['author']}")
 
             await ctx.send(embed =embed)

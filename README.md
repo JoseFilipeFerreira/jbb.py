@@ -4,8 +4,13 @@ Discord bot programmed in Python
 ## Getting Started
 ### Setting up
 ### Credentials
-* Get a discord bot Token and place it into a text file named `auth`
-* Get a access key to wolfram alpha and place the key in a file named `WA_KEY`
+* create a `config.yaml` with:
+```yaml
+credentials:
+  discord: "DISCORD_API_TOKEN"
+  github: "GITHUB_API_TOKEN"
+  wolframalpha: "WOLFRAMALPHA_API_TOKEN"
+```
 * Get acess to google via `client_secret.json`
 
 #### Automatic
@@ -27,7 +32,7 @@ source .env/bin/activate
 
 * Install all dependencies
 ```bash
-pip install -r requirements.txt --upgrade
+pip install -r requirements.txt
 ```
 
 <details><summary>Update dependencies</summary>
@@ -44,14 +49,6 @@ pip3 freeze > requirements.txt
 python bot.py
 ```
 * follow the instructions on screen to activate the access to google calendar
-
-## Built With
-* [discord.py](https://github.com/Rapptz/discord.py) - API for discord
-* [baseconvert](https://github.com/squdle/baseconvert) - Convert numbers
-* [fuzzywuzzy](https://github.com/seatgeek/fuzzywuzzy) - Search quotes
-* [wolframalpha](https://github.com/jaraco/wolframalpha) - Python 3 wrapper for Wolfram|Alpha v2.0 API.
-* [ftfy](https://github.com/LuminosoInsight/python-ftfy) - Fixes glitches in Unicode text.
-* [deckofcards](https://deckofcardsapi.com/)
 
 ## Contribuitors
 * [João Teixeira](https://github.com/jtexeira) - [say](Extensions/manage.py)

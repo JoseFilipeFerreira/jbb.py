@@ -9,7 +9,7 @@ class Dotfiles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.repos = json.load(open(bot.DOTFILES_PATH, 'r'))
-        self.g = Github(open('auth_github').readline().rstrip())
+        self.g = Github(bot.config['credentials']['github'])
 
     @commands.command(
         name='dotfile',

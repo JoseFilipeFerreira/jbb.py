@@ -103,14 +103,11 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-auth
-WA_KEY
+config.yaml
 client_secret.json
 credentials_calendar.json
 credentials_youtube.json
 .vscode/
 LI3_IP.txt
-Tmp/*
-auth_github
 db
 media
