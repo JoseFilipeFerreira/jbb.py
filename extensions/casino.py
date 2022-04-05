@@ -71,13 +71,13 @@ class Casino(commands.Cog):
             pNumbers = [bet]
             win = amount * len(self.rOrder)
         elif bet == "odd":
-            pNumbers = list(range(1, 36, 2))
+            pNumbers = list(range(1, 37, 2))
             win = amount * 2
         elif bet == "even":
             pNumbers = list(range(2, 36, 2))
             win = amount * 2
         elif bet == "low":
-            pNumbers = list(range(1, 18))
+            pNumbers = list(range(1, 19))
             win = amount * 2
         elif bet == "high":
             pNumbers = list(range(19, 36))
