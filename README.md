@@ -13,12 +13,6 @@ credentials:
 ```
 * Get acess to google via `client_secret.json`
 
-#### Automatic
-```bash
-sh run.sh
-```
-* follow the instructions on screen to activate the access to google calendar
-
 #### Manual
 * Create a virtual env
 ```bash
@@ -34,15 +28,6 @@ source .env/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-
-<details><summary>Update dependencies</summary>
-<p>
-
-```bash
-pip3 freeze > requirements.txt
-```
-</p>
-</details>
 
 * Run the Bot
 ```
