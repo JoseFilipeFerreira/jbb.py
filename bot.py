@@ -19,7 +19,7 @@ bot = commands.Bot(
 
 bot.remove_command('help')
 
-cogs_blacklist = []
+cogs_blacklist = ['Google']
 
 def main():
     #adding to bot object directories

@@ -2,8 +2,6 @@
 Discord bot programmed in Python
 
 ## Getting Started
-### Setting up
-### Credentials
 * create a `config.yaml` with:
 ```yaml
 credentials:
@@ -11,29 +9,11 @@ credentials:
   github: "GITHUB_API_TOKEN"
   wolframalpha: "WOLFRAMALPHA_API_TOKEN"
 ```
-* Get acess to google via `client_secret.json`
+* ~~Get access to google via `client_secret.json`~~
 
-#### Manual
-* Create a virtual env
-```bash
-virtualenv .env
-```
+* ~~Get access to google calendar via `credentials_calendar.json`~~
 
-* Activate the virtual env
-```bash
-source .env/bin/activate
-```
-
-* Install all dependencies
-```bash
-pip install -r requirements.txt
-```
-
-* Run the Bot
-```
-python bot.py
-```
-* follow the instructions on screen to activate the access to google calendar
+* launch with docker
 
 ## Contribuitors
 * [João Teixeira](https://github.com/jtexeira) - [say](Extensions/manage.py)
