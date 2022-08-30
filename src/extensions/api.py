@@ -1,12 +1,12 @@
 import discord
 from discord.ext import commands
-import asyncio
 import wolframalpha
 from aiohttp import ClientSession
 from html2text import html2text
 from random import choice, randint
 from re import sub
-import urllib
+
+from aux.url import make_url
 
 
 class Api(commands.Cog):
@@ -97,20 +97,19 @@ class Api(commands.Cog):
                       description="give link for let me google that for you",
                       brief="let me google that for you")
     async def lmgtfy(self, ctx, *query):
-        await ctx.send(f"http://lmgtfy.com/?q={urllib.parse.quote(query, safe='')}")
+        await ctx.send(f"http://lmgtfy.com/?q={make_url(query)}")
 
     @commands.command(name='lmddgtfy',
                       description="give link for let me duck duck go that for you",
                       brief="let me duck duck go that for you")
     async def lmddgtfy(self, ctx, *query):
-        await ctx.send(f"http://lmddgtfy.net/?q={urllib.parse.quote(query, safe='')}")
-
+        await ctx.send(f"http://lmddgtfy.net/?q={make_url(query)}")
 
     @commands.command(name='urban',
                       description="Get a urban defenition of a query",
                       brief="search urban")
-    async def urban(self, ctx, * query : str):
-        url = f"http://api.urbandictionary.com/v0/define?term={urllib.parse.quote(query, safe='')}"
+    async def urban(self, ctx, *query: str):
+        url = f"http://api.urbandictionary.com/v0/define?term={make_url(query)}"
         result, error = await get_json(url)
         if error:
             await ctx.send(error)
@@ -148,17 +147,17 @@ class Api(commands.Cog):
 
     @commands.command(name='hoogle',
                       brief="search hoogle")
-    async def hoogle(self, ctx, * query : str):
+    async def hoogle(self, ctx, *query: str):
         """Searches Hoggle and returns first two options
         Click title to see full search"""
-        url = f"https://hoogle.haskell.org?mode=json&hoogle={urllib.parse.quote(query, safe='')}&start=1&count=1"
+        url = f"https://hoogle.haskell.org?mode=json&hoogle={make_url(query)}&start=1&count=1"
         result, error = await get_json(url)
         if error:
             await ctx.send(error)
             return
         embed = discord.Embed(
             title=f"Definition of {' '.join(query)}",
-            url=f"https://hoogle.haskell.org/?hoogle={urllib.parse.quote(query, safe='')}",
+            url=f"https://hoogle.haskell.org/?hoogle={make_url(query)}",
             color=self.bot.embed_color)
         embed.set_thumbnail(
             url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Lambda-letter-lowercase-symbol-Garamond.svg/1200px-Lambda-letter-lowercase-symbol-Garamond.svg.png")
@@ -177,6 +176,7 @@ class Api(commands.Cog):
                     inline=False)
             embed.set_footer(text="first option in Hoogle (Click title for more)")
         await ctx.send(embed=embed)
+
 
 async def get_json(url):
     try:
