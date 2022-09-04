@@ -23,19 +23,19 @@ class Help(commands.Cog):
                       description="list all available musics",
                       brief="all available musics")
     async def helpPlay(self, ctx):
-        await MenuGenerateEmbed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
+        await menu_generate_embed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
 
     @commands.command(name='helpImage',
                       description="list all available Images",
                       brief="all available Images")
     async def helpImage(self, ctx):
-        await MenuGenerateEmbed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
+        await menu_generate_embed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
 
     @commands.command(name='helpGif',
                       description="list all available gifs",
                       brief="all available gifs")
     async def helpGif(self, ctx):
-        await MenuGenerateEmbed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
+        await menu_generate_embed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
 
 def setup(bot):
     bot.add_cog(Help(bot))
@@ -120,17 +120,17 @@ async def help_command(self, ctx, command_or_cog):
 
     await ctx.send(embed=embed)
 
-async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
+async def menu_generate_embed(self, ctx, media_list, title, section):
 #generate a embed for a menu
     embed=discord.Embed(
         title=title,
         description=" ",
         color=self.bot.embed_color
     )
-    musicArray = []
-    for music in thingMap:
-        musicArray.append(music)
-    musicArray.sort()
-    embed.add_field(name=section, value='\n'.join(musicArray), inline=True)
+    lines_array = []
+    for line in media_list:
+        lines_array.append(line)
+    lines_array.sort()
+    embed.add_field(name=section, value='\n'.join(lines_array), inline=True)
     await ctx.message.author.send(embed=embed)
     await ctx.message.delete()

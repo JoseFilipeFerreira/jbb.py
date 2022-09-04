@@ -20,17 +20,17 @@ class Quotes(commands.Cog):
                       brief="quote from Students")
     async def quoteA(self, ctx, args = None):
         """random quote from Students"""
-        l = get_random_line(self.quotes_dict, 'quoteA')
+        line = get_random_line(self.quotes_dict, 'quoteA')
         if args:
-            u = []
+            candidates = []
             if args.lower() == "me":
-                for q in self.quotes_dict['quoteA']:
-                    if q['id'] == ctx.message.author.id:
-                        u.append(q)
-                if len(u) == 0:
+                for quote in self.quotes_dict['quoteA']:
+                    if quote['id'] == ctx.message.author.id:
+                        candidates.append(quote)
+                if len(candidates) == 0:
                     await ctx.send("You don't have a quote")
                     return
-                l = choice(u)
+                line = choice(candidates)
 
             elif args.lower() == "nos":
                 last_users = set(())
@@ -38,18 +38,18 @@ class Quotes(commands.Cog):
                     last_users.add(msg.author.id)
                     if len(last_users) == 10:
                         break
-                while len(u) == 0 or len(last_users) != 0:
+                while len(candidates) == 0 or len(last_users) != 0:
                     chosen_user = choice(tuple(last_users))
                     last_users.discard(chosen_user)
-                    for q in self.quotes_dict['quoteA']:
-                        if q['id'] == chosen_user:
-                            u.append(q)
-                if len(u) == 0:
+                    for quote in self.quotes_dict['quoteA']:
+                        if quote['id'] == chosen_user:
+                            candidates.append(quote)
+                if len(candidates) == 0:
                     await ctx.send("No quote can be found")
                     return
-                l = choice(u)
+                line = choice(candidates)
 
-        s = f'{l["content"]} - {l["name"]}'
+        s = f'{line["content"]} - {line["name"]}'
         if "<@!" in s:
             message_sent = await ctx.send(discord.utils.escape_mentions(s))
             await message_sent.edit(s)
@@ -79,16 +79,16 @@ class Quotes(commands.Cog):
                       brief="number of student quotes")
     async def nquoteA(self, ctx, args=None):
         if args and args.lower() =="me":
-            u = 0
+            total = 0
             for q in self.quotes_dict['quoteA']:
                 if q['id'] == ctx.message.author.id:
-                    u += 1
-            if u == 0:
+                    total += 1
+            if total == 0:
                 await ctx.send("You don't have a quote")
             else:
-                await ctx.send(f"You have {u} quotes")
+                await ctx.send(f"You have {total} quotes")
         else:
-            await ctx.send('Existem ' + get_number_lines(self.quotes_dict, 'quoteA') + ' quotes de alunos')
+            await ctx.send(f"Existem {get_number_lines(self.quotes_dict, 'quoteA')} quotes de alunos")
 
     @commands.command(name='quoteRank',
                       description="Ranking of student quotes",
