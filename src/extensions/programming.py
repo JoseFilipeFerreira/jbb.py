@@ -159,4 +159,3 @@ def swap_pivot (matrix, pos):
 
 def setup(bot):
     bot.add_cog(Programming(bot))
-

@@ -50,4 +50,3 @@ def get_NSFW(ctx):
                 if channel.name != "test-in-prod":
                     listChannels.append(channel.mention)
     return ' '.join(listChannels)
-

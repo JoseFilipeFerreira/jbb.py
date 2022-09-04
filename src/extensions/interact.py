@@ -157,4 +157,3 @@ async def send_msg(ctx, no_user, several_user, self_user, correct_message):
         await ctx.send(correct_message.format(
             ctx.message.mentions[0].mention,
             ctx.message.author.mention))
-
