@@ -10,9 +10,9 @@ def round_down(num, divisor):
 #round down a num to the nearest multiple of a divisor
     return num - (num%divisor)
 
-def RepresentsInt(s):
-    try: 
-        int(s)
+def represents_int(string):
+    try:
+        int(string)
         return True
     except ValueError:
         return False

@@ -4,10 +4,10 @@ import subprocess
 from PIL import Image, ImageFont, ImageDraw
 
 class Memegenerator(commands.Cog):
-    """Generate dank memes"""    
+    """Generate dank memes"""
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(name='meme',
                       description="creates a meme with given arguments",
                       brief="create a meme")
@@ -24,11 +24,11 @@ class Memegenerator(commands.Cog):
         else:
             top = text[0]
             bottom = text[1]
-        
+
         if image in self.bot.imagesMap:
             img = Image.open(self.bot.IMAGES_PATH + self.bot.imagesMap[image])
             draw = ImageDraw.Draw(img)
-        
+
             fontTop, w1, _ = getFittingFont(img, self.bot.IMPACT_PATH, top)
             fontBottom, w2, h2 = getFittingFont(img, self.bot.IMPACT_PATH, bottom)
 
@@ -36,7 +36,7 @@ class Memegenerator(commands.Cog):
             drawTextWithOutline(draw, fontBottom, bottom, img.width/2 - w2/2, img.height-h2-7)
 
             img.save(self.bot.TMP_PATH + "memegenerator.png")
-    
+
             await ctx.message.delete()
             await ctx.send(
                 'by {}'.format(ctx.message.author.mention),

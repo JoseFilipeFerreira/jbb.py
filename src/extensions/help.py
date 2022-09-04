@@ -1,11 +1,8 @@
 import discord
 from discord.ext import commands
-import json
-import subprocess
-import time
 
 class Help(commands.Cog):
-    """Help command"""    
+    """Help command"""
     def __init__(self, bot):
         self.bot = bot
 
@@ -21,24 +18,24 @@ class Help(commands.Cog):
             await help_command(self, ctx, command_or_cog)
         else:
             await ctx.send("Command or cog not found")
-    
+
     @commands.command(name='helpPlay',
                       description="list all available musics",
                       brief="all available musics")
     async def helpPlay(self, ctx):
-        await MenuGenerateEmbed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
+        await menu_generate_embed(self, ctx, self.bot.musicMap,"Music", "available music in jukebox:")
 
     @commands.command(name='helpImage',
                       description="list all available Images",
                       brief="all available Images")
     async def helpImage(self, ctx):
-        await MenuGenerateEmbed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
+        await menu_generate_embed(self, ctx, self.bot.imagesMap,"Image", "available memes and photos:")
 
     @commands.command(name='helpGif',
                       description="list all available gifs",
                       brief="all available gifs")
     async def helpGif(self, ctx):
-        await MenuGenerateEmbed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
+        await menu_generate_embed(self, ctx, self.bot.gifsMap,"Gif", "available Gif/Jif:")
 
 def setup(bot):
     bot.add_cog(Help(bot))
@@ -49,16 +46,16 @@ async def help_all(self, ctx):
 
     string_cogs = ""
     for cog in cogs.keys():
-       string_cogs += "**{0}**\n".format(cog)
+        string_cogs += "**{0}**\n".format(cog)
 
     embed = discord.Embed(
         title="List of all available cogs:",
         description=string_cogs,
         color=self.bot.embed_color)
-    
+
     embed.set_footer(
         text=f"{self.bot.command_prefix}help [cog] para saberes mais sobre alguma cog")
-    
+
     await ctx.send(embed=embed)
 
 async def help_cog(self, ctx, command_or_cog):
@@ -82,10 +79,10 @@ async def help_cog(self, ctx, command_or_cog):
         name="Commands in Cog:",
         value=string_commands,
         inline=False)
-            
+
     embed.set_footer(
         text=f"{self.bot.command_prefix}help [comando] para saberes mais sobre algum comando")
-            
+
     await ctx.send(embed=embed)
 
 async def help_command(self, ctx, command_or_cog):
@@ -103,18 +100,18 @@ async def help_command(self, ctx, command_or_cog):
 
     embed.add_field(
         name="DESCRIPTION",
-        value=command.help if command.help != None else command.description,
+        value=command.help if command.help is not None else command.description,
         inline=False)
-            
+
     synopse = self.bot.command_prefix + command.name
     for param in command.clean_params.keys():
         synopse = synopse + " [" + param + "]"
-            
+
     embed.add_field(
         name="SYNOPSE",
         value="`" + synopse + "`",
         inline=False)
-            
+
     if len(command.aliases) > 0:
         embed.add_field(
             name="ALIASES",
@@ -123,17 +120,17 @@ async def help_command(self, ctx, command_or_cog):
 
     await ctx.send(embed=embed)
 
-async def MenuGenerateEmbed(self, ctx, thingMap, title, section):
+async def menu_generate_embed(self, ctx, media_list, title, section):
 #generate a embed for a menu
     embed=discord.Embed(
         title=title,
         description=" ",
         color=self.bot.embed_color
     )
-    musicArray = []
-    for music in thingMap:
-        musicArray.append(music)
-    musicArray.sort()
-    embed.add_field(name=section, value='\n'.join(musicArray), inline=True)
+    lines_array = []
+    for line in media_list:
+        lines_array.append(line)
+    lines_array.sort()
+    embed.add_field(name=section, value='\n'.join(lines_array), inline=True)
     await ctx.message.author.send(embed=embed)
     await ctx.message.delete()

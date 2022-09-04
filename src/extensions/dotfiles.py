@@ -1,15 +1,15 @@
-import discord
+import json
 from discord.ext import commands
 from github import Github
-import json
 
 class Dotfiles(commands.Cog):
     """Server member's dotfiles"""
 
     def __init__(self, bot):
         self.bot = bot
-        self.repos = json.load(open(bot.DOTFILES_PATH, 'r'))
-        self.g = Github(bot.config['credentials']['github'])
+        with open(bot.DOTFILES_PATH, 'r') as file:
+            self.repos = json.load(file)
+        self.github = Github(bot.config['credentials']['github'])
 
     @commands.command(
         name='dotfile',
@@ -37,7 +37,7 @@ class Dotfiles(commands.Cog):
             await ctx.send(self.repos[owner])
 
         else:
-            repo = self.g.get_repo(self.repos[owner].replace('https://github.com/', ''))
+            repo = self.github.get_repo(self.repos[owner].replace('https://github.com/', ''))
             contents = repo.get_contents("")
             searched_repo = None
 
@@ -66,7 +66,7 @@ class Dotfiles(commands.Cog):
             await ctx.send(site)
             return
 
-        repo = self.g.get_repo(repo)
+        repo = self.github.get_repo(repo)
         contents = repo.get_contents("")
 
         searched_repo = None

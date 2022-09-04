@@ -22,7 +22,7 @@ service = build('calendar', 'v3', http=creds.authorize(Http()))
 
 class Google(commands.Cog):
     """Google Apis"""
-    
+
     def __init__(self, bot):
         self.bot = bot
         self.menus = {
@@ -47,7 +47,7 @@ class Google(commands.Cog):
         else:
             await ctx.send("Menu Inválido")
             return
-        
+
         now = datetime.datetime.utcnow().isoformat() + 'Z'
         events_result = service.events().list(
             calendarId = get_calendar_ids()[calendar_name],
@@ -82,7 +82,7 @@ class Google(commands.Cog):
         embed.set_thumbnail(url = "http://logonoid.com/images/google-translate-logo.png")
         embed.add_field(
             name="Detected Language:",
-            value="{0}({1}%)".format(detector.lang, round(detector.confidence*100)),
+            value=f"{detector.lang}({round(detector.confidence*100)}%)",
             inline=False)
         embed.add_field(
             name="Translation:",
@@ -101,7 +101,7 @@ def get_calendar_ids():
             if '@group.calendar.google.com' in calendar_list_entry['id']:
                 key = calendar_list_entry['summary']
                 if 'summaryOverride' in calendar_list_entry:
-                   key = calendar_list_entry['summaryOverride']
+                    key = calendar_list_entry['summaryOverride']
                 calendar_ids[key] = calendar_list_entry['id']
         page_token = calendar_list.get('nextPageToken')
         if not page_token:

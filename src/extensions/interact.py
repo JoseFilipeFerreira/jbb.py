@@ -1,14 +1,11 @@
-import discord
 from discord.ext import commands
-import json
-import subprocess
 from random import randint
 
 class Interact(commands.Cog):
-    """Interact with other users while pinging them"""    
+    """Interact with other users while pinging them"""
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(name='hug',
                       description="hug somenone you love",
                       brief="hug somenone you love")
@@ -42,7 +39,7 @@ class Interact(commands.Cog):
             "Calm down! I advise you to first punch the worst one!",
             "You can punch yourself! But first you should get some help.",
             "(*＇Д＇)ﾉｼ)ﾟﾛﾟ ) {0} was punched by {1}.")
-    
+
     @commands.command(name='whip',
                       description="whip the sinner",
                       brief="whip the sinner")
@@ -157,4 +154,3 @@ async def send_msg(ctx, no_user, several_user, self_user, correct_message):
         await ctx.send(correct_message.format(
             ctx.message.mentions[0].mention,
             ctx.message.author.mention))
-
