@@ -55,7 +55,7 @@ class Quotes(commands.Cog):
             await message_sent.edit(s)
         else:
             await ctx.send(s)
-    
+
     @commands.command(name='quoteP',
                       description="random quote from Teachers",
                       brief="quote from Teachers")
@@ -122,7 +122,7 @@ class Quotes(commands.Cog):
                       brief="number of JBB quotes")
     async def nquote(self, ctx):
         await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
-    
+
     @commands.command(name='nquoteP',
                       description="number of teachers quotes",
                       brief="number of teachers quotes")
@@ -176,20 +176,20 @@ class Quotes(commands.Cog):
                 await ctx.send("Invalid Messages IDs")
                 return
             content = "\n".join(list(map(lambda x: x.content,msgArr)))
-            
+
             name = msgArr[0].author.display_name
             self.quotes_dict[cat].append({
                 "content": content,
                 "name": name,
                 "id": msgArr[0].author.id})
-            newQ = "{} - {}".format(content, name) 
+            newQ = "{} - {}".format(content, name)
         else:
             self.quotes_dict[cat].append(msgs)
-            newQ = msgs 
+            newQ = msgs
 
         updateQuotes(self)
         await ctx.send('quote "'+ newQ +'" added to `'+ cat +'`')
-    
+
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",
                       brief="remove a quote",
@@ -213,14 +213,14 @@ class Quotes(commands.Cog):
             lambda x: "{} - {}".format(x["content"], x["name"]),
             self.quotes_dict['quoteA']))
         quote = self.quotes_dict['quote']
-        fact = self.quotes_dict['fact'] 
+        fact = self.quotes_dict['fact']
         candidates = quoteA + quote + fact
         shuffle(candidates)
-        
+
         result = process.extract(search, candidates, limit=1)
 
         s = result[0][0]
-        
+
         if "<@!" in s:
             message_sent = await ctx.send(discord.utils.escape_mentions(s))
             await message_sent.edit(s)

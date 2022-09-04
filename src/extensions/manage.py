@@ -6,10 +6,10 @@ import subprocess
 import time
 
 class Manage(commands.Cog):
-    """Manage the server"""    
+    """Manage the server"""
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(name='update',
                       description="update the code from github and reboot [OWNER ONLY]",
                       brief="update the bot")
@@ -17,7 +17,7 @@ class Manage(commands.Cog):
     async def update(self, ctx):
         await self.bot.change_presence(activity=discord.Game(name='rebooting'))
         await self.bot.logout()
-    
+
     @commands.command(name='eval',
                       description="run random python code [OWNER ONLY]",
                       brief="built in eval")
@@ -163,7 +163,7 @@ class Manage(commands.Cog):
                 value=gaming,
                 inline=True)
         await ctx.send(embed=embed)
-        
+
     @commands.command(name='say',
                       description="bot sends query and deletes trigger message",
                       brief="bot sends query")
@@ -193,7 +193,7 @@ class Manage(commands.Cog):
             elif args.lower() == "info":
                 cooldown_users = ",".join(list(map(lambda x: ctx.guild.get_member(int(x)).display_name, self.bot.slow_users['users'].keys())))
                 await ctx.send("Cooldown time: {} minutes\nCooldown users: {}".format(self.bot.slow_users['time'], cooldown_users))
-                
+
             with open(self.bot.SLOWMODE_PATH, 'w', encoding='utf8') as file:
                 json.dump(self.bot.slow_users, file, indent=4)
 

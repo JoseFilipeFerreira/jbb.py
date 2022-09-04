@@ -170,4 +170,3 @@ def get_empty_stats():
                     "simbol": "👤"}}}
     stat["bet"] = False
     return stat
-

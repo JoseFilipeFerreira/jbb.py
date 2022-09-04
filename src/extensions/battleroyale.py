@@ -47,7 +47,7 @@ class Battle():
             self.time -= 1
         elif now.minute > 0:
             self.time -= 0.5
-    
+
     def initialReport(self):
         embed = discord.Embed(
             title = 'Battle Royale no DI',
@@ -100,31 +100,31 @@ class Battle():
                 p1 = choice(tuple(self.alive))
                 self.alive.remove(p1)
                 self.dead.add(p1)
-    
+
                 p2 = choice(tuple(self.alive))
                 p2.add_Kill()
-    
+
                 figthResult = match["description"].format(p1.get_name(), p2.get_name())
-    
+
             elif match["action"] == 1: #die
                 p1 = choice(tuple(self.alive))
                 self.alive.remove(p1)
                 self.dead.add(p1)
-    
+
                 figthResult = match["description"].format(p1.get_name())
 
             elif match["action"] == 2: #event
                 p1 = choice(tuple(self.alive))
                 figthResult = match["description"].format(p1.get_name())
-    
+
             elif match["action"] == 3: #meet
                 p1 = choice(tuple(self.alive))
                 p2 = choice(tuple(self.alive))
-    
+
                 figthResult = match["description"].format(p1.get_name(), p2.get_name())
             self.time -= match["time"]
             figthTrailer.append("**" + self.displayTime() + "** " + figthResult)
-    
+
         return figthTrailer
 
     def displayTime(self):
@@ -154,7 +154,7 @@ class BattleRoyale(commands.Cog):
         self.bot = bot
         self.listAction = ["kill", "die", "event", "meet"]
         self.listReactions = json.load(open(bot.BATTLEROYALE_PATH, 'r'))
-        
+
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]\n\nWinner gets 100 coins.",
                       brief="server wide battle royale",
@@ -189,7 +189,7 @@ class BattleRoyale(commands.Cog):
 
         self.bot.stats.give_cash(br.get_winner().get_id(), 10)
         br.updateStats(self.bot.stats)
-    
+
     @commands.command(name='battleroyale',
                       description="create server battle royale",
                       brief="server battle royale",
@@ -217,7 +217,7 @@ class BattleRoyale(commands.Cog):
             await ctx.send(embed=embed)
 
         br.updateStats(self.bot.stats)
-    
+
     @commands.command(name='battleroyaleKDR',
                       description="battleroyale Kill/Death Ratio",
                       brief="battleroyale Kill/Death Ratio",
@@ -245,7 +245,7 @@ class BattleRoyale(commands.Cog):
                 "kills": k,
                 "death": d}
             arrayKDR.append(kdr)
-        
+
         def compare(kdr):
             if kdr["death"] == 0:
                 return 0
@@ -265,7 +265,7 @@ class BattleRoyale(commands.Cog):
                 name=f"{i+1}. {member.display_name}",
                 value=f"KDR: {win['kills']}/{win['death']}",
                 inline=False)
-            
+
         embed.set_thumbnail(
             url="https://mbtskoudsalg.com/images/pubg-lvl-3-helmet-png-7.png")
 
@@ -291,7 +291,7 @@ class BattleRoyale(commands.Cog):
         if not description:
             await ctx.send('Invalid description')
             return
-        
+
         if action not in self.listAction:
             await ctx.send('Invalid action')
             return
@@ -306,7 +306,7 @@ class BattleRoyale(commands.Cog):
             "description":description}
         self.listReactions.append(event)
         updateListActions(self)
-        await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))  
+        await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))
 
     @commands.command(name='deleteBattleroyale',
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
@@ -321,7 +321,7 @@ class BattleRoyale(commands.Cog):
                 .format(
                     deleted["action"],
                     deleted["time"],
-                    deleted["description"]))  
+                    deleted["description"]))
 
 
 async def sendChallenge(self, ctx):

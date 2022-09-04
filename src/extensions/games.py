@@ -5,10 +5,10 @@ import aiohttp
 from random import randint, choice
 
 class Games(commands.Cog):
-    """Play games with your friends"""    
+    """Play games with your friends"""
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(name='flip',
                       description="flip a coin",
                       brief="flip a coin")
@@ -17,9 +17,9 @@ class Games(commands.Cog):
         line = 'WTF the coin landed upright!'
         if(n<5000): line = 'You got tails'
         elif(n<10000): line = 'You got heads'
-    
+
         await ctx.send(line)
-    
+
     @commands.command(name='pick',
                       description="pick a random card from a deck",
                       brief="pick a card")
@@ -33,8 +33,8 @@ class Games(commands.Cog):
             embed.set_image(url=result["cards"][0]["image"])
             await ctx.send(embed =embed)
         except:
-            await self.bot.say("Something unexpected went wrong.")   
-    
+            await self.bot.say("Something unexpected went wrong.")
+
     @commands.command(name='rps',
                       description="play rock paper scissors against the bot",
                       brief="play rock paper scissors")
@@ -51,14 +51,14 @@ class Games(commands.Cog):
             await ctx.send('You played ' + player + '\n' + appInfo.name + ' played ' + cpu + '\n' + result)
         else:
             await ctx.send('*Invalid*')
-    
+
     @commands.command(name='choose',
                       description="choose from the query",
                       brief="choose from the query")
     async def choose(self, ctx, *choices : str):
         if all(('@' not in choice) for choice in choices):
             await ctx.send(choice(choices))
-    
+
     @commands.command(name='magicball',
                       description="gives answer from very likely to impossible",
                       brief="like a 8ball")
@@ -93,7 +93,7 @@ def simpRPS(hand):
     if (hand == "s"):
         hand = "scissors"
     return hand
-    
+
 
 def setup(bot):
     bot.add_cog(Games(bot))
