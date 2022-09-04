@@ -1,6 +1,6 @@
-import discord
-import json
 import time
+import json
+import discord
 from aux.misc import hours_passed
 
 class Gear:
@@ -22,8 +22,8 @@ class Gear:
 class Stats:
     def __init__(self, directory):
         self.PATH = directory
-        with open(self.PATH, 'r') as f:
-            j = json.load(f)
+        with open(self.PATH, 'r') as file:
+            j = json.load(file)
             #Keys convert to string when writing to json
             self.stats = {int(key): value for key, value in j["stats"].items()}
             self.last_giveaway = j["last_giveaway"]
@@ -60,11 +60,11 @@ class Stats:
             inv["gear"][gear.get_type()] = gear.to_dict()
 
     def get_cash(self, id):
-        return self.get_stat(id)["cash"] 
+        return self.get_stat(id)["cash"]
 
     def enough_cash(self, id, amount):
-        return (self.get_cash(id) >= amount)
-    
+        return self.get_cash(id) >= amount
+
     def spend_cash(self, id, amount):
         if self.enough_cash(id, amount):
             self.give_cash(id, (-1) * amount)
@@ -73,7 +73,7 @@ class Stats:
 
     def give_cash(self, id, amount):
         self.get_stat(id)["cash"] += amount
-    
+
     def get_bet(self, id):
         return self.get_stat(id)["bet"]
 
@@ -92,7 +92,7 @@ class Stats:
 
     def daily_giveaway(self, amount):
         if hours_passed(self.last_giveaway, time.time()) > 24:
-            self.last_giveaway += 24*60*60 
+            self.last_giveaway += 24*60*60
             given = 0
             for id in self.get_all_users():
                 if self.get_bet(id):
@@ -108,35 +108,35 @@ class Stats:
                 title = f"Inventory of {name}",
                 color=embed_colour)
         embed.set_thumbnail(
-                url="https://cdn4.iconfinder.com/data/icons/video-game-items-concepts/128/inventory-bag-2-512.png")
-    
+            url="https://cdn4.iconfinder.com/data/icons/video-game-items-concepts/128/inventory-bag-2-512.png")
+
         embed.add_field(
             name="⚔ weapon",
             value="{1} {2}\ndamage: {0}".format(
                 inv["gear"]["weapon"]["stats"],
                 inv["gear"]["weapon"]["simbol"],
                 inv["gear"]["weapon"]["name"]))
-    
+
         embed.add_field(
             name="⚓armor",
             value="{1} {2}\nprotection: {0}".format(
                 inv["gear"]["armor"]["stats"],
                 inv["gear"]["armor"]["simbol"],
                 inv["gear"]["armor"]["name"]))
-    
+
         embed.add_field(
             name="🛡shield",
             value="{1} {2}\nblock: {0}".format(
                 inv["gear"]["shield"]["stats"],
                 inv["gear"]["shield"]["simbol"],
                 inv["gear"]["shield"]["name"]))
-    
+
         embed.add_field(
             name="💰Cash",
             value=self.get_cash(id))
-    
+
         embed.set_footer(text = "Inventory")
-    
+
         return embed
 
     def save_stats(self):
@@ -145,7 +145,7 @@ class Stats:
             json.dump(
                 {"last_giveaway":self.last_giveaway, "stats": self.stats}
                , file, indent=4)
-    
+
 
 def get_empty_stats():
     stat = {}

@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 import asyncio
 import time
-from aux.misc import RepresentsInt, hours_passed 
+from aux.misc import represents_int, hours_passed
 from aux.stats import Stats
-from aux.message import userInputTrueFalse
+from aux.message import user_input_bool
 from PIL import Image, ImageDraw
 from random import randint
 
@@ -22,14 +22,14 @@ class Casino(commands.Cog):
         id = ctx.message.author.id
         if hours_passed(self.bot.stats.get_last_beg(id), time.time()) > 24:
             self.bot.stats.set_last_beg(id, time.time())
-            
+
             if randint(0, 100) == 1:
                 await ctx.send("Feeling a bit generous today. Have 100 coins.")
                 self.bot.stats.give_cash(id, 100)
             else:
                 await ctx.send("Have 1 coin.")
                 self.bot.stats.give_cash(id, 1)
-                
+
         else:
             await ctx.send("No coin for you.")
 
@@ -51,19 +51,19 @@ class Casino(commands.Cog):
         if amount <= 0:
             await ctx.send("Invalid amount")
             return
-        
+
         if not self.bot.stats.enough_cash(ctx.message.author.id, amount):
             await ctx.send("Not enough cash to bet")
             return
 
-        if bet not in ["red", "black","green", "odd", "even", "high", "low"] and (not RepresentsInt(bet)):
+        if bet not in ["red", "black","green", "odd", "even", "high", "low"] and (not represents_int(bet)):
             await ctx.send("Invalid bet")
             return
-        
+
         pNumbers = []
         win = 0
 
-        if RepresentsInt(bet):
+        if represents_int(bet):
             bet = int(bet)
             if bet < 0 or bet > 36:
                 await ctx.send("Invalid position")
@@ -91,16 +91,16 @@ class Casino(commands.Cog):
         elif bet == "green":
             pNumbers = [0]
             win = amount * len(self.rOrder)
-        
+
         msg = await ctx.send(
             f"**GAMBLE**\nBet {amount} points in a roulete spin.\nWin {win} if correct.")
-    
+
         self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
-        if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
+        if not await user_input_bool(self.bot, ctx.message.author, msg):
             self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
-        
+
         pos = randint(0, len(self.rOrder) - 1)
 
         rImage = Image.open(self.bot.GAMES_PATH + "roulette.png")
@@ -161,7 +161,7 @@ class Casino(commands.Cog):
 
             self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
-            if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
+            if not await user_input_bool(self.bot, ctx.message.author, msg):
                 self.bot.stats.give_cash(ctx.message.author.id, amount)
                 return
 
@@ -175,7 +175,7 @@ class Casino(commands.Cog):
 
         self.bot.stats.set_bet(ctx.message.author.id, True)
         self.bot.stats.save_stats()
-    
+
     @commands.command(name='slot',
                       description="play on a slot machine",
                       brief="slot machine")
@@ -188,18 +188,18 @@ class Casino(commands.Cog):
         if amount <= 0:
             await ctx.send("Invalid bet")
             return
-        
+
         if not self.bot.stats.enough_cash(ctx.message.author.id, amount):
                 await ctx.send("Not enough cash to bet")
                 return
-        
+
         msg = await ctx.send(
                 "**GAMBLE**\nBet {0} points in the slot machine.\nWin up to {1}.".format(
                     amount, amount * 30))
 
         self.bot.stats.spend_cash(ctx.message.author.id, amount)
 
-        if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
+        if not await user_input_bool(self.bot, ctx.message.author, msg):
             self.bot.stats.give_cash(ctx.message.author.id, amount)
             return
 
@@ -213,7 +213,7 @@ class Casino(commands.Cog):
         if (w1 - w2) == (w2 - w3) and (w1 - w2) in [-1,0,1]:
             prize = amount * 30
             slot = "**YOU WON**\n"
-        
+
         elif (w1 - w2) == 0 or (w2 - w3) == 0 or (w1 - w3) == 0:
             prize = amount * 10
             slot = "**YOU WON**\n"
@@ -228,7 +228,7 @@ class Casino(commands.Cog):
             wheels_array[w1],
             wheels_array[w2],
             wheels_array[w3])
-        
+
         slot += "------------------\n"
         slot += " {0} | {1} | {2}\n\n".format(
             get_next_slot(wheels_array, w1),
@@ -241,7 +241,7 @@ class Casino(commands.Cog):
         else:
             slot += f"You won {prize} 🎉"
             self.bot.stats.give_cash(ctx.message.author.id, prize)
-        
+
         await ctx.send(slot)
         self.bot.stats.set_bet(ctx.message.author.id, True)
         self.bot.stats.save_stats()

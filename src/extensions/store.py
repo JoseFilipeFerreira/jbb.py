@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import json
-from aux.message import userInputTrueFalse
+from aux.message import user_input_bool
 from aux.stats import Stats, Gear
 
 class Store(commands.Cog):
@@ -20,7 +20,7 @@ class Store(commands.Cog):
             title = 'Economy no DI',
             color=self.bot.embed_color)
         embed.set_thumbnail(
-            url="http://pixelartmaker.com/art/89daa821cd53576.png") 
+            url="http://pixelartmaker.com/art/89daa821cd53576.png")
 
         money = []
         for id in self.bot.stats.get_all_users():
@@ -88,21 +88,21 @@ async def store_interact(self, ctx, store, tool):
         value="cost: {0}\nstat: {1}".format(
             prod_dic["cost"],
             prod_dic["stats"]))
-    
+
     embed.add_field(
         name="**Replace**",
         value="{0} {1}\nstat: {2}".format(
             gear[store]["simbol"],
             gear[store]["name"],
-            gear[store]["stats"])) 
+            gear[store]["stats"]))
 
     embed.set_footer(
         text="select to buy")
 
     self.bot.stats.spend_cash(ctx.message.author.id, price)
-    
+
     msg = await ctx.send(embed=embed)
-    if not await userInputTrueFalse(self.bot, ctx.message.author, msg):
+    if not await user_input_bool(self.bot, ctx.message.author, msg):
         self.bot.stats.give_cash(ctx.message.author.id, price)
         return
 
@@ -132,7 +132,7 @@ async def market_stalls(self, ctx):
                 self.iventory[store]["simbol"],
                 store),
             value=self.iventory[store]["description"])
-    
+
     embed.set_footer(text="{0}market [store] to see one store".format(self.bot.command_prefix))
 
     await ctx.send(embed=embed)
@@ -145,7 +145,7 @@ async def stall(self, ctx, store):
             embed,
             self.iventory[store]["stats"],
             self.iventory[store]["contents"])
-        
+
         embed.set_footer(
             text="{0}market {1} [tool] to buy from store".format(self.bot.command_prefix, store))
     else:
@@ -157,7 +157,7 @@ async def stall(self, ctx, store):
 def store_items(embed, stat, items):
     items.sort(key=lambda i: i["stats"])
 
-    for item in items:    
+    for item in items:
         embed.add_field(
             name="{0}{1}".format(
                 item["simbol"],

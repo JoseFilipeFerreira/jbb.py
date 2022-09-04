@@ -1,13 +1,12 @@
-import discord
 import asyncio
 
-async def userInputTrueFalse(bot, author, msg):
+async def user_input_bool(bot, author, msg):
     await msg.add_reaction('\U0000274C')
     await msg.add_reaction('\U00002705')
 
     def check(reaction, user):
-        return user == author and str(reaction.emoji) in ['\U00002705', '\U0000274C']  
-    
+        return user == author and str(reaction.emoji) in ['\U00002705', '\U0000274C']
+
     try:
         reaction, _ = await bot.wait_for(
                 'reaction_add',
