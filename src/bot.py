@@ -1,14 +1,13 @@
-import discord
-import time
-from discord.ext import commands
-import asyncio
-import json
-import traceback
 from datetime import datetime
 from os import path, listdir
+import json
+import time
+import traceback
+import yaml
+import discord
+from discord.ext import commands
 from aux.stats import Stats
 from aux.misc import minutes_passed
-import yaml
 
 intents = discord.Intents.all()
 
@@ -38,23 +37,25 @@ def main():
     bot.IP_PATH='./ip.txt'
     bot.DOTFILES_PATH='./db/dotfiles.json'
 
-    with open("config.yaml", "r") as f:
-        bot.config = yaml.safe_load(f)
+    with open("config.yaml", "r") as file:
+        bot.config = yaml.safe_load(file)
 
     #load media
     bot.mediaMap = {}
-    for f in listdir(bot.MEDIA_PATH):
-        if path.isfile(path.join(bot.MEDIA_PATH, f)):
-            filename, _ = path.splitext(f)
-            bot.mediaMap[filename.lower()] = f
+    for media_file in listdir(bot.MEDIA_PATH):
+        if path.isfile(path.join(bot.MEDIA_PATH, media_file)):
+            filename, _ = path.splitext(media_file)
+            bot.mediaMap[filename.lower()] = media_file
 
     #load stats
     bot.stats = Stats(bot.STATS_PATH)
 
-    bot.replies = json.load(open(bot.REPLIES_PATH, 'r'))
+    with open(bot.REPLIES_PATH, 'r') as file:
+        bot.replies = json.load(file)
 
     #load slowmode
-    bot.slow_users = json.load(open(bot.SLOWMODE_PATH, 'r'))
+    with open(bot.SLOWMODE_PATH, 'r') as file:
+        bot.slow_users = json.load(file)
 
     #load extensions
     extensions_loader(create_list_extensions())
@@ -70,7 +71,7 @@ async def on_ready():
 
     embed = discord.Embed(
         title="Starting up",
-        description="bot started at " + str(datetime.now()),
+        description=f"bot started at {str(datetime.now())}",
         color=bot.embed_color)
 
     embed.add_field(
@@ -92,9 +93,9 @@ async def on_ready():
         value=blacklist,
         inline=False)
 
-    appInfo = await bot.application_info()
+    app_info = await bot.application_info()
 
-    await appInfo.owner.send(embed=embed)
+    await app_info.owner.send(embed=embed)
 
     print('Logged in as:')
     print(bot.user.name)
@@ -122,7 +123,7 @@ async def on_message(message):
             with open(bot.SLOWMODE_PATH, 'w', encoding='utf8') as file:
                 json.dump(bot.slow_users, file, indent=4)
             if minutes_passed(slowed_user, time.time()) <= bot.slow_users['time']:
-                await message.author.send("You are in the JBB naughty list, this meaning that you can only call a command one every {} minutes. Be carefull, every time you try to call a command before the cooldown ends, it will start again".format(bot.slow_users['time']))
+                await message.author.send("You are in the JBB naughty list, this meaning that you can only call a command one every {bot.slow_user['time']}} minutes. Be carefull, every time you try to call a command before the cooldown ends, it will start again")
                 return
         content = message.content.lower()[1:]
         if content in bot.mediaMap:
@@ -139,9 +140,9 @@ async def on_message(message):
 @bot.event
 async def on_member_join(member):
     bot.stats.add_user(member.id)
-    nUser = len(list(filter(lambda x: not x.bot , member.guild.members)))
-    if nUser % 100 == 0:
-        await member.guild.system_channel.send(f"🎉 **CONGRATULATIONS** 🎉\nYou are the user number {nUser}\nClick here to redeem your prize -> <https://bit.ly/MIEIreward>")
+    n_users = len(list(filter(lambda x: not x.bot , member.guild.members)))
+    if n_users % 100 == 0:
+        await member.guild.system_channel.send(f"🎉 **CONGRATULATIONS** 🎉\nYou are the user number {n_users}\nClick here to redeem your prize -> <https://bit.ly/MIEIreward>")
     bot.stats.save_stats()
 
 @bot.event
@@ -150,10 +151,10 @@ async def on_member_remove(member):
     bot.stats.save_stats()
 
 def get_bot_color(bot):
-    bGuild, color = 0, 0xffff00
+    big_guild, color = 0, 0xffff00
     for guild in bot.guilds:
-        if len(guild.members) > bGuild:
-            bGuild, color = len(guild.members), guild.me.color
+        if len(guild.members) > big_guild:
+            big_guild, color = len(guild.members), guild.me.color
     return color
 
 def create_list_extensions():
@@ -181,13 +182,14 @@ def extensions_loader(extensions):
             bot.load_extension(bot.EXTENSIONS_PATH + '.' + extension)
             loaded = loaded + "\n" + extension
         except Exception as e:
-            exc = '{}: {}'.format(type(e).__name__, e)
+            exc = f'{type(e).__name__}: {e}'
             print(f'Failed to load extension: {extension}\n{exc}')
             failed = failed + "\n" + ('**{}**:{}'.format(extension, exc))
             print(traceback.format_exc())
 
     bot.extensions_list_loaded = loaded
     bot.extensions_list_failed = "No cogs failed to load"
-    if failed != "": bot.extensions_list_failed = failed
+    if failed != "":
+        bot.extensions_list_failed = failed
 
 main()

@@ -1,11 +1,10 @@
-import discord
-from discord.ext import commands
-import asyncio
-import json
 from datetime import datetime
 from random import choice
+import asyncio
+import json
+import discord
+from discord.ext import commands
 from aux.misc import round_down
-from aux.stats import Stats
 
 class InvalidNumberPlayers(Exception):
     pass
@@ -28,8 +27,8 @@ class Warrior():
         return self.kills
 
 class Battle():
-    def __init__(self, listReactions, embed_color, members):
-        self.listReactions = listReactions
+    def __init__(self, reactions, embed_color, members):
+        self.reactions = reactions
         self.embed_color = embed_color
         self.alive = set()
         self.dead = set()
@@ -48,7 +47,7 @@ class Battle():
         elif now.minute > 0:
             self.time -= 0.5
 
-    def initialReport(self):
+    def initial_report(self):
         embed = discord.Embed(
             title = 'Battle Royale no DI',
             description=f'Result of the battle\nParticipants: {len(self.alive)}',
@@ -62,7 +61,7 @@ class Battle():
         self.alive.add(winner)
         return winner
 
-    def victoryEmbed(self):
+    def victory_embed(self):
         winner = self.get_winner()
         embed = discord.Embed(
             title = 'Winner',
@@ -71,16 +70,16 @@ class Battle():
         embed.set_footer(text = f"Kills: {winner.get_kills()}")
         return embed
 
-    def allReports(self):
-        yield self.initialReport()
-        while(len(self.alive) > 1):
-            yield self.dailyReportEmbed()
+    def all_reports(self):
+        yield self.initial_report()
+        while len(self.alive) > 1:
+            yield self.daily_report_embed()
             self.time = 24
             self.day += 1
-        yield self.victoryEmbed()
+        yield self.victory_embed()
 
-    def dailyReportEmbed(self):
-        result = self.dailyReport()
+    def daily_report_embed(self):
+        result = self.daily_report()
         if not result:
             result = "Today nothing happened"
         embed = discord.Embed(
@@ -89,10 +88,10 @@ class Battle():
             color=self.embed_color)
         return embed
 
-    def dailyReport(self):
-        figthTrailer = []
-        while(len(self.alive) > 1 and self.time > 0):
-            match = choice(self.listReactions)
+    def daily_report(self):
+        figth_trailer = []
+        while len(self.alive) > 1 and self.time > 0:
+            match = choice(self.reactions)
 
             if self.time - match["time"] <= 0:
                 break
@@ -104,30 +103,30 @@ class Battle():
                 p2 = choice(tuple(self.alive))
                 p2.add_Kill()
 
-                figthResult = match["description"].format(p1.get_name(), p2.get_name())
+                figth_result = match["description"].format(p1.get_name(), p2.get_name())
 
             elif match["action"] == 1: #die
                 p1 = choice(tuple(self.alive))
                 self.alive.remove(p1)
                 self.dead.add(p1)
 
-                figthResult = match["description"].format(p1.get_name())
+                figth_result = match["description"].format(p1.get_name())
 
             elif match["action"] == 2: #event
                 p1 = choice(tuple(self.alive))
-                figthResult = match["description"].format(p1.get_name())
+                figth_result = match["description"].format(p1.get_name())
 
             elif match["action"] == 3: #meet
                 p1 = choice(tuple(self.alive))
                 p2 = choice(tuple(self.alive))
 
-                figthResult = match["description"].format(p1.get_name(), p2.get_name())
+                figth_result = match["description"].format(p1.get_name(), p2.get_name())
             self.time -= match["time"]
-            figthTrailer.append("**" + self.displayTime() + "** " + figthResult)
+            figth_trailer.append("**" + self.display_time() + "** " + figth_result)
 
-        return figthTrailer
+        return figth_trailer
 
-    def displayTime(self):
+    def display_time(self):
     #convert time in hours to midnigth to hour of day
         time = 24 - self.time
         minutes = time * 60
@@ -152,8 +151,9 @@ class BattleRoyale(commands.Cog):
     """BattleRoyale in the server"""
     def __init__(self, bot):
         self.bot = bot
-        self.listAction = ["kill", "die", "event", "meet"]
-        self.listReactions = json.load(open(bot.BATTLEROYALE_PATH, 'r'))
+        self.actions = ["kill", "die", "event", "meet"]
+        with open(bot.BATTLEROYALE_PATH, 'r') as file:
+            self.reactions = json.load(file)
 
     @commands.command(name='battleroyaleFull',
                       description="create server wide battle royale [ADMIN ONLY]\n\nWinner gets 100 coins.",
@@ -162,10 +162,10 @@ class BattleRoyale(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def battleroyaleFull(self, ctx):
         await ctx.message.delete()
-        await sendChallenge(self, ctx)
+        await send_challenge(self, ctx)
 
-        br = Battle(self.listReactions, self.bot.embed_color, ctx.message.guild.members)
-        for embed in br.allReports():
+        br = Battle(self.reactions, self.bot.embed_color, ctx.message.guild.members)
+        for embed in br.all_reports():
             await ctx.send(embed=embed)
 
         self.bot.stats.give_cash(br.get_winner().get_id(), 100)
@@ -178,13 +178,13 @@ class BattleRoyale(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def battleroyaleOnline(self, ctx):
         await ctx.message.delete()
-        await sendChallenge(self, ctx)
+        await send_challenge(self, ctx)
         wid = await ctx.message.guild.widget()
         br = Battle(
-            self.listReactions,
+            self.reactions,
             self.bot.embed_color,
             wid.members)
-        for embed in br.allReports():
+        for embed in br.all_reports():
             await ctx.send(embed=embed)
 
         self.bot.stats.give_cash(br.get_winner().get_id(), 10)
@@ -197,7 +197,7 @@ class BattleRoyale(commands.Cog):
     @commands.is_nsfw()
     async def battleroyale(self, ctx):
         await ctx.message.delete()
-        msg = await sendChallenge(self, ctx)
+        msg = await send_challenge(self, ctx)
         async with ctx.message.channel.typing():
             await asyncio.sleep(20)
 
@@ -208,12 +208,12 @@ class BattleRoyale(commands.Cog):
             members.update(await reaction.users().flatten())
 
         try:
-            br = Battle(self.listReactions, self.bot.embed_color, members)
+            br = Battle(self.reactions, self.bot.embed_color, members)
         except InvalidNumberPlayers:
             await ctx.send("Not enough players for a Battle Royale")
             return
 
-        for embed in br.allReports():
+        for embed in br.all_reports():
             await ctx.send(embed=embed)
 
         br.updateStats(self.bot.stats)
@@ -237,21 +237,21 @@ class BattleRoyale(commands.Cog):
             await ctx.send(embed=embed)
             return
 
-        arrayKDR = []
+        array_kdr = []
         for id in self.bot.stats.get_all_users():
             k, d = self.bot.get_kdr(id)
             kdr = {
                 "id": id,
                 "kills": k,
                 "death": d}
-            arrayKDR.append(kdr)
+            array_kdr.append(kdr)
 
         def compare(kdr):
             if kdr["death"] == 0:
                 return 0
             return kdr["kills"] / kdr["death"]
 
-        arrayKDR.sort(key=compare, reverse=True)
+        array_kdr.sort(key=compare, reverse=True)
 
         embed = discord.Embed(
             title = 'Battleroyale no DI',
@@ -259,7 +259,7 @@ class BattleRoyale(commands.Cog):
             color=self.bot.embed_color)
 
         for i in range(3):
-            win = arrayKDR[i]
+            win = array_kdr[i]
             member = ctx.message.guild.get_member(win["id"])
             embed.add_field(
                 name=f"{i+1}. {member.display_name}",
@@ -292,7 +292,7 @@ class BattleRoyale(commands.Cog):
             await ctx.send('Invalid description')
             return
 
-        if action not in self.listAction:
+        if action not in self.actions:
             await ctx.send('Invalid action')
             return
 
@@ -301,12 +301,13 @@ class BattleRoyale(commands.Cog):
             return
 
         event = {
-            "action":self.listAction.index(action),
+            "action":self.actions.index(action),
             "time":time,
             "description":description}
-        self.listReactions.append(event)
-        updateListActions(self)
-        await ctx.send("**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))
+        self.reactions.append(event)
+        update_list_actions(self)
+        await ctx.send(
+            "**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`".format(action, time, description))
 
     @commands.command(name='deleteBattleroyale',
                       description="delete the last Battleroyale event on the json [OWNER ONLY]",
@@ -314,8 +315,8 @@ class BattleRoyale(commands.Cog):
                       aliases=['removeBattleroyale', 'removeBr', 'deleteBr'])
     @commands.is_owner()
     async def deleteBattleroyale(self, ctx):
-        deleted = self.listReactions.pop()
-        updateListActions(self)
+        deleted = self.reactions.pop()
+        update_list_actions(self)
         await ctx.send(
             "__**DELETED**__\n**action:**`{0}`\n**time:**`{1}`h\n**description:**`{2}`"
                 .format(
@@ -324,7 +325,7 @@ class BattleRoyale(commands.Cog):
                     deleted["description"]))
 
 
-async def sendChallenge(self, ctx):
+async def send_challenge(self, ctx):
     embed = discord.Embed(
         title = 'Battle Royale no DI',
         description='{} started a battle royale'.format(ctx.message.author.mention),
@@ -343,7 +344,7 @@ async def sendChallenge(self, ctx):
     return await ctx.fetch_message(msg.id)
 
 
-def updateListActions(self):
+def update_list_actions(self):
 #update a JSON file
     with open(self.bot.BATTLEROYALE_PATH, 'w') as file:
         json.dump(self.listReactions, file, indent=4)

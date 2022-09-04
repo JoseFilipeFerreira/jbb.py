@@ -1,10 +1,10 @@
+from random import choice, randint
+from re import sub
 import discord
 from discord.ext import commands
 import wolframalpha
 from aiohttp import ClientSession
 from html2text import html2text
-from random import choice, randint
-from re import sub
 
 from aux.url import make_url
 
@@ -14,21 +14,21 @@ class Api(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.client = wolframalpha.Client(bot.config['credentials']['wolframalpha'])
+        self.wa_client = wolframalpha.Client(bot.config['credentials']['wolframalpha'])
         self.colours = [0x1abc9c, 0x11806a, 0x2ecc71, 0x1f8b4c, 0x3498db, 0x206694, 0x9b59b6, 0x71368a, 0xe91e63, 0xad1457, 0xf1c40f, 0xc27c0e, 0xa84300, 0xe74c3c, 0x992d22, 0x95a5a6, 0x607d8b, 0x979c9f, 0x546e7a]
 
     @commands.command(name='ask',
                       description="replies to a query with the short text answer of the wolfram alpha API",
                       brief="wolfram alpha API")
     async def ask(self, ctx, *, query):
-        res = self.client.query(query)
+        res = self.wa_client.query(query)
         if res['@success'] == 'false':
-            strRes = "Couldn't find an answer"
+            result = "Couldn't find an answer"
         else:
-            strRes = next(res.results).text
+            result = next(res.results).text
         embed = discord.Embed(
             title=query,
-            description=strRes,
+            description=result,
             color=self.bot.embed_color)
         await ctx.send(embed=embed)
 
@@ -167,11 +167,11 @@ class Api(commands.Cog):
                     value="*undefined*",
                     inline=False)
         else:
-            for l in result:
-                val = "*Module:* " + l["module"]["name"] + "\n"
-                val+= sub(r'\n{2,}', '\n\n', sub(r"\n +", "\n" , html2text(l["docs"])))
+            for line in result:
+                val = "*Module:* " + line["module"]["name"] + "\n"
+                val+= sub(r'\n{2,}', '\n\n', sub(r"\n +", "\n" , html2text(line["docs"])))
                 embed.add_field(
-                    name= html2text(l["item"]),
+                    name= html2text(line["item"]),
                     value= val,
                     inline=False)
             embed.set_footer(text="first option in Hoogle (Click title for more)")
