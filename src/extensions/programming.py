@@ -1,8 +1,5 @@
-import discord
-from discord.ext import commands
-# from baseconvert import base
 from random import choice
-from aiohttp import ClientSession
+from discord.ext import commands
 
 class ReadMatrix(commands.Converter):
     async def convert(self, ctx, matrix):
@@ -21,13 +18,13 @@ class Programming(commands.Cog):
                       description="give overlycomplicated function that returns the double of a given number in haskell",
                       brief="small program in haskell")
     async def helpHaskell(self, ctx):
-        doublFct = ['double = foldr (+) 0 . take 2 . repeat',
+        implementations = ['double = foldr (+) 0 . take 2 . repeat',
             'double = foldr (+) 0 . take 2 . cycle . return',
             'double = head . fmap ap . zip [(2*)] . return',
             'double = succ . (!!2) . enumFromThen 1',
             'double = uncurry (+) . dup',
             'double x = x + x']
-        await ctx.send('```Haskell\ndouble :: Double -> Double\n' + choice(doublFct) + '```')
+        await ctx.send(f'```Haskell\ndouble :: Double -> Double\n{choice(implementations)}```')
 
     @commands.command(name='quicksort',
                       description="help understand quicksort",
@@ -112,11 +109,8 @@ class Programming(commands.Cog):
             await ctx.send("Invalid Matrix Content")
             return
 
-        await ctx.send("**Original:**\n```"
-                + print_matrix(matrix)
-                + "```\n**EGPP:**\n```"
-                + print_matrix(gauss_solver(matrix))
-                + "```")
+        await ctx.send(
+            f"**Original:**\n```{print_matrix(matrix)}```\n**EGPP:**\n```{print_matrix(gauss_solver(matrix))}```")
 
 def print_matrix(matrix):
     matrix = list(map(lambda x : list(map(str, x)), matrix))
@@ -136,7 +130,7 @@ def gauss_solver(matrix):
     for i in range(len(matrix)):
         matrix = swap_pivot(matrix,i)
         for row in range(i+1, len(matrix)):
-            if(matrix[i][i] != 0):
+            if matrix[i][i] != 0:
                 mult = - (matrix[row][i]/matrix[i][i])
                 lpivot_mult = list(map(lambda x: x * mult, matrix[i]))
                 matrix[row] = [round(lpivot_mult[col] + matrix[row][col],5) for col in range(len(lpivot_mult))]
@@ -146,11 +140,11 @@ def swap_pivot (matrix, pos):
     # Index of the line with the biggest pivot absolute value. This line will be used for a line swap.
     max_index, value = pos, 0
     for i in range(pos, len(matrix)):
-        if(abs(matrix[i][pos]) > value):
+        if abs(matrix[i][pos]) > value:
             value = abs(matrix[i][pos])
             max_index = i
 
-    if(max_index != pos):
+    if max_index != pos:
         temp = matrix[max_index]
         matrix[max_index] = matrix[pos]
         matrix[pos] = temp

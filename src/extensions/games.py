@@ -1,8 +1,7 @@
-import discord
-from discord.ext import commands
-import asyncio
 import aiohttp
 from random import randint, choice
+import discord
+from discord.ext import commands
 
 class Games(commands.Cog):
     """Play games with your friends"""
@@ -15,8 +14,10 @@ class Games(commands.Cog):
     async def flip(self, ctx):
         n = randint(0,10000)
         line = 'WTF the coin landed upright!'
-        if(n<5000): line = 'You got tails'
-        elif(n<10000): line = 'You got heads'
+        if n<5000:
+            line = 'You got tails'
+        elif n<10000:
+            line = 'You got heads'
 
         await ctx.send(line)
 
@@ -39,16 +40,16 @@ class Games(commands.Cog):
                       description="play rock paper scissors against the bot",
                       brief="play rock paper scissors")
     async def rps(self, ctx, player):
-        appInfo = await self.bot.application_info()
-        if(player in ['rock','paper','scissors','r','p','s']):
+        app_info = await self.bot.application_info()
+        if player in ['rock','paper','scissors','r','p','s']:
             cpu = choice(['rock','paper','scissors'])
-            player = simpRPS(player)
-            result = "**" + appInfo.name + " won!**"
-            if (player == cpu):
+            player = convert_rps(player)
+            result = "**" + app_info.name + " won!**"
+            if player == cpu:
                 result = "**It´s a tie!**"
             elif (player == "rock" and cpu == "scissors") or (player == "paper" and cpu == "rock") or (player == "scissors" and cpu == "paper"):
                 result = "**You won!**"
-            await ctx.send('You played ' + player + '\n' + appInfo.name + ' played ' + cpu + '\n' + result)
+            await ctx.send('You played ' + player + '\n' + app_info.name + ' played ' + cpu + '\n' + result)
         else:
             await ctx.send('*Invalid*')
 
@@ -63,7 +64,18 @@ class Games(commands.Cog):
                       description="gives answer from very likely to impossible",
                       brief="like a 8ball")
     async def magicball(self, ctx):
-        a = ['Most likely', 'Very doubtful', 'Ask again', 'As I see it, yes', 'My sources say no', 'Cannot perdict now', 'Yes', 'Dont count on it', 'Without a doubt', 'Better not tell you']
+        a = [
+            'Most likely',
+            'Very doubtful',
+            'Ask again',
+            'As I see it, yes',
+            'My sources say no',
+            'Cannot perdict now',
+            'Yes',
+            'Dont count on it',
+            'Without a doubt',
+            'Better not tell you'
+        ]
         await ctx.send(choice(a))
 
     @commands.command(name='vote',
@@ -72,25 +84,25 @@ class Games(commands.Cog):
                       aliases=['poll'])
     async def vote(self, ctx, *, quote = 'Vote here'):
         await ctx.message.delete()
-        msg = await ctx.send('**{0}**\n(poll by {1})'.format(quote, ctx.message.author.mention))
+        msg = await ctx.send(f'**{quote}**\n(poll by {ctx.message.author.mention})')
         await msg.add_reaction('\U0000274C')
         await msg.add_reaction('\U00002705')
 
 def getRPS():
     n = randint(0,2)
-    if(n == 0):
+    if n == 0:
         return "rock"
-    elif(n == 1):
+    elif n == 1:
         return "paper"
     return "scissors"
 
 
-def simpRPS(hand):
-    if (hand == "r"):
+def convert_rps(hand):
+    if hand == "r":
         hand = "rock"
-    if (hand == "p"):
+    if hand == "p":
         hand = "paper"
-    if (hand == "s"):
+    if hand == "s":
         hand = "scissors"
     return hand
 

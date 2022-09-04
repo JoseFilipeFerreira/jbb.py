@@ -1,15 +1,15 @@
+import json
 import discord
 from discord.ext import commands
-import asyncio
-import json
 from aux.message import user_input_bool
-from aux.stats import Stats, Gear
+from aux.stats import Gear
 
 class Store(commands.Cog):
     """Spend your money here"""
     def __init__(self, bot):
         self.bot = bot
-        self.iventory = json.load(open(bot.MARKET_PATH, 'r'))
+        with open(bot.MARKET_PATH, 'r') as file:
+            self.iventory = json.load(file)
 
     @commands.command(name='richest',
             description="get richest users",
@@ -64,7 +64,7 @@ async def store_interact(self, ctx, store, tool):
         return
 
     prod_dic =  find(self.iventory[store]["contents"], "name", prod)
-    if prod_dic == None:
+    if prod_dic is None:
         embed.add_field(
             name="Invalid Product",
             value=f"{self.bot.command_prefix}market {store} to get valid products in this store")

@@ -1,8 +1,8 @@
+import json
+from random import choice, shuffle
 import discord
 from discord.ext import commands
-import json
-from fuzzywuzzy import fuzz, process
-from random import choice, shuffle
+from fuzzywuzzy import process
 
 class Quotes(commands.Cog):
     """All quotes stored"""
@@ -14,13 +14,13 @@ class Quotes(commands.Cog):
                       description="random quote from JBB",
                       brief="quote from JBB")
     async def quote(self, ctx):
-        await ctx.send(getRLine(self.quotes_dict,'quote'))
+        await ctx.send(get_random_line(self.quotes_dict,'quote'))
 
     @commands.command(name='quoteA',
                       brief="quote from Students")
     async def quoteA(self, ctx, args = None):
         """random quote from Students"""
-        l = getRLine(self.quotes_dict, 'quoteA')
+        l = get_random_line(self.quotes_dict, 'quoteA')
         if args:
             u = []
             if args.lower() == "me":
@@ -49,7 +49,7 @@ class Quotes(commands.Cog):
                     return
                 l = choice(u)
 
-        s = "{} - {}".format(l["content"], l["name"])
+        s = f'{l["content"]} - {l["name"]}'
         if "<@!" in s:
             message_sent = await ctx.send(discord.utils.escape_mentions(s))
             await message_sent.edit(s)
@@ -60,19 +60,19 @@ class Quotes(commands.Cog):
                       description="random quote from Teachers",
                       brief="quote from Teachers")
     async def quoteP(self, ctx):
-        await ctx.send(getRLine(self.quotes_dict, 'quoteP'))
+        await ctx.send(get_random_line(self.quotes_dict, 'quoteP'))
 
     @commands.command(name='fact',
                       description="random fact of JBB",
                       brief="fact of JBB")
     async def fact(self, ctx):
-        await ctx.send(getRLine(self.quotes_dict, 'fact'))
+        await ctx.send(get_random_line(self.quotes_dict, 'fact'))
 
     @commands.command(name='dadjoke',
                       description="random dad joke",
                       brief="random dad joke")
     async def dadjoke(self, ctx):
-        await ctx.send(getRLine(self.quotes_dict, 'dadjoke'))
+        await ctx.send(get_random_line(self.quotes_dict, 'dadjoke'))
 
     @commands.command(name='nquoteA',
                       description="number of student quotes",
@@ -88,7 +88,7 @@ class Quotes(commands.Cog):
             else:
                 await ctx.send(f"You have {u} quotes")
         else:
-            await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteA') + ' quotes de alunos')
+            await ctx.send('Existem ' + get_number_lines(self.quotes_dict, 'quoteA') + ' quotes de alunos')
 
     @commands.command(name='quoteRank',
                       description="Ranking of student quotes",
@@ -111,8 +111,8 @@ class Quotes(commands.Cog):
             member = ctx.message.guild.get_member(quotes["id"])
 
             embed.add_field(
-                name="{0}. {1}".format(i + 1, member.display_name),
-                value="Quotes: {0}".format(quotes["nquotes"]),
+                name=f"{i+1}. {member.display_name}",
+                value=f'Quotes: {quotes["nquotes"]}',
                 inline=False)
 
         await ctx.send(embed=embed)
@@ -121,26 +121,26 @@ class Quotes(commands.Cog):
                       description="number of JBB quotes",
                       brief="number of JBB quotes")
     async def nquote(self, ctx):
-        await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quote') + ' quotes do JBB')
+        await ctx.send('Existem ' + get_number_lines(self.quotes_dict, 'quote') + ' quotes do JBB')
 
     @commands.command(name='nquoteP',
                       description="number of teachers quotes",
                       brief="number of teachers quotes")
     async def nquoteP(self, ctx):
-        await ctx.send('Existem ' + getNLine(self.quotes_dict, 'quoteP') + ' quotes do Professores')
+        await ctx.send('Existem ' + get_number_lines(self.quotes_dict, 'quoteP') + ' quotes do Professores')
 
 
     @commands.command(name='nfact',
                       description="number of JBB facts",
                       brief="number of JBB facts")
     async def nfact(self, ctx):
-        await ctx.send('Existem '+ getNLine(self.quotes_dict, 'fact') + ' factos sobre o JBB')
+        await ctx.send('Existem '+ get_number_lines(self.quotes_dict, 'fact') + ' factos sobre o JBB')
 
     @commands.command(name='ndadjoke',
                       description="number of dadjokes",
                       brief="number of dadjokes")
     async def ndadjoke(self, ctx):
-        await ctx.send('Existem '+ getNLine(self.quotes_dict, 'dadjoke') + ' dad jokes')
+        await ctx.send('Existem '+ get_number_lines(self.quotes_dict, 'dadjoke') + ' dad jokes')
 
 
     @commands.command(name='ntotal',
@@ -149,7 +149,7 @@ class Quotes(commands.Cog):
     async def ntotal(self, ctx):
         n = 0
         for k in self.quotes_dict.keys():
-            n += int(getNLine(self.quotes_dict, k))
+            n += int(get_number_lines(self.quotes_dict, k))
 
         await ctx.send('Existem '+ str(n) + ' frases')
 
@@ -182,13 +182,13 @@ class Quotes(commands.Cog):
                 "content": content,
                 "name": name,
                 "id": msgArr[0].author.id})
-            newQ = "{} - {}".format(content, name)
+            new_quote = f"{content} - {name}"
         else:
             self.quotes_dict[cat].append(msgs)
-            newQ = msgs
+            new_quote = msgs
 
-        updateQuotes(self)
-        await ctx.send('quote "'+ newQ +'" added to `'+ cat +'`')
+        update_quotes(self)
+        await ctx.send('quote "'+ new_quote +'" added to `'+ cat +'`')
 
     @commands.command(name='remove',
                       description="remove a quote [OWNER ONLY]",
@@ -200,7 +200,7 @@ class Quotes(commands.Cog):
             await ctx.send('Invalid category')
         else:
             quote = self.quotes_dict[cat].pop()
-            updateQuotes(self)
+            update_quotes(self)
             await ctx.send('quote "'+ str(quote) +'" removed from `'+ cat +'`')
 
     @commands.command(name='quoteS',
@@ -210,7 +210,7 @@ class Quotes(commands.Cog):
     async def quoteS(self, ctx, *, search):
     #search a quote using fuzzysearching
         quoteA = list(map(
-            lambda x: "{} - {}".format(x["content"], x["name"]),
+            lambda x: f"{x['content']} - {x['name']}",
             self.quotes_dict['quoteA']))
         quote = self.quotes_dict['quote']
         fact = self.quotes_dict['fact']
@@ -227,17 +227,17 @@ class Quotes(commands.Cog):
         else:
             await ctx.send(s)
 
-def getRLine(quotes_dict, filename):
+def get_random_line(quotes_dict, filename):
 #get a random quote
     return choice(quotes_dict[filename])
 
 
-def getNLine(quotes_dict, filename):
+def get_number_lines(quotes_dict, filename):
 #get number of quotes
     return str(len(quotes_dict[filename]))
 
 
-def updateQuotes(self):
+def update_quotes(self):
 #update a JSON file
     with open(self.bot.QUOTES_PATH, 'w', encoding='utf8') as file:
         json.dump(self.quotes_dict, file, indent=4)

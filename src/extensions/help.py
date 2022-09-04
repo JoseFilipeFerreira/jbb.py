@@ -1,8 +1,5 @@
 import discord
 from discord.ext import commands
-import json
-import subprocess
-import time
 
 class Help(commands.Cog):
     """Help command"""
@@ -49,7 +46,7 @@ async def help_all(self, ctx):
 
     string_cogs = ""
     for cog in cogs.keys():
-       string_cogs += "**{0}**\n".format(cog)
+        string_cogs += "**{0}**\n".format(cog)
 
     embed = discord.Embed(
         title="List of all available cogs:",
@@ -103,7 +100,7 @@ async def help_command(self, ctx, command_or_cog):
 
     embed.add_field(
         name="DESCRIPTION",
-        value=command.help if command.help != None else command.description,
+        value=command.help if command.help is not None else command.description,
         inline=False)
 
     synopse = self.bot.command_prefix + command.name

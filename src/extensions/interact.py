@@ -1,7 +1,4 @@
-import discord
 from discord.ext import commands
-import json
-import subprocess
 from random import randint
 
 class Interact(commands.Cog):

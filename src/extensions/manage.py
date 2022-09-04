@@ -1,9 +1,7 @@
+import json
+import time
 import discord
 from discord.ext import commands
-import json
-import os
-import subprocess
-import time
 
 class Manage(commands.Cog):
     """Manage the server"""
@@ -28,7 +26,7 @@ class Manage(commands.Cog):
             evaluated = eval(code)
         except Exception as e:
             evaluated = str(e)
-        await ctx.send("**{0}**\n```\n{1}\n```".format(code, evaluated))
+        await ctx.send(f"**{code}**\n```\n{evaluated}\n```")
 
     @commands.command(name='setplay',
                       description="change the game tag off the bot [ADMIN ONLY]",
@@ -36,21 +34,6 @@ class Manage(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def setplay(self, ctx,*, play):
         await self.bot.change_presence(game=discord.Game(name=play))
-
-    @commands.command(name='live',
-                      description="get link for multi-webcam chat on server",
-                      brief="go live")
-    @commands.has_permissions(administrator=True)
-    async def live(self, ctx):
-        vcState = ctx.message.author.voice
-        if vcState == None:
-            ctx.send("No voice state")
-            return
-        channel = vcState.channel
-        if channel == None:
-            ctx.send("Not in a voice channel")
-            return
-        await ctx.send("WebCam Show Live!😉 \n<https://www.discordapp.com/channels/{0}/{1}>".format(ctx.guild.id, channel.id))
 
     @commands.command(name='info',
                       description="get info on a specific user",
@@ -183,16 +166,17 @@ class Manage(commands.Cog):
                 if user is not None:
                     if args.lower() == "add":
                         self.bot.slow_users['users'][user_id] = time.time()
-                        await ctx.send("{} was added to the slowmode list".format(user.display_name))
+                        await ctx.send(f"{user.display_name} was added to the slowmode list")
                     elif args.lower() == "rm":
                         self.bot.slow_users['users'].pop(user_id, None)
-                        await ctx.send("{} was removed to the slowmode list".format(user.display_name))
+                        await ctx.send(f"{user.display_name} was removed to the slowmode list")
                 elif args.lower() == "set":
                     self.bot.slow_users['time'] = int(user_id)
-                    await ctx.send("Cooldown is now set to {} minutes".format(user_id))
+                    await ctx.send(f"Cooldown is now set to {user_id} minutes")
             elif args.lower() == "info":
                 cooldown_users = ",".join(list(map(lambda x: ctx.guild.get_member(int(x)).display_name, self.bot.slow_users['users'].keys())))
-                await ctx.send("Cooldown time: {} minutes\nCooldown users: {}".format(self.bot.slow_users['time'], cooldown_users))
+                await ctx.send(
+                    f"Cooldown time: {self.bot.slow_users['time']} minutes\nCooldown users: {cooldown_users}")
 
             with open(self.bot.SLOWMODE_PATH, 'w', encoding='utf8') as file:
                 json.dump(self.bot.slow_users, file, indent=4)
