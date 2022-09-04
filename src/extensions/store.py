@@ -35,8 +35,8 @@ class Store(commands.Cog):
             member = ctx.message.guild.get_member(cash["id"])
 
             embed.add_field(
-                name="{0}. {1}".format(i + 1, member.display_name),
-                value="Cash: {0}".format(cash["cash"]),
+                name=f"{i+1}. {member.display_name}",
+                value=f"Cash: {cash['cash']}",
                 inline=False)
 
         await ctx.send(embed=embed)
@@ -60,14 +60,14 @@ async def store_interact(self, ctx, store, tool):
     if store not in self.iventory:
         embed.add_field(
             name="Invalid Store",
-            value="{0}market to get valid stores".format(self.bot.command_prefix))
+            value=f"{self.bot.command_prefix}market to get valid stores")
         return
 
     prod_dic =  find(self.iventory[store]["contents"], "name", prod)
     if prod_dic == None:
         embed.add_field(
             name="Invalid Product",
-            value="{0}market {1} to get valid products in this store".format(self.bot.command_prefix, store))
+            value=f"{self.bot.command_prefix}market {store} to get valid products in this store")
         ctx.send(embed=embed)
         return
 
@@ -82,22 +82,14 @@ async def store_interact(self, ctx, store, tool):
     gear = self.bot.stats.get_gear(ctx.message.author.id)
 
     embed.add_field(
-        name="{0}{1}".format(
-            prod_dic["simbol"],
-            prod_dic["name"]),
-        value="cost: {0}\nstat: {1}".format(
-            prod_dic["cost"],
-            prod_dic["stats"]))
+        name=f"{prod['simbol']}{prod_dic['name']}",
+        value=f"cost: {prod_dic['cost']}\nstat: {prod_dic['stats']}")
 
     embed.add_field(
         name="**Replace**",
-        value="{0} {1}\nstat: {2}".format(
-            gear[store]["simbol"],
-            gear[store]["name"],
-            gear[store]["stats"]))
+        value=f"{gear[store]['simbol']} {gear[store]['name']}\nstat: {gear[store]['stats']}")
 
-    embed.set_footer(
-        text="select to buy")
+    embed.set_footer(text="select to buy")
 
     self.bot.stats.spend_cash(ctx.message.author.id, price)
 
@@ -128,12 +120,10 @@ async def market_stalls(self, ctx):
     embed = default_embed(self, ctx)
     for store in self.iventory.keys():
         embed.add_field(
-            name="{0} {1}".format(
-                self.iventory[store]["simbol"],
-                store),
+            name=f"{self.inventory[store]['simbol']} {store}",
             value=self.iventory[store]["description"])
 
-    embed.set_footer(text="{0}market [store] to see one store".format(self.bot.command_prefix))
+    embed.set_footer(text=f"{self.bot.command_prefix}market [store] to see one store")
 
     await ctx.send(embed=embed)
 
@@ -146,12 +136,11 @@ async def stall(self, ctx, store):
             self.iventory[store]["stats"],
             self.iventory[store]["contents"])
 
-        embed.set_footer(
-            text="{0}market {1} [tool] to buy from store".format(self.bot.command_prefix, store))
+        embed.set_footer(text=f"{self.bot.command_prefix}market {store} [tool] to buy from store")
     else:
         embed.add_field(
             name="Invalid Store",
-            value="{0}market to get valid stores".format(self.bot.command_prefix))
+            value=f"{self.bot.command_prefix}market to get valid stores")
     await ctx.send(embed=embed)
 
 def store_items(embed, stat, items):
@@ -159,18 +148,13 @@ def store_items(embed, stat, items):
 
     for item in items:
         embed.add_field(
-            name="{0}{1}".format(
-                item["simbol"],
-                item["name"]),
-            value="cost: {2}\n{0}: {1}\n".format(
-                stat,
-                item["stats"],
-                item["cost"]),
+            name=f'{item["simbol"]}{item["name"]}',
+            value=f'cost: {stat}\n{item["stats"]}: {item["cost"]}\n',
             inline=False)
 
 def default_embed(self, ctx):
     embed = discord.Embed(
-            title = 'Market de {}'.format(ctx.message.guild.name),
+            title = f'Market de {ctx.message.guild.name}',
             color=self.bot.embed_color)
     embed.set_thumbnail(
             url="http://pixelartmaker.com/art/9a22f122756ab01.png")
