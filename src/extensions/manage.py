@@ -106,10 +106,6 @@ class Manage(commands.Cog):
             description=guild.name,
             color=self.bot.embed_color)
         embed.set_thumbnail(url=guild.icon_url)
-        embed.add_field(
-                name='Region',
-                value=guild.region,
-                inline=False)
         text_channel = 0
         voice_channel = 0
         for channel in guild.channels:
