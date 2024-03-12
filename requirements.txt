@@ -1,4 +1,4 @@
-Pillow==9.0.1
+Pillow==10.0.1
 PyGithub==1.55
 PyYAML==6.0
 discord.py==1.7.3
